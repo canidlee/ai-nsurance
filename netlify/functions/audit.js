@@ -29,7 +29,7 @@ exports.handler = async (event) => {
   }
 
   // Enforce safe limits — callers cannot override these
-  params.model = 'claude-sonnet-4-5';
+  params.model = 'claude-haiku-4-5-20251001';
   params.max_tokens = Math.min(params.max_tokens || 2000, 2000);
 
   try {
