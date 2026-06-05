@@ -431,18 +431,17 @@ async function startAudit() {
       ]
     }];
 
-    const ANTHROPIC_KEY = 'PASTE_API_KEY_HERE';
-    const response = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://api.anthropic.com/v1/messages'), {
+    const response = await fetch('/.netlify/functions/audit', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        messages
+        params: {
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 2000,
+          messages
+        }
       })
     });
 
