@@ -613,16 +613,7 @@
 <body>
 
 <!-- NAV -->
-<!-- SETUP BANNER: delete this entire block once the site is fully configured -->
-<div id="setup-banner" style="background:#fef3cd;border-bottom:1px solid #f0c040;padding:0.6rem 1.5rem;font-size:0.82rem;color:#7a5c00;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
-  <strong>Setup checklist (only you can see this reminder — delete it when done):</strong>
-  <span>☐ Replace MAILCHIMP URL in email form</span>
-  <span>☐ Uncomment + fill Google Analytics ID</span>
-  <span>☐ Replace Stripe payment link</span>
-  <span>☐ Replace affiliate links on carrier names</span>
-  <span>☐ Delete this banner</span>
-</div>
-<!-- END SETUP BANNER -->
+
 <nav>
   <div class="nav-inner">
     <a href="#" class="logo">ai<span>-n</span>surance</a>
@@ -644,6 +635,7 @@
       <p class="hero-sub">We help you audit your P&C policy, find the discounts you're already entitled to, and know whether your carrier will actually show up when it matters.</p>
       <div class="hero-actions">
         <a href="#finder" class="btn-primary">Find my discounts — free</a>
+        <a href="/audit-tool.html" class="btn-primary" style="background:var(--warn)">Audit my policy — $39</a>
         <a href="#rankings" class="btn-secondary">Check my carrier</a>
       </div>
     </div>
@@ -692,7 +684,7 @@
         <!-- STRIPE: replace href below with your Stripe payment link -->
         <!-- Get it from: stripe.com → Products → Policy Audit → Create payment link -->
         <p style="font-size:0.78rem;color:var(--ink-3);margin-top:0.5rem;margin-bottom:0.25rem">🔒 Your document is never stored or retained. We analyze it and discard it immediately. Only your email is saved if you choose to provide it.</p>
-        <a href="PASTE_YOUR_STRIPE_PAYMENT_LINK_HERE" class="tool-link">Audit my policy ($39) →</a>
+        <a href="https://book.stripe.com/6oUeVf738d8N1sid0ibAs03" class="tool-link">Audit my policy ($39) →</a>
       </div>
       <div class="tool-card">
         <div class="tool-icon">⭐</div>
@@ -1041,11 +1033,11 @@
     <p>Enter your email and we'll send you the full discount checklist, plus a renewal reminder 30 days before your policy anniversary.</p>
     <!-- MAILCHIMP FORM: replace ACTION_URL with your Mailchimp form action URL -->
     <!-- Get it from: Mailchimp → Audience → Signup Forms → Embedded Forms -->
-    <form class="email-form" action="PASTE_YOUR_MAILCHIMP_URL_HERE" method="post" id="mc-form" target="_blank" novalidate>
+    <form class="email-form" action="https://ai-nsurance.us20.list-manage.com/subscribe/post?u=2a21dbd972d0c745d08968931&id=6fc38719c6&f_id=00e758eaf0" method="post" id="mc-form" target="_blank" novalidate>
       <input type="email" name="EMAIL" placeholder="your@email.com" id="email-input" required>
       <!-- Mailchimp bot protection — do not remove -->
       <div style="position:absolute;left:-5000px" aria-hidden="true">
-        <input type="text" name="b_XXXX_XXXX" tabindex="-1" value="">
+        <input type="text" name="b_2a21dbd972d0c745d08968931_6fc38719c6" tabindex="-1" value="">
       </div>
       <button type="submit">Send my report</button>
     </form>
@@ -1068,7 +1060,7 @@
       <h4>Tools</h4>
       <ul>
         <li><a href="#finder">Discount finder</a></li>
-        <li><a href="#audit">Policy audit ($39)</a></li>
+        <li><a href="/audit-tool.html">Policy audit ($39)</a></li>
         <li><a href="#rankings">Carrier rankings</a></li>
         <li><a href="#newsletter">Renewal alerts</a></li>
       </ul>
