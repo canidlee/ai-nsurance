@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy audit — ai-nsurance.com</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18; --ink-2: #4a4a44; --ink-3: #8a8a80;
+    --surface: #faf9f6; --surface-2: #f0ede6; --surface-3: #e4e0d6;
+    --accent: #1d6b4a; --accent-light: #e6f4ee; --accent-mid: #2d9e6f;
+    --warn: #c44a1a; --warn-light: #fdf0ea;
+    --border: rgba(26,26,24,0.12);
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --r: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--surface); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  nav { border-bottom: 1px solid var(--border); padding: 0 2rem; }
+  .nav-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .logo { font-family: var(--serif); font-size: 1.35rem; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+
+  .page-wrap { max-width: 780px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .page-eyebrow { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 4px; margin-bottom: 1rem; }
+  h1 { font-family: var(--serif); font-size: 2.2rem; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .page-sub { font-size: 1rem; color: var(--ink-2); margin-bottom: 2.5rem; max-width: 580px; }
+
+  .audit-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+  .audit-card h2 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .audit-card p { font-size: 0.9rem; color: var(--ink-2); margin-bottom: 1.25rem; }
+
+  .upload-zone { border: 2px dashed var(--surface-3); border-radius: var(--r); padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--surface); }
+  .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent-mid); background: var(--accent-light); }
+  .upload-zone.has-file { border-color: var(--accent); border-style: solid; background: var(--accent-light); }
+  .upload-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .upload-label { font-weight: 500; color: var(--ink); margin-bottom: 0.25rem; }
+  .upload-hint { font-size: 0.82rem; color: var(--ink-3); }
+  .upload-zone input[type="file"] { display: none; }
+  .file-name { font-size: 0.85rem; color: var(--accent); font-weight: 500; margin-top: 0.5rem; }
+
+  .form-row { margin-bottom: 1rem; }
+  .form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--ink-2); }
+  .form-input { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: var(--r); font-family: var(--sans); font-size: 0.95rem; color: var(--ink); background: var(--surface); transition: border-color 0.15s; }
+  .form-input:focus { outline: none; border-color: var(--accent-mid); }
+  select.form-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8a80' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
+
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .btn-submit { width: 100%; background: var(--accent); color: #fff; border: none; padding: 0.9rem 1.5rem; border-radius: var(--r); font-family: var(--sans); font-size: 1rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s; margin-top: 0.5rem; }
+  .btn-submit:hover { opacity: 0.88; }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .processing { display: none; text-align: center; padding: 3rem 2rem; }
+  .spinner { width: 40px; height: 40px; border: 3px solid var(--surface-3); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1.25rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processing-title { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .processing-steps { list-style: none; font-size: 0.9rem; color: var(--ink-2); }
+  .processing-steps li { padding: 0.3rem 0; }
+  .processing-steps li.done { color: var(--accent); }
+  .processing-steps li.done::before { content: "✓ "; }
+  .processing-steps li.active::before { content: "→ "; color: var(--accent); }
+
+  .results { display: none; }
+  .results-header { background: var(--accent-light); border: 1px solid rgba(29,107,74,0.2); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .results-header h2 { font-family: var(--serif); color: var(--accent); margin-bottom: 0.25rem; }
+  .results-header p { font-size: 0.875rem; color: var(--ink-2); }
+
+  .score-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .score-card { flex: 1; min-width: 140px; background: var(--surface-2); border-radius: var(--r); padding: 1rem; text-align: center; }
+  .score-num { font-family: var(--serif); font-size: 1.8rem; line-height: 1; margin-bottom: 0.25rem; }
+  .score-label { font-size: 0.75rem; color: var(--ink-2); }
+  .score-good { color: var(--accent); }
+  .score-warn { color: #c47a1a; }
+  .score-bad { color: var(--warn); }
+
+  .finding { border-left: 3px solid var(--border); padding: 0.75rem 1rem; margin-bottom: 0.75rem; border-radius: 0 var(--r) var(--r) 0; background: var(--surface); }
+  .finding.critical { border-left-color: var(--warn); background: var(--warn-light); }
+  .finding.warning { border-left-color: #c47a1a; background: #fdf6e8; }
+  .finding.good { border-left-color: var(--accent); background: var(--accent-light); }
+  .finding-title { font-weight: 500; font-size: 0.92rem; margin-bottom: 0.2rem; }
+  .finding-desc { font-size: 0.84rem; color: var(--ink-2); line-height: 1.55; }
+  .finding-action { font-size: 0.8rem; color: var(--accent); font-weight: 500; margin-top: 0.35rem; }
+
+  .section-heading { font-family: var(--serif); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--ink); }
+
+  .discount-list { display: grid; gap: 0.5rem; }
+  .discount-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 0.65rem 1rem; font-size: 0.875rem; }
+  .discount-name { font-weight: 500; }
+  .discount-savings { color: var(--accent); font-weight: 500; font-size: 0.82rem; }
+
+  .carrier-verdict { display: flex; align-items: center; gap: 1rem; background: var(--surface-2); border-radius: var(--r); padding: 1rem 1.25rem; margin-bottom: 0.75rem; }
+  .verdict-score { font-family: var(--serif); font-size: 2rem; min-width: 48px; text-align: center; }
+  .verdict-name { font-weight: 500; margin-bottom: 0.15rem; }
+  .verdict-text { font-size: 0.82rem; color: var(--ink-2); }
+
+  .report-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .btn-secondary { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--ink); padding: 0.75rem 1rem; border-radius: var(--r); font-family: var(--sans); font-weight: 500; cursor: pointer; font-size: 0.9rem; }
+  .btn-secondary:hover { background: var(--surface-2); }
+
+  .error-box { background: var(--warn-light); border: 1px solid rgba(196,74,26,0.25); border-radius: var(--r); padding: 1rem 1.25rem; margin-top: 1rem; display: none; font-size: 0.875rem; color: var(--warn); }
+
+  .what-happens { background: var(--surface-2); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+  .what-happens h3 { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.6rem; color: var(--ink); }
+  .steps-inline { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .step-pill { font-size: 0.78rem; background: #fff; border: 0.5px solid var(--border); border-radius: 20px; padding: 0.25rem 0.7rem; color: var(--ink-2); }
+  .step-arrow { color: var(--ink-3); font-size: 0.8rem; align-self: center; }
+
+  .api-note { background: #f0eaff; border: 1px solid rgba(90,53,176,0.15); border-radius: var(--r); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.82rem; color: #3d2580; }
+  .api-note strong { display: block; margin-bottom: 0.25rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">ai<span>-n</span>surance</a>
+    <span style="font-size:0.85rem;color:var(--ink-3)">Policy audit tool</span>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-eyebrow">AI-powered · Delivered in minutes</div>
+  <h1>Your personal policy audit</h1>
+  <p class="page-sub">Upload your declarations page and answer 4 quick questions. Our AI reviews your coverage against 47 checkpoints and delivers a written report with specific recommendations.</p>
+
+  <div class="what-happens">
+    <h3>What happens after you submit</h3>
+    <div class="steps-inline">
+      <span class="step-pill">📄 You upload dec page</span>
+      <span class="step-arrow">→</span>
+      <span class="step-pill">🤖 AI reads your policy</span>
+      <span class="step-arrow">→</span>
+      <span class="step-pill">🔍 47-point audit runs</span>
+      <span class="step-arrow">→</span>
+      <span class="step-pill">📋 Report in 60 seconds</span>
+      <span class="step-arrow">→</span>
+      <span class="step-pill">📧 Emailed to you</span>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div id="form-section">
+    <div class="audit-card">
+      <h2>Step 1 — Upload your declarations page</h2>
+      <p>This is the 1–2 page summary sent at the start of every policy period. It's usually titled "Declarations Page" or "Policy Summary." PDF or image (JPG/PNG) accepted.</p>
+
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+        <div class="upload-icon">📄</div>
+        <div class="upload-label">Click to upload or drag and drop</div>
+        <div class="upload-hint">PDF, JPG, or PNG · Max 10MB</div>
+        <div class="file-name" id="file-name"></div>
+        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this)">
+      </div>
+    </div>
+
+    <div class="audit-card">
+      <h2>Step 2 — A few quick questions</h2>
+      <p>These help the AI contextualize your coverage against your actual situation.</p>
+
+      <div class="form-row">
+        <label class="form-label">Your email (we'll send the report here)</label>
+        <input type="email" class="form-input" id="user-email" placeholder="you@email.com">
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Policy type</label>
+          <select class="form-input" id="policy-type">
+            <option value="">Select...</option>
+            <option value="auto">Auto insurance</option>
+            <option value="home">Homeowners insurance</option>
+            <option value="renters">Renters insurance</option>
+            <option value="both">Auto + Home bundle</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Your state</label>
+          <select class="form-input" id="user-state">
+            <option value="">Select...</option>
+            <option>Alabama</option><option>Alaska</option><option>Arizona</option>
+            <option>Arkansas</option><option>California</option><option>Colorado</option>
+            <option>Connecticut</option><option>Delaware</option><option>Florida</option>
+            <option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+            <option>Illinois</option><option>Indiana</option><option>Iowa</option>
+            <option>Kansas</option><option>Kentucky</option><option>Louisiana</option>
+            <option>Maine</option><option>Maryland</option><option>Massachusetts</option>
+            <option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+            <option>Missouri</option><option>Montana</option><option>Nebraska</option>
+            <option>Nevada</option><option>New Hampshire</option><option>New Jersey</option>
+            <option>New Mexico</option><option>New York</option><option>North Carolina</option>
+            <option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+            <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option>
+            <option>South Carolina</option><option>South Dakota</option><option>Tennessee</option>
+            <option>Texas</option><option>Utah</option><option>Vermont</option>
+            <option>Virginia</option><option>Washington</option><option>West Virginia</option>
+            <option>Wisconsin</option><option>Wyoming</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:1rem">
+        <label class="form-label">Anything specific you're concerned about? (optional)</label>
+        <input type="text" class="form-input" id="user-concern" placeholder="e.g. my rates went up 30%, I just bought a new car, I'm not sure if I'm underinsured...">
+      </div>
+    </div>
+
+    <div id="error-box" class="error-box"></div>
+
+    <button class="btn-submit" id="submit-btn" onclick="startAudit()">
+      Run my policy audit →
+    </button>
+
+    <p style="text-align:center;font-size:0.78rem;color:var(--ink-3);margin-top:0.75rem">
+      Your document is analyzed and immediately discarded. We don't store policy documents.
+    </p>
+
+  </div>
+
+  <!-- PROCESSING -->
+  <div class="audit-card processing" id="processing-section">
+    <div class="spinner"></div>
+    <div class="processing-title">Auditing your policy...</div>
+    <p style="font-size:0.875rem;color:var(--ink-2);margin-bottom:1.25rem">This takes about 30–60 seconds</p>
+    <ul class="processing-steps" id="processing-steps">
+      <li id="ps-1">Reading your declarations page</li>
+      <li id="ps-2">Identifying your coverage limits</li>
+      <li id="ps-3">Checking against 47 audit criteria</li>
+      <li id="ps-4">Scoring your carrier quality</li>
+      <li id="ps-5">Finding applicable discounts</li>
+      <li id="ps-6">Generating your written report</li>
+    </ul>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results-section">
+    <div class="results-header">
+      <h2>Your audit is complete</h2>
+      <p>Report sent to <span id="results-email"></span> · <span id="results-date"></span></p>
+    </div>
+
+    <div class="score-row">
+      <div class="score-card">
+        <div class="score-num" id="score-overall">—</div>
+        <div class="score-label">Overall coverage score</div>
+      </div>
+      <div class="score-card">
+        <div class="score-num" id="score-issues" style="color:var(--warn)">—</div>
+        <div class="score-label">Issues found</div>
+      </div>
+      <div class="score-card">
+        <div class="score-num" id="score-discounts" style="color:var(--accent)">—</div>
+        <div class="score-label">Discounts to request</div>
+      </div>
+      <div class="score-card">
+        <div class="score-num" id="score-savings" style="color:var(--accent)">—</div>
+        <div class="score-label">Est. annual savings</div>
+      </div>
+    </div>
+
+    <div class="audit-card" id="findings-card">
+      <div class="section-heading">Coverage findings</div>
+      <div id="findings-list"></div>
+    </div>
+
+    <div class="audit-card" id="discounts-card">
+      <div class="section-heading">Discounts you likely qualify for</div>
+      <div class="discount-list" id="discounts-list"></div>
+    </div>
+
+    <div class="audit-card" id="carrier-card">
+      <div class="section-heading">Your carrier assessment</div>
+      <div id="carrier-verdict"></div>
+    </div>
+
+    <div class="audit-card" id="summary-card">
+      <div class="section-heading">Full written summary</div>
+      <div id="full-summary" style="font-size:0.9rem;color:var(--ink-2);line-height:1.75;white-space:pre-wrap"></div>
+    </div>
+
+    <div class="report-actions">
+      <button class="btn-secondary" onclick="window.print()">🖨 Print report</button>
+      <button class="btn-secondary" onclick="copyReport()">📋 Copy to clipboard</button>
+      <button class="btn-submit" style="flex:1" onclick="location.reload()">Audit another policy</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let uploadedFile = null;
+let auditReport = {};
+
+const AUDIT_PROMPT = `You are an expert P&C insurance policy auditor with 20 years of experience. You have been given a declarations page (or description of one) to audit.
+
+Your job is to analyze this policy and produce a structured audit report. Be specific, practical, and honest. If you cannot determine something from the document, say so clearly rather than guessing.
+
+Analyze the following and return a JSON response with this exact structure:
+
+{
+  "overall_score": <number 0-100>,
+  "issues_count": <number>,
+  "discounts_count": <number>,
+  "estimated_savings": "<string like '$200-400/yr'>",
+  "carrier_name": "<carrier name from document>",
+  "carrier_score": <number 0-100>,
+  "carrier_verdict": "<2-3 sentence honest assessment of this carrier>",
+  "findings": [
+    {
+      "severity": "critical|warning|good",
+      "title": "<short title>",
+      "description": "<2-3 sentence explanation of what you found and why it matters>",
+      "action": "<specific action the policyholder should take>"
+    }
+  ],
+  "discounts": [
+    {
+      "name": "<discount name>",
+      "savings": "<estimated savings range>"
+    }
+  ],
+  "full_summary": "<3-5 paragraph written summary of the audit findings, written directly to the policyholder in plain English. Include the most important things to do this week, this month, and at next renewal.>"
+}
+
+Audit criteria to check (apply what's visible in the document):
+COVERAGE LIMITS: Are liability limits adequate (100/300/100 minimum recommended)? Are UM/UIM limits matching liability? Is dwelling coverage sufficient for current rebuild costs? Is personal property at replacement cost or ACV?
+GAPS: Missing umbrella liability? No UM/UIM? ACV instead of RCV? No extended replacement cost? High deductibles relative to assets?
+CARRIER QUALITY: Based on the carrier name, assess their known quality (JD Power rankings, NAIC complaint history, financial strength). Be honest — if it's Farmers, say so. If it's USAA or Amica, say so.
+DISCOUNTS: Based on visible policy details, what discounts should this person ask about? (bundling, loyalty tenure, claims-free, paperless, autopay, safety features)
+RED FLAGS: Anything unusual, concerning, or that suggests the policy was not structured in the policyholder's best interest?
+
+The policyholder's state: {STATE}
+Policy type: {POLICY_TYPE}
+Specific concern: {CONCERN}
+
+Return ONLY the JSON. No preamble, no markdown code blocks, just the raw JSON object.`;
+
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  uploadedFile = file;
+  document.getElementById('file-name').textContent = '✓ ' + file.name;
+  document.getElementById('upload-zone').classList.add('has-file');
+}
+
+const uploadZone = document.getElementById('upload-zone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    uploadedFile = file;
+    document.getElementById('file-name').textContent = '✓ ' + file.name;
+    uploadZone.classList.add('has-file');
+  }
+});
+
+function showError(msg) {
+  const box = document.getElementById('error-box');
+  box.textContent = msg;
+  box.style.display = 'block';
+  setTimeout(() => box.style.display = 'none', 6000);
+}
+
+async function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function startAudit() {
+  const email = document.getElementById('user-email').value;
+  const policyType = document.getElementById('policy-type').value;
+  const state = document.getElementById('user-state').value;
+  const concern = document.getElementById('user-concern').value || 'None specified';
+
+  if (!uploadedFile) return showError('Please upload your declarations page first.');
+  if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
+  if (!policyType) return showError('Please select your policy type.');
+  if (!state) return showError('Please select your state.');
+
+  document.getElementById('form-section').style.display = 'none';
+  const proc = document.getElementById('processing-section');
+  proc.style.display = 'block';
+
+  const steps = ['ps-1','ps-2','ps-3','ps-4','ps-5','ps-6'];
+  let stepIdx = 0;
+  const stepInterval = setInterval(() => {
+    if (stepIdx > 0) document.getElementById(steps[stepIdx-1]).className = 'done';
+    if (stepIdx < steps.length) {
+      document.getElementById(steps[stepIdx]).className = 'active';
+      stepIdx++;
+    }
+  }, 4000);
+
+  try {
+    const base64 = await fileToBase64(uploadedFile);
+    const isPDF = uploadedFile.type === 'application/pdf';
+    const mediaType = isPDF ? 'application/pdf' : uploadedFile.type;
+
+    const prompt = AUDIT_PROMPT
+      .replace('{STATE}', state)
+      .replace('{POLICY_TYPE}', policyType)
+      .replace('{CONCERN}', concern);
+
+    const messages = [{
+      role: 'user',
+      content: [
+        {
+          type: isPDF ? 'document' : 'image',
+          source: { type: 'base64', media_type: mediaType, data: base64 }
+        },
+        { type: 'text', text: prompt }
+      ]
+    }];
+
+    const response = await fetch('/.netlify/functions/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        params: {
+          model: 'claude-sonnet-4-5',
+          max_tokens: 2000,
+          messages
+        }
+      })
+    });
+
+    clearInterval(stepInterval);
+    steps.forEach(s => document.getElementById(s).className = 'done');
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error?.message || 'API error ' + response.status);
+    }
+
+    const data = await response.json();
+    const rawText = (data && data.content && Array.isArray(data.content) && data.content.find(b => b.type === 'text')?.text) || '';
+    if (!rawText) throw new Error('No response from AI. Please try again.');
+
+    let report;
+    try {
+      report = JSON.parse(rawText.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      throw new Error('Could not parse audit report. Please try again.');
+    }
+
+    auditReport = report;
+    auditReport.email = email;
+    auditReport.policyType = policyType;
+
+    setTimeout(() => {
+      proc.style.display = 'none';
+      renderResults(report, email);
+    }, 800);
+
+  } catch(err) {
+    clearInterval(stepInterval);
+    proc.style.display = 'none';
+    document.getElementById('form-section').style.display = 'block';
+    showError('Audit failed: ' + err.message + '. Please check your file and try again.');
+  }
+}
+
+function renderResults(r, email) {
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-email').textContent = email;
+  document.getElementById('results-date').textContent = new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
+
+  const scoreEl = document.getElementById('score-overall');
+  scoreEl.textContent = r.overall_score;
+  scoreEl.className = 'score-num ' + (r.overall_score >= 75 ? 'score-good' : r.overall_score >= 50 ? 'score-warn' : 'score-bad');
+
+  document.getElementById('score-issues').textContent = r.issues_count;
+  document.getElementById('score-discounts').textContent = r.discounts_count;
+  document.getElementById('score-savings').textContent = r.estimated_savings;
+
+  const findingsList = document.getElementById('findings-list');
+  findingsList.innerHTML = '';
+  (r.findings || []).forEach(f => {
+    const el = document.createElement('div');
+    el.className = 'finding ' + (f.severity === 'critical' ? 'critical' : f.severity === 'warning' ? 'warning' : 'good');
+    el.innerHTML = `
+      <div class="finding-title">${f.severity === 'critical' ? '🔴 ' : f.severity === 'warning' ? '🟡 ' : '🟢 '}${f.title}</div>
+      <div class="finding-desc">${f.description}</div>
+      ${f.action ? `<div class="finding-action">→ ${f.action}</div>` : ''}
+    `;
+    findingsList.appendChild(el);
+  });
+
+  const discountsList = document.getElementById('discounts-list');
+  discountsList.innerHTML = '';
+  (r.discounts || []).forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'discount-item';
+    el.innerHTML = `<span class="discount-name">💰 ${d.name}</span><span class="discount-savings">${d.savings}</span>`;
+    discountsList.appendChild(el);
+  });
+
+  const carrierEl = document.getElementById('carrier-verdict');
+  const carrierScore = r.carrier_score || 50;
+  const carrierColor = carrierScore >= 75 ? 'score-good' : carrierScore >= 50 ? 'score-warn' : 'score-bad';
+  carrierEl.innerHTML = `
+    <div class="carrier-verdict">
+      <div class="verdict-score ${carrierColor}">${carrierScore}</div>
+      <div>
+        <div class="verdict-name">${r.carrier_name || 'Your carrier'}</div>
+        <div class="verdict-text">${r.carrier_verdict || ''}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('full-summary').textContent = r.full_summary || '';
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth'});
+}
+
+function copyReport() {
+  const r = auditReport;
+  if (!r.full_summary) return;
+  const text = `AI-NSURANCE.COM POLICY AUDIT REPORT\n${'='.repeat(40)}\n\nOverall score: ${r.overall_score}/100\nIssues found: ${r.issues_count}\nDiscounts to request: ${r.discounts_count}\nEstimated savings: ${r.estimated_savings}\n\nFINDINGS\n${(r.findings||[]).map(f => `• ${f.title}: ${f.description} Action: ${f.action}`).join('\n')}\n\nDISCOUNTS\n${(r.discounts||[]).map(d => `• ${d.name} — ${d.savings}`).join('\n')}\n\nCARRIER: ${r.carrier_name} (score: ${r.carrier_score}/100)\n${r.carrier_verdict}\n\nFULL SUMMARY\n${r.full_summary}`;
+  navigator.clipboard.writeText(text).then(() => alert('Report copied to clipboard.'));
+}
+</script>
+
+
+</body>
+</html>
