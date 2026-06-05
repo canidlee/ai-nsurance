@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When to switch insurance carriers (and when it's a mistake) — ai-nsurance.com</title>
+<meta name="description" content="Every comparison site wants you to switch carriers. Here's the honest math on when switching saves money — and when it costs you more over three years.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18; --ink-2: #4a4a44; --ink-3: #8a8a80;
+    --surface: #faf9f6; --surface-2: #f0ede6; --surface-3: #e4e0d6;
+    --accent: #1d6b4a; --accent-light: #e6f4ee; --accent-mid: #2d9e6f;
+    --warn: #c44a1a; --warn-light: #fdf0ea;
+    --border: rgba(26,26,24,0.12);
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --max: 1100px; --r: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--surface); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+  .nav-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .logo { font-family: var(--serif); font-size: 1.35rem; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.875rem; color: var(--ink-2); }
+  .article-wrap { max-width: 720px; margin: 0 auto; padding: 3.5rem 2rem 6rem; }
+  .article-eyebrow { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--ink-3); }
+  .article-eyebrow span { background: var(--accent-light); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500; }
+  h1 { font-family: var(--serif); font-size: 2.4rem; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .article-sub { font-size: 1.05rem; color: var(--ink-2); margin-bottom: 2.5rem; max-width: 600px; line-height: 1.6; }
+  .article-body h2 { font-family: var(--serif); font-size: 1.5rem; margin: 2.5rem 0 0.75rem; }
+  .article-body h3 { font-size: 1rem; font-weight: 500; margin: 1.75rem 0 0.5rem; color: var(--ink); }
+  .article-body p { margin-bottom: 1.1rem; color: var(--ink-2); font-size: 0.975rem; line-height: 1.75; }
+  .article-body strong { color: var(--ink); font-weight: 500; }
+  .article-body ul, .article-body ol { margin: 0.75rem 0 1.1rem 1.5rem; color: var(--ink-2); font-size: 0.975rem; }
+  .article-body li { margin-bottom: 0.4rem; line-height: 1.65; }
+  .article-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .callout { background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 var(--r) var(--r) 0; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.9rem; color: var(--ink-2); }
+  .callout strong { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th { text-align: left; padding: 0.6rem 1rem; background: var(--surface-2); color: var(--ink); font-weight: 500; border-bottom: 2px solid var(--border); }
+  td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); color: var(--ink-2); }
+  tr:last-child td { border-bottom: none; }
+  .checklist { list-style: none; margin-left: 0; }
+  .checklist li { padding: 0.35rem 0 0.35rem 1.75rem; position: relative; }
+  .checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--accent); }
+  .cta-box { background: var(--surface-2); border-radius: 14px; padding: 1.75rem 2rem; margin: 2.5rem 0; text-align: center; }
+  .cta-box p { color: var(--ink-2); font-size: 0.9rem; margin-bottom: 1rem; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; padding: 0.75rem 1.75rem; border-radius: var(--r); font-weight: 500; font-size: 0.95rem; }
+  .cta-btn:hover { opacity: 0.88; text-decoration: none; }
+  .related { border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; }
+  .related h3 { font-size: 0.85rem; font-weight: 500; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
+  .related-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .related-links a { background: var(--surface-2); border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.85rem; color: var(--ink-2); }
+  .disclaimer { font-size: 0.78rem; color: var(--ink-3); margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); line-height: 1.6; }
+  footer { background: var(--surface-2); border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-size: 0.8rem; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">ai<span>-n</span>surance</a>
+    <ul class="nav-links">
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#rankings">Carrier rankings</a></li>
+      <li><a href="audit-tool.html">Audit my policy</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="article-wrap">
+  <div class="article-eyebrow">
+    <span>Auto &amp; Home</span>
+    <span>6-minute read</span>
+    <span>Updated annually</span>
+  </div>
+  <h1>When to switch insurance carriers (and when switching is a mistake)</h1>
+  <p class="article-sub">Every comparison website wants you to switch. They earn a referral fee when you do. We don't — which means we can give you the honest answer.</p>
+
+  <div class="article-body">
+
+    <p>Every comparison website on the internet wants you to switch insurance carriers. That's because they earn a referral fee when you do. We don't have that incentive, which means we can give you the honest answer: switching is sometimes the right move, often a lateral one, and occasionally a significant mistake.</p>
+
+    <hr>
+
+    <h2>The case for NOT switching (usually)</h2>
+
+    <p>Before anything else, understand what you give up when you leave a carrier:</p>
+
+    <p><strong>Loyalty discounts reset to zero.</strong> Most carriers offer meaningful discounts at the 2, 3, and 5-year marks. A 5-year customer at State Farm might be receiving an 8–12% loyalty credit that disappears the moment they leave. Your new-customer quote from a competitor doesn't include that credit — because you haven't earned it yet.</p>
+
+    <p><strong>Claims-free discounts reset.</strong> Five years without a claim at your current carrier likely earns you a claims-free discount, sometimes called an "accident forgiveness" credit. Walk out the door and that history doesn't transfer.</p>
+
+    <p><strong>You become a new customer again.</strong> New customers are statistically riskier to insurers — they don't know your behavior yet. Pricing often reflects this.</p>
+
+    <p><strong>Year-one pricing isn't year-three pricing.</strong> This is the trap that most comparison tools don't model. A carrier can legally offer you a competitive rate in year one and raise it in years two and three as they "correct" for actual loss experience. Farmers, in particular, has a documented history of lower entry rates followed by steeper renewal increases.</p>
+
+    <div class="callout"><strong>The right question:</strong> "Is this quote cheaper?" is the wrong question. Ask: "What will I actually pay over three years, accounting for what I'm giving up?"</div>
+
+    <hr>
+
+    <h2>When switching IS worth it</h2>
+
+    <h3>1. Your carrier's quality score has declined materially</h3>
+    <p>If a carrier's NAIC complaint ratio has climbed above 1.5, their JD Power claims satisfaction ranking has dropped two or more tiers, or their AM Best rating has been downgraded, these are signals the organization is struggling — and the time to leave is before you file a claim, not after.</p>
+
+    <h3>2. You've had a coverage or claims dispute</h3>
+    <p>If your carrier denied a reasonable claim, lowballed a settlement, or made the claims process materially more difficult than it should have been, that's data about how they'll behave next time. A carrier's willingness to pay claims promptly and fairly is the entire product. If that's broken, price is irrelevant.</p>
+
+    <h3>3. You're significantly overinsured for your actual situation</h3>
+    <p>Rates vary dramatically by carrier for the same coverage — sometimes 40–50% for identical policies. If you've had the same policy for five or more years without shopping it, and your life has changed meaningfully (car paid off, home value changed, kids moved out), you may be holding coverage that doesn't fit your situation.</p>
+
+    <h3>4. You qualify for a carrier you previously didn't</h3>
+    <p>USAA is the clearest example. If you or a family member has served in the military, you likely qualify for the consistently top-rated carrier in the country. People often don't know they're eligible, or their eligibility changed (a parent's military service qualifies adult children). AARP members get access to The Hartford's preferred programs.</p>
+
+    <h3>5. A life event changes your risk profile</h3>
+    <p>Getting married, buying a home, moving to a different state, reaching age 25, retiring (and driving less) — these events change how carriers price you. Some carriers reward these transitions more than others. A shopping exercise every 2–3 years, timed to a life event, is reasonable.</p>
+
+    <hr>
+
+    <h2>The switching math: a worked example</h2>
+
+    <p>Let's say you're currently paying $1,400/year and a competitor quotes you $1,150.</p>
+
+    <table>
+      <tr><th>Factor</th><th>Impact</th></tr>
+      <tr><td>Quoted savings</td><td>−$250/yr</td></tr>
+      <tr><td>Lost loyalty discount (5-yr)</td><td>+$140/yr</td></tr>
+      <tr><td>Lost claims-free discount</td><td>+$90/yr</td></tr>
+      <tr><td>Estimated year-2 rate adjustment</td><td>+$80/yr</td></tr>
+      <tr><td><strong>Net impact, year one</strong></td><td><strong>−$250 (apparent saving)</strong></td></tr>
+      <tr><td><strong>Net impact, year two</strong></td><td><strong>+$60 (you're now paying more)</strong></td></tr>
+      <tr><td><strong>Net impact, year three</strong></td><td><strong>+$140 (materially worse)</strong></td></tr>
+    </table>
+
+    <p>The comparison site shows you $250 in savings. The actual three-year outcome is that you pay more. This is the documented pattern behind the common experience of switching to a "cheaper" carrier and watching rates climb.</p>
+
+    <hr>
+
+    <h2>How to shop without switching</h2>
+
+    <p>If you're unsure whether your current rate is reasonable, the best move is to get competing quotes without committing to switch. Use them as leverage.</p>
+
+    <p>Call your current insurer and say: <em>"I've been with you for [X] years and I've received a quote from [competitor] for $[amount] for the same coverage. Before I make any decisions, I wanted to ask whether there's anything you can do on my current rate, and whether I'm receiving all the discounts I qualify for."</em></p>
+
+    <p>This one call, made 30–45 days before renewal, is one of the highest-ROI conversations in personal finance. Carriers have retention departments whose job is to keep you.</p>
+
+    <div class="cta-box">
+      <p>Know exactly which discounts to ask for before you make that call.</p>
+      <a href="article-3-discounts.html" class="cta-btn">See the complete discount menu →</a>
+    </div>
+
+    <hr>
+
+    <h2>A checklist before switching</h2>
+
+    <p>If you've done the math and switching still makes sense, verify these before you sign anything:</p>
+
+    <ul class="checklist">
+      <li>New policy effective date overlaps with old policy end date by at least one day (no coverage gap)</li>
+      <li>New coverage limits match or exceed current limits — don't accept "similar" without verifying exactly</li>
+      <li>Both vehicles/properties are correctly listed with accurate VINs and addresses</li>
+      <li>The new carrier's financial strength rating is A- or better (AM Best)</li>
+      <li>The NAIC complaint ratio for the new carrier is under 1.0</li>
+      <li>You've asked the new carrier specifically: "What is my rate likely to be at renewal if I have no claims?"</li>
+      <li>You've notified your lender (if you have a mortgage or auto loan) of the carrier change</li>
+    </ul>
+
+    <div class="related">
+      <h3>Related guides</h3>
+      <div class="related-links">
+        <a href="article-1-declarations-page.html">How to read your dec page</a>
+        <a href="article-3-discounts.html">23 discounts you're missing</a>
+        <a href="article-4-carrier-quality.html">Is your carrier actually good?</a>
+      </div>
+    </div>
+
+    <p class="disclaimer">ai-nsurance.com publishes educational guides about P&C insurance. We are not licensed insurance agents. Nothing here constitutes personalized advice.</p>
+
+  </div>
+</div>
+<footer>
+  <p>© 2025 ai-nsurance.com · <a href="index.html">Home</a> · Educational content only · Not licensed insurance advice</p>
+</footer>
+</body>
+</html>

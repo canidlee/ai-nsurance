@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACV vs. replacement cost: the coverage difference that costs people thousands — ai-nsurance.com</title>
+<meta name="description" content="Actual cash value vs. replacement cost value is the single most important distinction on your homeowners policy. Most people don't know which one they have.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18; --ink-2: #4a4a44; --ink-3: #8a8a80;
+    --surface: #faf9f6; --surface-2: #f0ede6; --surface-3: #e4e0d6;
+    --accent: #1d6b4a; --accent-light: #e6f4ee; --accent-mid: #2d9e6f;
+    --warn: #c44a1a; --warn-light: #fdf0ea;
+    --border: rgba(26,26,24,0.12);
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --max: 1100px; --r: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--surface); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+  .nav-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .logo { font-family: var(--serif); font-size: 1.35rem; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.875rem; color: var(--ink-2); }
+  .article-wrap { max-width: 720px; margin: 0 auto; padding: 3.5rem 2rem 6rem; }
+  .article-eyebrow { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--ink-3); }
+  .article-eyebrow span { background: var(--accent-light); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500; }
+  h1 { font-family: var(--serif); font-size: 2.4rem; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .article-sub { font-size: 1.05rem; color: var(--ink-2); margin-bottom: 2.5rem; max-width: 600px; line-height: 1.6; }
+  .article-body h2 { font-family: var(--serif); font-size: 1.5rem; margin: 2.5rem 0 0.75rem; }
+  .article-body h3 { font-size: 1rem; font-weight: 500; margin: 1.75rem 0 0.5rem; color: var(--ink); }
+  .article-body p { margin-bottom: 1.1rem; color: var(--ink-2); font-size: 0.975rem; line-height: 1.75; }
+  .article-body strong { color: var(--ink); font-weight: 500; }
+  .article-body ul, .article-body ol { margin: 0.75rem 0 1.1rem 1.5rem; color: var(--ink-2); font-size: 0.975rem; }
+  .article-body li { margin-bottom: 0.4rem; line-height: 1.65; }
+  .article-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .callout { background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 var(--r) var(--r) 0; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.9rem; color: var(--ink-2); }
+  .callout strong { color: var(--accent); }
+  .warn-callout { background: var(--warn-light); border-left: 3px solid var(--warn); border-radius: 0 var(--r) var(--r) 0; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.9rem; color: var(--ink-2); }
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .comparison-card { background: var(--surface-2); border-radius: var(--r); padding: 1.25rem; }
+  .comparison-card h4 { font-family: var(--serif); font-size: 1rem; margin-bottom: 0.5rem; }
+  .comparison-card p { font-size: 0.875rem; color: var(--ink-2); margin: 0; }
+  .comparison-card.good { border-top: 3px solid var(--accent); }
+  .comparison-card.warn { border-top: 3px solid var(--warn); }
+  .cta-box { background: var(--surface-2); border-radius: 14px; padding: 1.75rem 2rem; margin: 2.5rem 0; text-align: center; }
+  .cta-box p { color: var(--ink-2); font-size: 0.9rem; margin-bottom: 1rem; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; padding: 0.75rem 1.75rem; border-radius: var(--r); font-weight: 500; font-size: 0.95rem; }
+  .cta-btn:hover { opacity: 0.88; text-decoration: none; }
+  .related { border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; }
+  .related h3 { font-size: 0.85rem; font-weight: 500; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
+  .related-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .related-links a { background: var(--surface-2); border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.85rem; color: var(--ink-2); }
+  .disclaimer { font-size: 0.78rem; color: var(--ink-3); margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); line-height: 1.6; }
+  footer { background: var(--surface-2); border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-size: 0.8rem; color: var(--ink-3); }
+  @media (max-width: 540px) { .comparison { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">ai<span>-n</span>surance</a>
+    <ul class="nav-links">
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#rankings">Carrier rankings</a></li>
+      <li><a href="audit-tool.html">Audit my policy</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="article-wrap">
+  <div class="article-eyebrow">
+    <span>Home &amp; Auto</span>
+    <span>5-minute read</span>
+    <span>Updated annually</span>
+  </div>
+  <h1>ACV vs. replacement cost: the insurance coverage difference that costs people thousands</h1>
+  <p class="article-sub">One line item on your policy determines whether a claim check actually covers your loss — or leaves you with a gap you pay out of pocket. Most people don't know which one they have.</p>
+
+  <div class="article-body">
+
+    <p>There is a single line item on your homeowners and auto insurance policy that can mean the difference between getting a check that actually covers your loss and getting a check that leaves you thousands of dollars short. Most policyholders don't know what it says. Many don't learn until they file a claim.</p>
+
+    <p>It's the choice between <strong>actual cash value (ACV)</strong> and <strong>replacement cost value (RCV)</strong>.</p>
+
+    <hr>
+
+    <div class="comparison">
+      <div class="comparison-card warn">
+        <h4>Actual Cash Value (ACV)</h4>
+        <p>What your property is worth <em>today</em>, after depreciation. A 5-year-old roof gets valued at what a 5-year-old roof is worth — not what a new one costs.</p>
+      </div>
+      <div class="comparison-card good">
+        <h4>Replacement Cost Value (RCV)</h4>
+        <p>What it costs to repair or replace the item with something new and comparable, at today's prices. Depreciation doesn't enter the calculation.</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>What actual cash value means</h2>
+
+    <p>Actual cash value is what your damaged or destroyed property is worth <em>right now</em>, accounting for depreciation. The insurer calculates: what was this item worth at the time of the loss, given its age and condition?</p>
+
+    <p>A five-year-old roof that cost $18,000 to install might have a depreciated value of $9,000. Under ACV, you get $9,000 — and you cover the remaining $9,000 to $25,000 (because current installation costs are higher) yourself.</p>
+
+    <p>Depreciation schedules vary by carrier but are typically aggressive:</p>
+    <ul>
+      <li>Electronics: 20–30% per year</li>
+      <li>Roofing materials: 5–10% per year</li>
+      <li>Appliances: 10–15% per year</li>
+      <li>Clothing: 15–20% per year</li>
+    </ul>
+
+    <hr>
+
+    <h2>What replacement cost value means</h2>
+
+    <p>Replacement cost value is what it costs to repair or replace the damaged item with a new item of similar kind and quality, at today's prices. Depreciation doesn't enter the calculation.</p>
+
+    <p>That five-year-old roof? Your insurer pays the current cost to install a new comparable roof — which, with 2023–2024 construction costs, might be $24,000. You pay your deductible; they cover the rest.</p>
+
+    <div class="callout"><strong>The premium difference</strong> between ACV and RCV is typically modest — often 10–15% higher for replacement cost coverage. The claims difference can be enormous.</div>
+
+    <hr>
+
+    <h2>Why this matters more than most people realize</h2>
+
+    <p>The gap between ACV and RCV has widened significantly in recent years because construction and material costs have risen dramatically while policies written years ago haven't kept pace.</p>
+
+    <div class="warn-callout">
+      A homeowner who bought a policy in 2019 with ACV coverage on a home that cost $350,000 to build might face a rebuild that costs $490,000 by 2024. Their ACV payout could be $280,000 on a rebuild that costs $490,000. That's a $210,000 gap the homeowner absorbs. This is playing out in disaster-affected communities across the country right now.
+    </div>
+
+    <hr>
+
+    <h2>Where this shows up on your policy</h2>
+
+    <p><strong>Homeowners — dwelling coverage:</strong> Most standard policies default to replacement cost for the dwelling, but this is not universal. Verify it explicitly.</p>
+
+    <p><strong>Homeowners — personal property:</strong> This is where most people get surprised. Standard policies often default to ACV for personal property (furniture, electronics, appliances, clothing) even when the dwelling itself is covered at replacement cost. Call and ask: "Is my personal property covered at actual cash value or replacement cost?"</p>
+
+    <p><strong>Auto insurance:</strong> Auto insurance typically uses ACV as the standard for total losses — the market value of your car at the time of the accident. This is industry standard and generally unavoidable, though gap insurance addresses the specific problem of owing more on your loan than the ACV payout.</p>
+
+    <p><strong>Scheduled personal property:</strong> High-value items — jewelry, art, musical instruments, cameras — are often subject to ACV or sublimits. A separate "floater" or "rider" usually provides replacement cost coverage with no sublimit.</p>
+
+    <hr>
+
+    <h2>The extended replacement cost endorsement</h2>
+
+    <p>Even RCV coverage has a limit — the dwelling coverage amount on your dec page. If it costs more to rebuild your home than your dwelling limit, you cover the difference.</p>
+
+    <p>An <strong>extended replacement cost endorsement</strong> increases that ceiling — typically to 125%, 150%, or 200% of your stated dwelling limit — to account for unexpected cost increases or coverage amounts that haven't kept pace with construction inflation.</p>
+
+    <p>This endorsement typically costs an additional $20–80 per year. Given that California, Florida, Texas, and other states have seen construction costs rise 40–60% since 2020, it's one of the highest-value low-cost additions available on a homeowners policy.</p>
+
+    <div class="callout"><strong>If you live in a high-risk state, ask your insurer:</strong> "Do I have extended replacement cost coverage, and if not, what would it cost to add it?"</div>
+
+    <hr>
+
+    <h2>Gap insurance for auto loans</h2>
+
+    <p>For auto policies, the equivalent concept is <strong>gap insurance</strong>. It covers the difference between your car's ACV and the remaining balance on your auto loan in the event of a total loss.</p>
+
+    <p>New cars depreciate 15–20% in the first year. If you put little money down or financed over 72–84 months, you may owe significantly more on the loan than the car is worth. Without gap coverage, an ACV payout leaves you still making payments on a car you no longer own.</p>
+
+    <div class="callout"><strong>Where to buy it:</strong> Gap insurance from a dealership is usually significantly more expensive than through your auto insurer. Ask your carrier first — it's often $20–40/year added to your policy versus $400–600 from the dealer.</div>
+
+    <hr>
+
+    <h2>How to check what you have right now</h2>
+
+    <p>Call your insurer and ask these three questions:</p>
+
+    <ol>
+      <li>"Is my dwelling covered at actual cash value or replacement cost, and is extended replacement cost included?"</li>
+      <li>"Is my personal property covered at actual cash value or replacement cost?"</li>
+      <li>"Is my dwelling coverage amount sufficient to rebuild my home at current construction costs in my area?"</li>
+    </ol>
+
+    <p>The third question is particularly important. Carriers are not required to proactively tell you that your coverage has become inadequate due to inflation. Ask whether your policy has "inflation guard" or "coverage A inflation protection" enabled, and what the adjustment rate has been.</p>
+
+    <div class="cta-box">
+      <p>Not sure which one you have? Upload your dec page and find out in 60 seconds.</p>
+      <a href="audit-tool.html" class="cta-btn">Audit my policy →</a>
+    </div>
+
+    <h2>Bottom line</h2>
+
+    <p>The difference between ACV and RCV is not a technicality. It's the difference between an insurance policy that makes you whole after a loss and one that leaves you covering a significant gap out of pocket. The premium difference is small. The claims difference is not.</p>
+
+    <p>If you don't know which one you have, find out today — not after the roof comes off.</p>
+
+    <div class="related">
+      <h3>Related guides</h3>
+      <div class="related-links">
+        <a href="article-1-declarations-page.html">How to read your dec page</a>
+        <a href="article-3-discounts.html">23 discounts you're missing</a>
+        <a href="article-4-carrier-quality.html">Is your carrier actually good?</a>
+        <a href="article-2-switching-carriers.html">When to switch carriers</a>
+      </div>
+    </div>
+
+    <p class="disclaimer">ai-nsurance.com publishes educational guides about P&C insurance. We are not licensed insurance agents. Nothing here constitutes personalized advice.</p>
+
+  </div>
+</div>
+<footer>
+  <p>© 2025 ai-nsurance.com · <a href="index.html">Home</a> · Educational content only · Not licensed insurance advice</p>
+</footer>
+</body>
+</html>
