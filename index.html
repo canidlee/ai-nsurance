@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ai-nsurance.com — unbiased P&C insurance guidance</title>
+<title>ai-nsurance.com — unbiased auto & home insurance guidance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -583,6 +583,56 @@
     max-width: 500px;
   }
 
+  /* SAMPLE AUDIT REPORT */
+  .sample-section { background: #fff; }
+  .sample-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    max-width: 860px;
+  }
+  .sample-header {
+    background: var(--accent-light);
+    border-bottom: 1px solid rgba(29,107,74,0.15);
+    padding: 1.5rem 2rem;
+    display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;
+  }
+  .sample-header-left h3 { font-family: var(--serif); font-size: 1.25rem; color: var(--accent); margin-bottom: 0.2rem; }
+  .sample-header-left p { font-size: 0.82rem; color: var(--ink-2); }
+  .sample-badge { background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 20px; }
+  .sample-scores { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+  .sample-score-box { flex: 1; padding: 1.25rem 1.5rem; text-align: center; border-right: 1px solid var(--border); }
+  .sample-score-box:last-child { border-right: none; }
+  .sample-score-num { font-family: var(--serif); font-size: 2rem; line-height: 1; margin-bottom: 0.2rem; }
+  .sample-score-label { font-size: 0.72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
+  .s-good { color: var(--accent); }
+  .s-warn { color: #c47a1a; }
+  .s-bad { color: var(--warn); }
+  .sample-body { padding: 1.75rem 2rem; }
+  .sample-section-title { font-family: var(--serif); font-size: 1rem; margin-bottom: 0.75rem; color: var(--ink); }
+  .sample-finding { border-left: 3px solid var(--border); padding: 0.7rem 1rem; margin-bottom: 0.6rem; border-radius: 0 8px 8px 0; background: var(--surface); }
+  .sample-finding.crit { border-left-color: var(--warn); background: var(--warn-light); }
+  .sample-finding.warn { border-left-color: #c47a1a; background: #fdf6e8; }
+  .sample-finding.good { border-left-color: var(--accent); background: var(--accent-light); }
+  .sample-finding-title { font-weight: 500; font-size: 0.88rem; margin-bottom: 0.15rem; }
+  .sample-finding-desc { font-size: 0.8rem; color: var(--ink-2); line-height: 1.5; }
+  .sample-finding-action { font-size: 0.77rem; color: var(--accent); font-weight: 500; margin-top: 0.3rem; }
+  .sample-discounts { display: grid; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .sample-discount-row { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.9rem; font-size: 0.82rem; }
+  .sample-discount-name { font-weight: 500; }
+  .sample-discount-amt { color: var(--accent); font-weight: 500; font-size: 0.78rem; }
+  .sample-carrier-row { display: flex; align-items: center; gap: 1rem; background: var(--surface-2); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+  .sample-carrier-score { font-family: var(--serif); font-size: 2rem; min-width: 44px; text-align: center; }
+  .sample-carrier-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.15rem; }
+  .sample-carrier-text { font-size: 0.8rem; color: var(--ink-2); line-height: 1.5; }
+  .sample-summary { background: var(--surface-2); border-radius: 10px; padding: 1.25rem 1.5rem; font-size: 0.85rem; color: var(--ink-2); line-height: 1.75; }
+  .sample-summary p { margin-bottom: 0.75rem; }
+  .sample-summary p:last-child { margin-bottom: 0; }
+  .sample-cta { background: var(--accent-light); border-top: 1px solid rgba(29,107,74,0.15); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .sample-cta p { font-size: 0.9rem; color: var(--ink-2); max-width: 520px; }
+  .sample-cta strong { color: var(--ink); }
+
   /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
@@ -619,6 +669,7 @@
     <a href="#" class="logo">ai<span>-n</span>surance</a>
     <ul class="nav-links">
       <li><a href="#tools">Tools</a></li>
+      <li><a href="#sample-report">Sample report</a></li>
       <li><a href="#rankings">Carrier rankings</a></li>
       <li><a href="#about">Our story</a></li>
       <li><a href="#newsletter" class="nav-cta">Get free report</a></li>
@@ -632,7 +683,7 @@
     <div class="fade-up">
       <div class="hero-eyebrow">No ads. No lead generation. No bias.</div>
       <h1>Your insurance company is <em>betting</em> you won't check.</h1>
-      <p class="hero-sub">We help you audit your P&C policy, find the discounts you're already entitled to, and know whether your carrier will actually show up when it matters.</p>
+      <p class="hero-sub">We help you audit your auto & home policy, find the discounts you're already entitled to, and know whether your carrier will actually show up when it matters.</p>
       <div class="hero-actions">
         <a href="#finder" class="btn-primary">Find my discounts — free</a>
         <a href="/audit-tool.html" class="btn-primary" style="background:var(--warn)">Audit my policy — $9.97</a>
@@ -700,6 +751,113 @@
         <span class="tool-badge badge-free">Free</span>
         <a href="#newsletter" class="tool-link">Set up my alert →</a>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SAMPLE AUDIT REPORT -->
+<section class="section sample-section" id="sample-report">
+  <div class="section-inner">
+    <div class="section-label">Sample report</div>
+    <h2 class="section-heading">Here&#8217;s what your audit looks like</h2>
+    <p class="section-sub">This is a real example of the report you receive. The name and carrier below are illustrative &#8212; your report is generated from your actual declarations page.</p>
+
+    <div class="sample-wrap">
+
+      <div class="sample-header">
+        <div class="sample-header-left">
+          <h3>Policy Audit &#8212; Sarah M., California</h3>
+          <p>Auto insurance &middot; Declarations page uploaded June 3, 2025 &middot; Report generated in 47 seconds</p>
+        </div>
+        <span class="sample-badge">Sample report</span>
+      </div>
+
+      <div class="sample-scores">
+        <div class="sample-score-box">
+          <div class="sample-score-num s-warn">61</div>
+          <div class="sample-score-label">Coverage score</div>
+        </div>
+        <div class="sample-score-box">
+          <div class="sample-score-num s-bad">4</div>
+          <div class="sample-score-label">Issues found</div>
+        </div>
+        <div class="sample-score-box">
+          <div class="sample-score-num s-good">6</div>
+          <div class="sample-score-label">Discounts to request</div>
+        </div>
+        <div class="sample-score-box">
+          <div class="sample-score-num s-good">$340&#8211;520</div>
+          <div class="sample-score-label">Est. annual savings</div>
+        </div>
+      </div>
+
+      <div class="sample-body">
+
+        <div class="sample-section-title">Coverage findings</div>
+
+        <div class="sample-finding crit">
+          <div class="sample-finding-title">&#128308; Uninsured motorist coverage is below your liability limits</div>
+          <div class="sample-finding-desc">Your liability limits are 100/300/100, but your UM/UIM coverage is only 25/50. If an uninsured driver totals your car and injures you, your own policy only pays up to $25,000 per person &#8212; far below what a serious injury costs in California.</div>
+          <div class="sample-finding-action">&#8594; Call your carrier and request UM/UIM limits matching your liability (100/300). Cost is typically $8&#8211;14/month.</div>
+        </div>
+
+        <div class="sample-finding crit">
+          <div class="sample-finding-title">&#128308; Rental reimbursement cap is $30/day &#8212; California average is $52/day</div>
+          <div class="sample-finding-desc">Your policy pays up to $30/day for a rental car while yours is being repaired. The average daily rental rate in California is $52. You will pay the difference out of pocket, often for 2&#8211;3 weeks during a major repair.</div>
+          <div class="sample-finding-action">&#8594; Request an upgrade to $50/day coverage. It typically adds $4&#8211;6/month.</div>
+        </div>
+
+        <div class="sample-finding warn">
+          <div class="sample-finding-title">&#128993; No medical payments (MedPay) coverage</div>
+          <div class="sample-finding-desc">MedPay covers you and your passengers regardless of fault &#8212; it pays immediately while liability disputes are resolved. At $5,000 of coverage, it typically costs under $5/month and prevents out-of-pocket emergency costs.</div>
+          <div class="sample-finding-action">&#8594; Ask your carrier to add $5,000 MedPay. Quote the exact cost before deciding.</div>
+        </div>
+
+        <div class="sample-finding warn">
+          <div class="sample-finding-title">&#128993; Comprehensive deductible is $1,000 &#8212; higher than typical for your vehicle value</div>
+          <div class="sample-finding-desc">Your 2021 Honda CR-V has an estimated value of $26,400. A $1,000 comprehensive deductible is 3.8% of vehicle value. Dropping to $500 costs roughly $60&#8211;80/year more but meaningfully lowers your out-of-pocket exposure for theft, hail, or glass claims.</div>
+          <div class="sample-finding-action">&#8594; Get a quote for $500 comprehensive deductible and decide if the premium difference is worth it to you.</div>
+        </div>
+
+        <div class="sample-finding good">
+          <div class="sample-finding-title">&#128994; Liability limits are adequate &#8212; 100/300/100</div>
+          <div class="sample-finding-desc">Your bodily injury and property damage liability limits meet the recommended minimums for a California driver with assets to protect. No action needed here.</div>
+        </div>
+
+        <div class="sample-section-title" style="margin-top:1.5rem">Discounts you likely qualify for</div>
+        <div class="sample-discounts">
+          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Paid-in-full discount</span><span class="sample-discount-amt">$120&#8211;180/yr</span></div>
+          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Paperless billing</span><span class="sample-discount-amt">$25&#8211;45/yr</span></div>
+          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Auto-pay enrollment</span><span class="sample-discount-amt">$40&#8211;70/yr</span></div>
+          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Vehicle safety features (Honda Sensing)</span><span class="sample-discount-amt">$30&#8211;60/yr</span></div>
+          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Claims-free tenure (4 years)</span><span class="sample-discount-amt">$55&#8211;90/yr</span></div>
+          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Defensive driving course (online, ~$25)</span><span class="sample-discount-amt">$70&#8211;100/yr</span></div>
+        </div>
+
+        <div class="sample-section-title">Carrier assessment</div>
+        <div class="sample-carrier-row">
+          <div class="sample-carrier-score s-warn">61</div>
+          <div>
+            <div class="sample-carrier-name">Mid-tier national carrier (illustrative)</div>
+            <div class="sample-carrier-text">This carrier scores average on claims satisfaction and has a complaint ratio above the industry median. They are financially stable with an AM Best A rating, but independent surveys suggest claim resolution times are longer than top-tier competitors. Not a reason to switch immediately, but worth monitoring at renewal.</div>
+          </div>
+        </div>
+
+        <div class="sample-section-title">Written summary</div>
+        <div class="sample-summary">
+          <p><strong>This week:</strong> Call your carrier and request a quote to increase your UM/UIM limits to match your liability (100/300). This is the most important gap in your current policy. Uninsured driver accidents represent roughly 15% of California crashes &#8212; at your current limits, you are underprotected.</p>
+          <p><strong>This month:</strong> Ask about the paid-in-full discount and auto-pay discount. Together they could save you $160&#8211;250/year with no coverage change. Also verify whether your Honda Sensing package is on file &#8212; many carriers discount for factory safety tech but only if it has been reported.</p>
+          <p><strong>At renewal:</strong> Your claims-free record and 4-year tenure give you strong leverage to shop. Your coverage score of 61 can realistically reach 80+ with the changes above &#8212; the gaps here are fixable, not structural.</p>
+        </div>
+
+      </div>
+
+      <div class="sample-cta">
+        <p><strong>Ready to see your actual report?</strong> Upload your declarations page and get a full audit like this one &#8212; specific to your policy, your carrier, and your state. Takes about 60 seconds.</p>
+        <a href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" class="btn-primary" style="white-space:nowrap">Get my audit &#8212; $9.97 &#8594;</a>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1051,7 +1209,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="logo">ai<span style="color:#5dcaa5">-n</span>surance</div>
-      <p>Unbiased P&C insurance guidance. We help you audit, optimize, and understand your coverage — without trying to sell you a new policy.</p>
+      <p>Unbiased auto & home insurance guidance. We help you audit, optimize, and understand your coverage — without trying to sell you a new policy.</p>
       <p style="margin-top:0.5rem"><a href="mailto:help@ai-nsurance.com" style="color:rgba(255,255,255,0.5)">help@ai-nsurance.com</a></p>
     </div>
     <div class="footer-links">

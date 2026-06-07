@@ -33,6 +33,24 @@
   .audit-card h2 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.5rem; }
   .audit-card p { font-size: 0.9rem; color: var(--ink-2); margin-bottom: 1.25rem; }
 
+  /* ── ACCESS GATE ── */
+  #access-gate { text-align: center; padding: 3rem 2rem; }
+  .lock-icon { font-size: 3rem; margin-bottom: 1.25rem; }
+  #access-gate h2 { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 0.75rem; }
+  #access-gate p { font-size: 0.95rem; color: var(--ink-2); max-width: 480px; margin: 0 auto 2rem; }
+  .gate-actions { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .btn-pay { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 0.9rem 2rem; border-radius: var(--r); font-weight: 500; font-size: 1rem; transition: opacity 0.15s; }
+  .btn-pay:hover { opacity: 0.88; }
+  .gate-divider { font-size: 0.82rem; color: var(--ink-3); }
+  .code-row { display: flex; gap: 0.5rem; width: 100%; max-width: 360px; }
+  .code-input { flex: 1; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: var(--r); font-family: var(--sans); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .code-input:focus { outline: none; border-color: var(--accent-mid); }
+  .btn-code { background: var(--surface-2); border: 1px solid var(--border); color: var(--ink); padding: 0.65rem 1.1rem; border-radius: var(--r); font-family: var(--sans); font-weight: 500; cursor: pointer; white-space: nowrap; font-size: 0.9rem; }
+  .btn-code:hover { background: var(--surface-3); }
+  .code-error { font-size: 0.82rem; color: var(--warn); margin-top: 0.25rem; min-height: 1.2em; }
+  .gate-note { font-size: 0.78rem; color: var(--ink-3); margin-top: 0.5rem; }
+
+  /* ── FORM ── */
   .upload-zone { border: 2px dashed var(--surface-3); border-radius: var(--r); padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--surface); }
   .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent-mid); background: var(--accent-light); }
   .upload-zone.has-file { border-color: var(--accent); border-style: solid; background: var(--accent-light); }
@@ -47,7 +65,6 @@
   .form-input { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: var(--r); font-family: var(--sans); font-size: 0.95rem; color: var(--ink); background: var(--surface); transition: border-color 0.15s; }
   .form-input:focus { outline: none; border-color: var(--accent-mid); }
   select.form-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8a80' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
-
   .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
   .btn-submit { width: 100%; background: var(--accent); color: #fff; border: none; padding: 0.9rem 1.5rem; border-radius: var(--r); font-family: var(--sans); font-size: 1rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s; margin-top: 0.5rem; }
@@ -108,9 +125,6 @@
   .steps-inline { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .step-pill { font-size: 0.78rem; background: #fff; border: 0.5px solid var(--border); border-radius: 20px; padding: 0.25rem 0.7rem; color: var(--ink-2); }
   .step-arrow { color: var(--ink-3); font-size: 0.8rem; align-self: center; }
-
-  .api-note { background: #f0eaff; border: 1px solid rgba(90,53,176,0.15); border-radius: var(--r); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.82rem; color: #3d2580; }
-  .api-note strong { display: block; margin-bottom: 0.25rem; }
 </style>
 </head>
 <body>
@@ -127,27 +141,48 @@
   <h1>Your personal policy audit</h1>
   <p class="page-sub">Upload your declarations page and answer 4 quick questions. Our AI reviews your coverage against 47 checkpoints and delivers a written report with specific recommendations.</p>
 
-  <div class="what-happens">
-    <h3>What happens after you submit</h3>
-    <div class="steps-inline">
-      <span class="step-pill">📄 You upload dec page</span>
-      <span class="step-arrow">→</span>
-      <span class="step-pill">🤖 AI reads your policy</span>
-      <span class="step-arrow">→</span>
-      <span class="step-pill">🔍 47-point audit runs</span>
-      <span class="step-arrow">→</span>
-      <span class="step-pill">📋 Report in 60 seconds</span>
-      <span class="step-arrow">→</span>
-      <span class="step-pill">📧 Emailed within 24hrs</span>
+  <!-- ACCESS GATE -->
+  <div class="audit-card" id="access-gate">
+    <div class="lock-icon">🔒</div>
+    <h2>Access your policy audit</h2>
+    <p>A one-time audit costs $9.97 — less than a latte. If you have an access code, enter it below.</p>
+    <div class="gate-actions">
+      <a href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" class="btn-pay" target="_blank" rel="noopener">
+        Get access — $9.97 →
+      </a>
+      <div class="gate-divider">— or enter your access code —</div>
+      <div style="width:100%;max-width:360px;">
+        <div class="code-row">
+          <input type="text" class="code-input" id="code-input" placeholder="ACCESS CODE" maxlength="30" onkeydown="if(event.key==='Enter') redeemCode()">
+          <button class="btn-code" onclick="redeemCode()">Unlock →</button>
+        </div>
+        <div class="code-error" id="code-error"></div>
+      </div>
+      <div class="gate-note">After payment, Stripe will give you a confirmation code to enter here.</div>
     </div>
   </div>
 
-  <!-- FORM -->
-  <div id="form-section">
+  <!-- FORM (hidden until unlocked) -->
+  <div id="form-section" style="display:none">
+
+    <div class="what-happens">
+      <h3>What happens after you submit</h3>
+      <div class="steps-inline">
+        <span class="step-pill">📄 You upload dec page</span>
+        <span class="step-arrow">→</span>
+        <span class="step-pill">🤖 AI reads your policy</span>
+        <span class="step-arrow">→</span>
+        <span class="step-pill">🔍 47-point audit runs</span>
+        <span class="step-arrow">→</span>
+        <span class="step-pill">📋 Report in 60 seconds</span>
+        <span class="step-arrow">→</span>
+        <span class="step-pill">📧 Emailed within 24hrs</span>
+      </div>
+    </div>
+
     <div class="audit-card">
       <h2>Step 1 — Upload your declarations page</h2>
       <p>This is the 1–2 page summary sent at the start of every policy period. It's usually titled "Declarations Page" or "Policy Summary." PDF or image (JPG/PNG) accepted.</p>
-
       <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
         <div class="upload-icon">📄</div>
         <div class="upload-label">Click to upload or drag and drop</div>
@@ -220,8 +255,6 @@
     <p style="text-align:center;font-size:0.78rem;color:var(--ink-3);margin-top:0.75rem">
       Your document is analyzed and immediately discarded. We don't store policy documents.
     </p>
-
-    
   </div>
 
   <!-- PROCESSING -->
@@ -295,6 +328,48 @@
 </div>
 
 <script>
+// ── ACCESS GATE ──────────────────────────────────────────
+// Valid codes (case-insensitive). Add more here as needed.
+const VALID_CODES = ['TEST', 'FOUNDINGFRIEND'];
+
+function redeemCode() {
+  const input = document.getElementById('code-input').value.trim().toUpperCase();
+  const errorEl = document.getElementById('code-error');
+
+  if (!input) {
+    errorEl.textContent = 'Please enter your access code.';
+    return;
+  }
+
+  if (VALID_CODES.includes(input)) {
+    sessionStorage.setItem('audit_access', input);
+    unlockAudit();
+  } else {
+    errorEl.textContent = 'That code isn\'t valid. Check for typos or get access below.';
+    document.getElementById('code-input').focus();
+  }
+}
+
+function unlockAudit() {
+  document.getElementById('access-gate').style.display = 'none';
+  document.getElementById('form-section').style.display = 'block';
+}
+
+// Check on page load — persists for the session
+(function checkAccess() {
+  // Also check URL param e.g. ?code=TEST (Stripe redirect can pass this)
+  const urlCode = new URLSearchParams(window.location.search).get('code');
+  if (urlCode && VALID_CODES.includes(urlCode.toUpperCase())) {
+    sessionStorage.setItem('audit_access', urlCode.toUpperCase());
+  }
+
+  const stored = sessionStorage.getItem('audit_access');
+  if (stored && VALID_CODES.includes(stored)) {
+    unlockAudit();
+  }
+})();
+// ────────────────────────────────────────────────────────
+
 let uploadedFile = null;
 let auditReport = {};
 
@@ -428,12 +503,10 @@ async function startAudit() {
 
     const response = await fetch('/.netlify/functions/audit', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         params: {
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-6',
           max_tokens: 2000,
           messages
         }
@@ -535,45 +608,6 @@ function copyReport() {
   navigator.clipboard.writeText(text).then(() => alert('Report copied to clipboard.'));
 }
 </script>
-
-<!--
-=============================================================
-NETLIFY FUNCTION SETUP (recommended for production)
-=============================================================
-To keep your API key secure, create a Netlify Function:
-
-1. In your project folder, create: netlify/functions/audit.js
-
-2. Paste this into audit.js:
-const Anthropic = require('@anthropic-ai/sdk');
-
-exports.handler = async (event) => {
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const body = JSON.parse(event.body);
-  
-  try {
-    const response = await client.messages.create(body.params);
-    return { statusCode: 200, body: JSON.stringify(response) };
-  } catch(e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
-  }
-};
-
-3. In Netlify dashboard: Site Settings → Environment Variables → Add:
-   ANTHROPIC_API_KEY = your key from console.anthropic.com
-
-4. In the JavaScript above, change the fetch URL from:
-   'https://api.anthropic.com/v1/messages'
-   to:
-   '/.netlify/functions/audit'
-   And remove the 'x-api-key' header.
-
-5. Remove the API key from the browser-side code entirely.
-
-Cost: Anthropic API is ~$0.003 per 1K input tokens + $0.015 per 1K output tokens.
-A typical dec page audit costs $0.02-0.05 total. On a $9.97 charge: ~99.9% margin.
-=============================================================
--->
 
 </body>
 </html>
