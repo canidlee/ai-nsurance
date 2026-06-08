@@ -3,1326 +3,209 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ai-nsurance.com — unbiased auto & home insurance guidance</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>AI-nsurance — Stop Guessing About Your Insurance</title>
+<meta name="description" content="Understand your coverage, uncover potential gaps, and identify savings opportunities in minutes. Upload your policies and get a clear, plain-English insurance review.">
+<link rel="stylesheet" href="/css/style.css">
 <style>
-  :root {
-    --ink: #1a1a18;
-    --ink-2: #4a4a44;
-    --ink-3: #8a8a80;
-    --surface: #faf9f6;
-    --surface-2: #f0ede6;
-    --surface-3: #e4e0d6;
-    --accent: #1d6b4a;
-    --accent-light: #e6f4ee;
-    --accent-mid: #2d9e6f;
-    --warn: #c44a1a;
-    --warn-light: #fdf0ea;
-    --border: rgba(26,26,24,0.12);
-    --serif: 'DM Serif Display', Georgia, serif;
-    --sans: 'DM Sans', system-ui, sans-serif;
-    --max: 1100px;
-    --r: 10px;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--sans);
-    background: var(--surface);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+.hero {
+  background: var(--ink); padding: 120px 40px 100px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(26,122,110,0.3) 0%, transparent 70%);
+}
+.hero-inner { position: relative; z-index: 2; max-width: 820px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(26,122,110,0.2); border: 1px solid rgba(26,122,110,0.4);
+  color: #5ecfbf; font-size: 13px; font-weight: 500;
+  padding: 6px 14px; border-radius: 100px; margin-bottom: 32px;
+}
+.hero h1 { color: var(--white); margin-bottom: 24px; }
+.hero h1 em { font-style: italic; color: #5ecfbf; }
+.hero-sub { font-size: 20px; color: rgba(255,255,255,0.7); max-width: 580px; margin: 0 auto 40px; line-height: 1.6; }
+.hero-checklist { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 24px; margin-bottom: 48px; }
+.hero-check { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.8); font-size: 15px; }
+.check-icon {
+  width: 20px; height: 20px; background: var(--teal); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 11px; color: white; font-weight: 700;
+}
+.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.hero-trust { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.4); }
 
-  /* NAV */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-  }
-  .nav-inner {
-    max-width: var(--max);
-    margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 58px;
-  }
-  .logo {
-    font-family: var(--serif);
-    font-size: 1.35rem;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  .logo span { color: var(--accent); }
-  .nav-links {
-    display: flex; gap: 2rem; list-style: none;
-    font-size: 0.875rem; font-weight: 500;
-  }
-  .nav-links a { color: var(--ink-2); }
-  .nav-links a:hover { color: var(--accent); text-decoration: none; }
-  .nav-cta {
-    background: var(--accent);
-    color: #fff !important;
-    padding: 0.45rem 1.1rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  .nav-cta:hover { opacity: 0.88; text-decoration: none !important; }
+.fear-section { background: var(--ink); padding: 100px 40px; }
+.fear-inner { max-width: 1100px; margin: 0 auto; }
+.fear-section h2 { color: var(--white); margin-bottom: 16px; }
+.fear-subtitle { color: rgba(255,255,255,0.6); font-size: 18px; margin-bottom: 56px; }
+.mistakes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.mistake-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius); padding: 28px; transition: background 0.2s;
+}
+.mistake-card:hover { background: rgba(255,255,255,0.08); }
+.mistake-label {
+  display: inline-block; background: rgba(192,57,43,0.2); border: 1px solid rgba(192,57,43,0.3);
+  color: #f08080; font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 100px; margin-bottom: 14px;
+}
+.mistake-card h4 { color: var(--white); font-size: 16px; margin-bottom: 8px; }
+.mistake-card p { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.6; }
 
-  /* HERO */
-  .hero {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 5rem 2rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 4rem;
-    align-items: center;
-  }
-  .hero-eyebrow {
-    display: inline-block;
-    background: var(--accent-light);
-    color: var(--accent);
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.75rem;
-    border-radius: 4px;
-    margin-bottom: 1.25rem;
-  }
-  .hero h1 {
-    font-family: var(--serif);
-    font-size: clamp(2.2rem, 4vw, 3.2rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.25rem;
-  }
-  .hero h1 em { color: var(--accent); font-style: italic; }
-  .hero-sub {
-    font-size: 1.05rem;
-    color: var(--ink-2);
-    line-height: 1.7;
-    margin-bottom: 2rem;
-    max-width: 520px;
-  }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    padding: 0.75rem 1.6rem;
-    border-radius: var(--r);
-    font-weight: 500;
-    font-size: 0.95rem;
-    border: none; cursor: pointer;
-    transition: opacity 0.15s;
-    display: inline-block;
-  }
-  .btn-primary:hover { opacity: 0.88; text-decoration: none; }
-  .btn-secondary {
-    background: transparent;
-    color: var(--ink);
-    padding: 0.75rem 1.6rem;
-    border-radius: var(--r);
-    font-weight: 500;
-    font-size: 0.95rem;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
-    display: inline-block;
-  }
-  .btn-secondary:hover { background: var(--surface-2); text-decoration: none; }
+.magnet-section { background: var(--gold-light); border-top: 1px solid var(--gold-mid); border-bottom: 1px solid var(--gold-mid); padding: 80px 40px; }
+.magnet-inner { max-width: 780px; margin: 0 auto; text-align: center; }
+.magnet-badge { display: inline-block; background: var(--gold); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+.magnet-checks { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-bottom: 36px; }
+.magnet-check { display: flex; align-items: center; gap: 6px; font-size: 15px; color: var(--ink-mid); }
 
-  /* Story card */
-  .story-card {
-    background: var(--warn-light);
-    border: 1px solid rgba(196,74,26,0.2);
-    border-radius: 14px;
-    padding: 1.75rem;
-    position: relative;
-  }
-  .story-card::before {
-    content: '"';
-    font-family: var(--serif);
-    font-size: 5rem;
-    color: var(--warn);
-    opacity: 0.18;
-    position: absolute;
-    top: 0.5rem; left: 1rem;
-    line-height: 1;
-  }
-  .story-label {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--warn);
-    margin-bottom: 0.75rem;
-  }
-  .story-card p {
-    font-size: 0.95rem;
-    color: var(--ink-2);
-    line-height: 1.7;
-    margin-bottom: 0.75rem;
-  }
-  .story-card p:last-child { margin-bottom: 0; }
-  .story-card strong { color: var(--ink); font-weight: 500; }
-
-  /* TRUST BAR */
-  .trust-bar {
-    background: var(--surface-2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 1.25rem 2rem;
-  }
-  .trust-inner {
-    max-width: var(--max);
-    margin: 0 auto;
-    display: flex; gap: 2rem;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .trust-item {
-    display: flex; gap: 0.5rem; align-items: center;
-    font-size: 0.83rem; color: var(--ink-2); font-weight: 500;
-  }
-  .trust-dot {
-    width: 7px; height: 7px;
-    background: var(--accent);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* SECTION WRAPPER */
-  .section { padding: 5rem 2rem; }
-  .section-inner { max-width: var(--max); margin: 0 auto; }
-  .section-label {
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
-  }
-  .section-heading {
-    font-family: var(--serif);
-    font-size: clamp(1.7rem, 3vw, 2.4rem);
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-  .section-sub {
-    font-size: 1rem;
-    color: var(--ink-2);
-    max-width: 600px;
-    margin-bottom: 3rem;
-  }
-
-  /* TOOLS GRID */
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
-  .tool-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.75rem;
-    transition: border-color 0.15s;
-  }
-  .tool-card:hover { border-color: var(--accent-mid); }
-  .tool-icon {
-    width: 44px; height: 44px;
-    background: var(--accent-light);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.25rem;
-    margin-bottom: 1.1rem;
-  }
-  .tool-card h3 {
-    font-family: var(--serif);
-    font-size: 1.15rem;
-    margin-bottom: 0.5rem;
-  }
-  .tool-card p {
-    font-size: 0.9rem;
-    color: var(--ink-2);
-    line-height: 1.65;
-    margin-bottom: 1.1rem;
-  }
-  .tool-badge {
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 0.25rem 0.6rem;
-    border-radius: 4px;
-    letter-spacing: 0.04em;
-  }
-  .badge-free { background: var(--accent-light); color: var(--accent); }
-  .badge-paid { background: #f0eaff; color: #5a35b0; }
-  .tool-link {
-    display: block;
-    margin-top: 1rem;
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: var(--accent);
-  }
-
-  /* DISCOUNT FINDER */
-  .finder-section { background: var(--surface-2); }
-  .finder-wrap {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2.5rem;
-    max-width: 740px;
-  }
-  .finder-step { display: none; }
-  .finder-step.active { display: block; }
-  .step-indicator {
-    display: flex; gap: 0.5rem; margin-bottom: 2rem;
-  }
-  .step-dot {
-    height: 4px; flex: 1;
-    background: var(--surface-3);
-    border-radius: 2px;
-    transition: background 0.3s;
-  }
-  .step-dot.done { background: var(--accent); }
-  .finder-q {
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-  }
-  .finder-hint { font-size: 0.875rem; color: var(--ink-3); margin-bottom: 1.5rem; }
-  .option-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-  .option-btn {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--r);
-    padding: 0.85rem 1rem;
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: left;
-  }
-  .option-btn:hover, .option-btn.selected {
-    border-color: var(--accent);
-    background: var(--accent-light);
-    color: var(--accent);
-  }
-  .finder-nav { display: flex; gap: 1rem; margin-top: 1.5rem; align-items: center; }
-  .finder-back {
-    background: none; border: 1px solid var(--border);
-    padding: 0.6rem 1.2rem; border-radius: var(--r);
-    cursor: pointer; font-family: var(--sans); font-size: 0.875rem; color: var(--ink-2);
-  }
-  .finder-back:hover { background: var(--surface-2); }
-  .step-counter { font-size: 0.8rem; color: var(--ink-3); margin-left: auto; }
-
-  /* Results */
-  .results-grid { display: grid; gap: 0.75rem; }
-  .result-row {
-    display: flex; gap: 1rem; align-items: flex-start;
-    background: var(--surface);
-    border-radius: var(--r);
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--border);
-  }
-  .result-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
-  .result-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.25rem; }
-  .result-desc { font-size: 0.85rem; color: var(--ink-2); }
-  .result-savings {
-    margin-left: auto; flex-shrink: 0;
-    font-weight: 500; color: var(--accent);
-    font-size: 0.9rem;
-  }
-  .result-action {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: var(--r);
-    cursor: pointer;
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-top: 1.5rem;
-    width: 100%;
-  }
-
-  /* CARRIER RANKINGS */
-  .carrier-section { background: #fff; }
-  .carriers-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-  }
-  .carriers-table th {
-    text-align: left;
-    padding: 0.75rem 1rem;
-    font-weight: 500;
-    font-size: 0.78rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    border-bottom: 1px solid var(--border);
-  }
-  .carriers-table td {
-    padding: 1rem 1rem;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
-  .carriers-table tr:last-child td { border-bottom: none; }
-  .carrier-name { font-weight: 500; font-size: 0.95rem; }
-  .carrier-tag {
-    font-size: 0.7rem;
-    font-weight: 500;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    display: inline-block;
-    margin-left: 0.5rem;
-  }
-  .tag-best { background: var(--accent-light); color: var(--accent); }
-  .tag-avoid { background: #fdecea; color: #b52a1a; }
-  .score-bar-wrap {
-    display: flex; align-items: center; gap: 0.75rem;
-  }
-  .score-bar {
-    height: 8px;
-    border-radius: 4px;
-    background: var(--surface-3);
-    flex: 1; max-width: 120px;
-    overflow: hidden;
-  }
-  .score-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: var(--accent);
-  }
-  .score-fill.mid { background: #e8a020; }
-  .score-fill.low { background: #c44a1a; }
-  .score-num { font-weight: 500; font-size: 0.9rem; min-width: 32px; }
-  .stability-pill {
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 0.25rem 0.6rem;
-    border-radius: 20px;
-  }
-  .stab-high { background: var(--accent-light); color: var(--accent); }
-  .stab-mid { background: #fdf3e0; color: #8a5c00; }
-  .stab-low { background: #fdecea; color: #b52a1a; }
-
-  /* METHODOLOGY CALLOUT */
-  .methodology-callout {
-    background: var(--surface-2);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-top: 2rem;
-    display: flex; gap: 1.25rem; align-items: flex-start;
-  }
-  .method-icon { font-size: 1.5rem; flex-shrink: 0; }
-  .method-text h4 { font-weight: 500; margin-bottom: 0.25rem; }
-  .method-text p { font-size: 0.875rem; color: var(--ink-2); }
-
-  /* HOW DIFFERENT */
-  .diff-section { background: var(--surface-2); }
-  .diff-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-  .diff-col {
-    background: #fff;
-    border-radius: 14px;
-    padding: 1.75rem;
-    border: 1px solid var(--border);
-  }
-  .diff-col.us { border-color: var(--accent-mid); }
-  .diff-col h3 { font-family: var(--serif); font-size: 1.15rem; margin-bottom: 1.1rem; }
-  .diff-list { list-style: none; }
-  .diff-list li {
-    font-size: 0.9rem;
-    color: var(--ink-2);
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border);
-    display: flex; gap: 0.6rem;
-  }
-  .diff-list li:last-child { border-bottom: none; }
-  .diff-list .tick { color: var(--accent); font-weight: 700; flex-shrink: 0; }
-  .diff-list .cross { color: #b52a1a; font-weight: 700; flex-shrink: 0; }
-
-  /* ABOUT / STORY */
-  .about-section { background: #fff; }
-  .about-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 4rem; align-items: start;
-  }
-  .about-story { font-size: 1rem; color: var(--ink-2); line-height: 1.8; }
-  .about-story p { margin-bottom: 1.25rem; }
-  .about-story strong { color: var(--ink); font-weight: 500; }
-  .pull-quote {
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    color: var(--ink);
-    line-height: 1.5;
-    border-left: 3px solid var(--accent);
-    padding-left: 1.25rem;
-    margin: 1.5rem 0;
-    font-style: italic;
-  }
-  .about-stats {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  .stat-card {
-    background: var(--surface-2);
-    border-radius: 12px;
-    padding: 1.25rem;
-  }
-  .stat-num {
-    font-family: var(--serif);
-    font-size: 2rem;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 0.35rem;
-  }
-  .stat-label { font-size: 0.82rem; color: var(--ink-2); line-height: 1.4; }
-
-  /* NEWSLETTER */
-  .newsletter-section {
-    background: var(--accent);
-    padding: 4rem 2rem;
-  }
-  .newsletter-inner {
-    max-width: 580px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .newsletter-inner h2 {
-    font-family: var(--serif);
-    font-size: 2rem;
-    color: #fff;
-    margin-bottom: 0.75rem;
-  }
-  .newsletter-inner p { color: rgba(255,255,255,0.8); margin-bottom: 1.75rem; font-size: 0.95rem; }
-  .email-form { display: flex; gap: 0.75rem; max-width: 440px; margin: 0 auto; }
-  .email-form input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border-radius: var(--r);
-    border: none;
-    font-family: var(--sans);
-    font-size: 0.95rem;
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    outline: none;
-  }
-  .email-form input::placeholder { color: rgba(255,255,255,0.55); }
-  .email-form input:focus { background: rgba(255,255,255,0.22); }
-  .email-form button {
-    background: #fff;
-    color: var(--accent);
-    border: none;
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--r);
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .disclaimer { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 0.75rem; }
-
-  /* FOOTER */
-  footer {
-    background: var(--ink);
-    color: rgba(255,255,255,0.6);
-    padding: 3rem 2rem;
-    font-size: 0.85rem;
-  }
-  .footer-inner {
-    max-width: var(--max); margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: flex-start;
-    flex-wrap: wrap; gap: 2rem;
-  }
-  .footer-brand .logo { color: #fff; }
-  .footer-brand p { margin-top: 0.5rem; font-size: 0.82rem; max-width: 260px; line-height: 1.6; }
-  .footer-links h4 { color: rgba(255,255,255,0.85); font-weight: 500; margin-bottom: 0.75rem; }
-  .footer-links ul { list-style: none; }
-  .footer-links li { margin-bottom: 0.4rem; }
-  .footer-links a { color: rgba(255,255,255,0.5); }
-  .footer-links a:hover { color: rgba(255,255,255,0.85); }
-  .footer-bottom {
-    max-width: var(--max); margin: 2rem auto 0;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    font-size: 0.78rem; color: rgba(255,255,255,0.35);
-  }
-  .affil-note {
-    background: rgba(255,255,255,0.06);
-    border-radius: 6px;
-    padding: 0.6rem 1rem;
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.45);
-    max-width: 500px;
-  }
-
-  /* SAMPLE AUDIT REPORT */
-  .sample-section { background: #fff; }
-  .sample-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-    max-width: 860px;
-  }
-  .sample-header {
-    background: var(--accent-light);
-    border-bottom: 1px solid rgba(29,107,74,0.15);
-    padding: 1.5rem 2rem;
-    display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;
-  }
-  .sample-header-left h3 { font-family: var(--serif); font-size: 1.25rem; color: var(--accent); margin-bottom: 0.2rem; }
-  .sample-header-left p { font-size: 0.82rem; color: var(--ink-2); }
-  .sample-badge { background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 20px; }
-  .sample-scores { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
-  .sample-score-box { flex: 1; padding: 1.25rem 1.5rem; text-align: center; border-right: 1px solid var(--border); }
-  .sample-score-box:last-child { border-right: none; }
-  .sample-score-num { font-family: var(--serif); font-size: 2rem; line-height: 1; margin-bottom: 0.2rem; }
-  .sample-score-label { font-size: 0.72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
-  .s-good { color: var(--accent); }
-  .s-warn { color: #c47a1a; }
-  .s-bad { color: var(--warn); }
-  .sample-body { padding: 1.75rem 2rem; }
-  .sample-section-title { font-family: var(--serif); font-size: 1rem; margin-bottom: 0.75rem; color: var(--ink); }
-  .sample-finding { border-left: 3px solid var(--border); padding: 0.7rem 1rem; margin-bottom: 0.6rem; border-radius: 0 8px 8px 0; background: var(--surface); }
-  .sample-finding.crit { border-left-color: var(--warn); background: var(--warn-light); }
-  .sample-finding.warn { border-left-color: #c47a1a; background: #fdf6e8; }
-  .sample-finding.good { border-left-color: var(--accent); background: var(--accent-light); }
-  .sample-finding-title { font-weight: 500; font-size: 0.88rem; margin-bottom: 0.15rem; }
-  .sample-finding-desc { font-size: 0.8rem; color: var(--ink-2); line-height: 1.5; }
-  .sample-finding-action { font-size: 0.77rem; color: var(--accent); font-weight: 500; margin-top: 0.3rem; }
-  .sample-discounts { display: grid; gap: 0.4rem; margin-bottom: 1.5rem; }
-  .sample-discount-row { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.9rem; font-size: 0.82rem; }
-  .sample-discount-name { font-weight: 500; }
-  .sample-discount-amt { color: var(--accent); font-weight: 500; font-size: 0.78rem; }
-  .sample-carrier-row { display: flex; align-items: center; gap: 1rem; background: var(--surface-2); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
-  .sample-carrier-score { font-family: var(--serif); font-size: 2rem; min-width: 44px; text-align: center; }
-  .sample-carrier-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.15rem; }
-  .sample-carrier-text { font-size: 0.8rem; color: var(--ink-2); line-height: 1.5; }
-  .sample-summary { background: var(--surface-2); border-radius: 10px; padding: 1.25rem 1.5rem; font-size: 0.85rem; color: var(--ink-2); line-height: 1.75; }
-  .sample-summary p { margin-bottom: 0.75rem; }
-  .sample-summary p:last-child { margin-bottom: 0; }
-  .sample-cta { background: var(--accent-light); border-top: 1px solid rgba(29,107,74,0.15); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-  .sample-cta p { font-size: 0.9rem; color: var(--ink-2); max-width: 520px; }
-  .sample-cta strong { color: var(--ink); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .fade-up { animation: fadeUp 0.55s ease both; }
-  .fade-up-2 { animation: fadeUp 0.55s 0.1s ease both; }
-  .fade-up-3 { animation: fadeUp 0.55s 0.2s ease both; }
-
-  @media (max-width: 820px) {
-    .hero { grid-template-columns: 1fr; gap: 2.5rem; }
-    .diff-grid { grid-template-columns: 1fr; }
-    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .nav-links { display: none; }
-  }
+@media (max-width: 900px) {
+  .mistakes-grid { grid-template-columns: 1fr; }
+}
 </style>
-  <!-- GOOGLE ANALYTICS: replace G-XXXXXXXXXX with your Measurement ID -->
-  <!-- Get it from: analytics.google.com → Admin → Data Streams → your site -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script> -->
-  <!-- Remove the comment tags above once you have your GA ID -->
 </head>
-<body>
+<body data-page="home">
+<div id="nav-placeholder"></div>
+<div class="page-wrap">
 
-<!-- NAV -->
-
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="logo">ai<span>-n</span>surance</a>
-    <ul class="nav-links">
-      <li><a href="#tools">Tools</a></li>
-      <li><a href="#sample-report">Sample report</a></li>
-      <li><a href="#rankings">Carrier rankings</a></li>
-      <li><a href="#about">Our story</a></li>
-      <li><a href="#newsletter" class="nav-cta">Get free report</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section style="padding: 0;">
+  <!-- HERO -->
   <div class="hero">
-    <div class="fade-up">
-      <div class="hero-eyebrow">No ads. No lead generation. No bias.</div>
-      <h1>Your insurance company is <em>betting</em> you won't check.</h1>
-      <p class="hero-sub">We help you audit your auto & home policy, find the discounts you're already entitled to, and know whether your carrier will actually show up when it matters.</p>
-      <div class="hero-actions">
-        <a href="#finder" class="btn-primary">Find my discounts — free</a>
-        <a href="/audit-tool.html" class="btn-primary" style="background:var(--warn)">Audit my policy — $9.97</a>
-        <a href="#rankings" class="btn-secondary">Check my carrier</a>
+    <div class="hero-inner">
+      <div class="hero-badge animate-in delay-1">🔍 Free Insurance Mistake Finder — No Account Required</div>
+      <h1 class="animate-in delay-2">Stop Guessing About<br><em>Your Insurance.</em></h1>
+      <p class="hero-sub animate-in delay-3">Understand your coverage, uncover potential gaps, and identify savings opportunities — in minutes.</p>
+      <div class="hero-checklist animate-in delay-4">
+        <div class="hero-check"><div class="check-icon">✓</div> Coverage explained in plain English</div>
+        <div class="hero-check"><div class="check-icon">✓</div> Gaps and overlaps identified</div>
+        <div class="hero-check"><div class="check-icon">✓</div> Savings opportunities highlighted</div>
+        <div class="hero-check"><div class="check-icon">✓</div> Questions to ask your agent</div>
+        <div class="hero-check"><div class="check-icon">✓</div> Delivered in minutes</div>
       </div>
-    </div>
-    <div class="fade-up-2">
-      <div class="story-card">
-        <div class="story-label">Why we built this</div>
-        <p>I was paying a reasonable rate through a highly-rated national carrier — great coverage, fast claims, no surprises. Then a friend of a friend who happened to be an insurance broker offered to help me save money. He ran the numbers. A competing carrier came in lower. I switched.</p>
-        <p>What I didn't track: the six-month billing cycle. The rate adjustments when I leased a new car. By the time I actually did the math, I was paying <strong>significantly more</strong> than before — for a carrier that independent quality rankings rated well below the one I'd left.</p>
-        <p>The broker got his commission. I got a worse carrier at a higher price.</p>
-        <p>What I really wanted was simple: <strong>someone to tell me what was best for me, not what was best for them.</strong> No website did that. Every tool I found wanted to sell me something new.</p>
-        <p>This one doesn't.</p>
+      <div class="hero-ctas animate-in delay-5">
+        <a class="btn-primary" href="/pages/get-my-review.html" style="font-size:17px;padding:18px 36px;">Review My Policies →</a>
+        <a class="btn-secondary" href="/pages/how-it-works.html" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);">See How It Works</a>
       </div>
+      <p class="hero-trust animate-in delay-6">No account required · Secure &amp; confidential · Results in minutes</p>
     </div>
   </div>
-</section>
 
-<!-- TRUST BAR -->
-<div class="trust-bar fade-up-3">
-  <div class="trust-inner">
-    <div class="trust-item"><div class="trust-dot"></div>No ads, no affiliate links, no hidden agenda</div>
-    <div class="trust-item"><div class="trust-dot"></div>Data from JD Power, NAIC, AM Best & Consumer Reports</div>
-    <div class="trust-item"><div class="trust-dot"></div>We'll tell you to stay with your current carrier if it's good</div>
-    <div class="trust-item"><div class="trust-dot"></div>Updated annually</div>
+  <!-- PROOF BAR -->
+  <div class="proof-bar">
+    <div class="proof-item">🔒 Bank-level encryption</div>
+    <div class="proof-item">⚡ Results in under 5 minutes</div>
+    <div class="proof-item">📋 Plain English — no jargon</div>
+    <div class="proof-item">💰 Avg. savings identified: $600/yr</div>
   </div>
+
+  <!-- HOW IT WORKS TEASER -->
+  <div class="section centered">
+    <div class="eyebrow">Simple Three-Step Process</div>
+    <h2>From confused to confident<br>in three simple steps</h2>
+    <p class="section-subtitle">Most people haven't read their policies since they signed them. We make that moment of clarity fast, simple, and genuinely useful.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Upload Your Policies</h3>
+        <p>Upload your home, auto, umbrella, or life policies. PDF, photo — whatever format you have. We handle the rest.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Receive Your Review</h3>
+        <p>Our analysis identifies gaps, flags duplicate coverage, highlights exclusions, and surfaces savings opportunities.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Make Informed Decisions</h3>
+        <p>Leave with a plain-English summary, specific questions for your agent, and complete confidence in what you have.</p>
+      </div>
+    </div>
+    <div style="margin-top:40px;">
+      <a class="btn-ghost" href="/pages/how-it-works.html">See the full process →</a>
+    </div>
+  </div>
+
+  <!-- WHAT YOU GET -->
+  <div style="background:var(--paper);padding:100px 0;">
+    <div class="section" style="padding-top:0;padding-bottom:0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+        <div>
+          <div class="eyebrow">What's Included</div>
+          <h2>Everything you need to feel confident about your coverage</h2>
+          <p style="margin-top:16px;margin-bottom:32px;">Insurance policies are written to protect the insurer, not to help you understand what you have. We translate them into something actually useful.</p>
+          <a class="btn-primary" href="/pages/get-my-review.html">Get My Review →</a>
+        </div>
+        <div class="deliverables-grid">
+          <div class="deliverable"><div class="del-icon">📄</div><div><div class="del-title">Coverage Summary</div><div class="del-desc">What you actually have, in plain English</div></div></div>
+          <div class="deliverable"><div class="del-icon">🔍</div><div><div class="del-title">Gap Analysis</div><div class="del-desc">Situations where you may not be covered</div></div></div>
+          <div class="deliverable"><div class="del-icon">⚖️</div><div><div class="del-title">Duplicate Review</div><div class="del-desc">Policies that overlap and cost you extra</div></div></div>
+          <div class="deliverable"><div class="del-icon">💰</div><div><div class="del-title">Savings Opportunities</div><div class="del-desc">Discounts you may be missing</div></div></div>
+          <div class="deliverable"><div class="del-icon">⚠️</div><div><div class="del-title">Exclusions Explained</div><div class="del-desc">What's NOT covered, clearly spelled out</div></div></div>
+          <div class="deliverable"><div class="del-icon">💬</div><div><div class="del-title">Agent Discussion Guide</div><div class="del-desc">Specific questions to bring to your agent</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEAR SECTION -->
+  <div class="fear-section">
+    <div class="fear-inner">
+      <div class="eyebrow" style="color:#5ecfbf;">The Costly Mistakes People Make</div>
+      <h2>Most families discover something<br>they didn't know about their insurance</h2>
+      <p class="fear-subtitle">The gap between what people assume they're covered for and what their policy says is where expensive surprises live.</p>
+      <div class="mistakes-grid">
+        <div class="mistake-card"><div class="mistake-label">Coverage Gap</div><h4>The Flood Assumption</h4><p>Standard homeowners policies don't cover floods. Many homeowners discover this only after a claim is denied.</p></div>
+        <div class="mistake-card"><div class="mistake-label">Underinsurance</div><h4>Outdated Replacement Costs</h4><p>Home values and construction costs have risen dramatically. Most people haven't updated limits in years.</p></div>
+        <div class="mistake-card"><div class="mistake-label">Liability Gap</div><h4>No Umbrella Coverage</h4><p>Auto and home liability limits are often far too low to protect assets in a serious accident or lawsuit.</p></div>
+        <div class="mistake-card"><div class="mistake-label">Duplicate Spend</div><h4>Overlapping Policies</h4><p>Paying for roadside assistance in multiple places, or rental coverage you already have through a credit card.</p></div>
+        <div class="mistake-card"><div class="mistake-label">Missed Savings</div><h4>Unclaimed Discounts</h4><p>Bundling, loyalty, security system, and professional discounts that were never applied to your policy.</p></div>
+        <div class="mistake-card"><div class="mistake-label">Hidden Exclusion</div><h4>Home Business Exposure</h4><p>Working from home doesn't mean your business equipment or liability is covered under your homeowners policy.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="section centered">
+    <div class="eyebrow">Real Results</div>
+    <h2>What families discover</h2>
+    <p class="section-subtitle">When people finally understand what they have — and what they don't — they make better decisions.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I had no idea my home policy hadn't been updated since we renovated. The review found a $180,000 coverage gap. That was a wake-up call."</blockquote>
+        <div style="display:flex;align-items:center;gap:10px;"><div class="author-avatar">MK</div><div><div class="author-name">Michael K.</div><div class="author-title">Homeowner, San Jose</div></div></div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Found $740 in annual savings through bundling discounts and removed duplicate roadside coverage I was paying for in three different places."</blockquote>
+        <div style="display:flex;align-items:center;gap:10px;"><div class="author-avatar">SR</div><div><div class="author-name">Sarah R.</div><div class="author-title">Married, two cars, two kids</div></div></div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The agent discussion guide was worth it alone. I went into that call knowing exactly what to ask. First time I've ever felt in control of an insurance conversation."</blockquote>
+        <div style="display:flex;align-items:center;gap:10px;"><div class="author-avatar">DR</div><div><div class="author-name">David R.</div><div class="author-title">Small business owner</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FREE MAGNET -->
+  <div class="magnet-section">
+    <div class="magnet-inner">
+      <div class="magnet-badge">Free · No Account Required</div>
+      <h2>Free Insurance Mistake Finder</h2>
+      <p>Find out in minutes whether you may have coverage gaps, duplicate coverage, outdated limits, or missed savings opportunities.</p>
+      <div class="magnet-checks">
+        <div class="magnet-check"><span style="color:var(--teal);font-weight:700;">✓</span> Coverage gaps</div>
+        <div class="magnet-check"><span style="color:var(--teal);font-weight:700;">✓</span> Duplicate coverage</div>
+        <div class="magnet-check"><span style="color:var(--teal);font-weight:700;">✓</span> Outdated limits</div>
+        <div class="magnet-check"><span style="color:var(--teal);font-weight:700;">✓</span> Missed savings</div>
+      </div>
+      <a class="btn-primary" href="/pages/get-my-review.html" style="font-size:16px;padding:16px 32px;">Find My Coverage Gaps — Free →</a>
+    </div>
+  </div>
+
+  <div id="ribbon-placeholder"></div>
 </div>
-
-<!-- TOOLS -->
-<section class="section" id="tools">
-  <div class="section-inner">
-    <div class="section-label">Free tools</div>
-    <h2 class="section-heading">What can we help you with?</h2>
-    <p class="section-sub">Three tools, each takes under 5 minutes. Start with the discount finder — most people are leaving $200–$600/year on the table.</p>
-    <div class="tools-grid">
-      <div class="tool-card">
-        <div class="tool-icon">🔍</div>
-        <h3>Discount finder</h3>
-        <p>12 questions about your car, home, driving record, and lifestyle. We show you every discount you likely qualify for — and the exact words to use when you call your insurer.</p>
-        <span class="tool-badge badge-free">Free</span>
-        <a href="#finder" class="tool-link">Find my discounts →</a>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon">📋</div>
-        <h3>Policy audit</h3>
-        <p>Upload your declarations page. We flag coverage gaps, overinsurance, and mismatches — like paying for rental reimbursement on a two-car household. Includes a written report.</p>
-        <span class="tool-badge badge-paid">$9.97 one-time</span>
-        <!-- STRIPE: replace href below with your Stripe payment link -->
-        <!-- Get it from: stripe.com → Products → Policy Audit → Create payment link -->
-        <p style="font-size:0.78rem;color:var(--ink-3);margin-top:0.5rem;margin-bottom:0.25rem">🔒 Your document is never stored or retained. We analyze it and discard it immediately. Only your email is saved if you choose to provide it.</p>
-        <a href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" class="tool-link">Audit my policy ($9.97) →</a>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon">⭐</div>
-        <h3>Carrier quality score</h3>
-        <p>Our composite score across claims satisfaction, complaint ratio, financial strength, and price stability. Not who spends most on ads — who's actually best.</p>
-        <span class="tool-badge badge-free">Free</span>
-        <a href="#rankings" class="tool-link">Check my carrier →</a>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon">📬</div>
-        <h3>Annual review alert</h3>
-        <p>Get reminded 30 days before your renewal to run the discount finder again, plus any new carrier rating changes or state-specific pricing alerts.</p>
-        <span class="tool-badge badge-free">Free</span>
-        <a href="#newsletter" class="tool-link">Set up my alert →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- SAMPLE AUDIT REPORT -->
-<section class="section sample-section" id="sample-report">
-  <div class="section-inner">
-    <div class="section-label">Sample report</div>
-    <h2 class="section-heading">Here&#8217;s what your audit looks like</h2>
-    <p class="section-sub">This is a real example of the report you receive. The name and carrier below are illustrative &#8212; your report is generated from your actual declarations page.</p>
-
-    <div class="sample-wrap">
-
-      <div class="sample-header">
-        <div class="sample-header-left">
-          <h3>Policy Audit &#8212; Sarah M., California</h3>
-          <p>Auto insurance &middot; Declarations page uploaded June 3, 2025 &middot; Report generated in 47 seconds</p>
-        </div>
-        <span class="sample-badge">Sample report</span>
-      </div>
-
-      <div class="sample-scores">
-        <div class="sample-score-box">
-          <div class="sample-score-num s-warn">61</div>
-          <div class="sample-score-label">Coverage score</div>
-        </div>
-        <div class="sample-score-box">
-          <div class="sample-score-num s-bad">4</div>
-          <div class="sample-score-label">Issues found</div>
-        </div>
-        <div class="sample-score-box">
-          <div class="sample-score-num s-good">6</div>
-          <div class="sample-score-label">Discounts to request</div>
-        </div>
-        <div class="sample-score-box">
-          <div class="sample-score-num s-good">$340&#8211;520</div>
-          <div class="sample-score-label">Est. annual savings</div>
-        </div>
-      </div>
-
-      <div class="sample-body">
-
-        <div class="sample-section-title">Coverage findings</div>
-
-        <div class="sample-finding crit">
-          <div class="sample-finding-title">&#128308; Uninsured motorist coverage is below your liability limits</div>
-          <div class="sample-finding-desc">Your liability limits are 100/300/100, but your UM/UIM coverage is only 25/50. If an uninsured driver totals your car and injures you, your own policy only pays up to $25,000 per person &#8212; far below what a serious injury costs in California.</div>
-          <div class="sample-finding-action">&#8594; Call your carrier and request UM/UIM limits matching your liability (100/300). Cost is typically $8&#8211;14/month.</div>
-        </div>
-
-        <div class="sample-finding crit">
-          <div class="sample-finding-title">&#128308; Rental reimbursement cap is $30/day &#8212; California average is $52/day</div>
-          <div class="sample-finding-desc">Your policy pays up to $30/day for a rental car while yours is being repaired. The average daily rental rate in California is $52. You will pay the difference out of pocket, often for 2&#8211;3 weeks during a major repair.</div>
-          <div class="sample-finding-action">&#8594; Request an upgrade to $50/day coverage. It typically adds $4&#8211;6/month.</div>
-        </div>
-
-        <div class="sample-finding warn">
-          <div class="sample-finding-title">&#128993; No medical payments (MedPay) coverage</div>
-          <div class="sample-finding-desc">MedPay covers you and your passengers regardless of fault &#8212; it pays immediately while liability disputes are resolved. At $5,000 of coverage, it typically costs under $5/month and prevents out-of-pocket emergency costs.</div>
-          <div class="sample-finding-action">&#8594; Ask your carrier to add $5,000 MedPay. Quote the exact cost before deciding.</div>
-        </div>
-
-        <div class="sample-finding warn">
-          <div class="sample-finding-title">&#128993; Comprehensive deductible is $1,000 &#8212; higher than typical for your vehicle value</div>
-          <div class="sample-finding-desc">Your 2021 Honda CR-V has an estimated value of $26,400. A $1,000 comprehensive deductible is 3.8% of vehicle value. Dropping to $500 costs roughly $60&#8211;80/year more but meaningfully lowers your out-of-pocket exposure for theft, hail, or glass claims.</div>
-          <div class="sample-finding-action">&#8594; Get a quote for $500 comprehensive deductible and decide if the premium difference is worth it to you.</div>
-        </div>
-
-        <div class="sample-finding good">
-          <div class="sample-finding-title">&#128994; Liability limits are adequate &#8212; 100/300/100</div>
-          <div class="sample-finding-desc">Your bodily injury and property damage liability limits meet the recommended minimums for a California driver with assets to protect. No action needed here.</div>
-        </div>
-
-        <div class="sample-section-title" style="margin-top:1.5rem">Discounts you likely qualify for</div>
-        <div class="sample-discounts">
-          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Paid-in-full discount</span><span class="sample-discount-amt">$120&#8211;180/yr</span></div>
-          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Paperless billing</span><span class="sample-discount-amt">$25&#8211;45/yr</span></div>
-          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Auto-pay enrollment</span><span class="sample-discount-amt">$40&#8211;70/yr</span></div>
-          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Vehicle safety features (Honda Sensing)</span><span class="sample-discount-amt">$30&#8211;60/yr</span></div>
-          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Claims-free tenure (4 years)</span><span class="sample-discount-amt">$55&#8211;90/yr</span></div>
-          <div class="sample-discount-row"><span class="sample-discount-name">&#128176; Defensive driving course (online, ~$25)</span><span class="sample-discount-amt">$70&#8211;100/yr</span></div>
-        </div>
-
-        <div class="sample-section-title">Carrier assessment</div>
-        <div class="sample-carrier-row">
-          <div class="sample-carrier-score s-warn">61</div>
-          <div>
-            <div class="sample-carrier-name">Mid-tier national carrier (illustrative)</div>
-            <div class="sample-carrier-text">This carrier scores average on claims satisfaction and has a complaint ratio above the industry median. They are financially stable with an AM Best A rating, but independent surveys suggest claim resolution times are longer than top-tier competitors. Not a reason to switch immediately, but worth monitoring at renewal.</div>
-          </div>
-        </div>
-
-        <div class="sample-section-title">Written summary</div>
-        <div class="sample-summary">
-          <p><strong>This week:</strong> Call your carrier and request a quote to increase your UM/UIM limits to match your liability (100/300). This is the most important gap in your current policy. Uninsured driver accidents represent roughly 15% of California crashes &#8212; at your current limits, you are underprotected.</p>
-          <p><strong>This month:</strong> Ask about the paid-in-full discount and auto-pay discount. Together they could save you $160&#8211;250/year with no coverage change. Also verify whether your Honda Sensing package is on file &#8212; many carriers discount for factory safety tech but only if it has been reported.</p>
-          <p><strong>At renewal:</strong> Your claims-free record and 4-year tenure give you strong leverage to shop. Your coverage score of 61 can realistically reach 80+ with the changes above &#8212; the gaps here are fixable, not structural.</p>
-        </div>
-
-      </div>
-
-      <div class="sample-cta">
-        <p><strong>Ready to see your actual report?</strong> Upload your declarations page and get a full audit like this one &#8212; specific to your policy, your carrier, and your state. Takes about 60 seconds.</p>
-        <a href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" class="btn-primary" style="white-space:nowrap">Get my audit &#8212; $9.97 &#8594;</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- DISCOUNT FINDER (interactive) -->
-<section class="section finder-section" id="finder">
-  <div class="section-inner">
-    <div class="section-label">Discount finder</div>
-    <h2 class="section-heading">Which discounts are you missing?</h2>
-    <p class="section-sub">Most policies have 6–12 applicable discounts. Carriers don't advertise all of them. Here's how to find yours.</p>
-
-    <div class="finder-wrap">
-      <div class="step-indicator">
-        <div class="step-dot done" id="dot-1"></div>
-        <div class="step-dot" id="dot-2"></div>
-        <div class="step-dot" id="dot-3"></div>
-        <div class="step-dot" id="dot-4"></div>
-        <div class="step-dot" id="dot-5"></div>
-      </div>
-
-      <!-- Step 1 -->
-      <div class="finder-step active" id="step-1">
-        <div class="finder-q">What type of insurance are we looking at?</div>
-        <div class="finder-hint">You can run this for multiple policy types separately</div>
-        <div class="option-grid">
-          <button class="option-btn" onclick="select(this,'type','auto')">🚗 Auto only</button>
-          <button class="option-btn" onclick="select(this,'type','home')">🏠 Home only</button>
-          <button class="option-btn" onclick="select(this,'type','both')">🏠🚗 Both (bundle opportunity)</button>
-          <button class="option-btn" onclick="select(this,'type','renters')">🏢 Renters + auto</button>
-        </div>
-        <div class="finder-nav">
-          <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
-          <span class="step-counter">Step 1 of 5</span>
-        </div>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="finder-step" id="step-2">
-        <div class="finder-q">How long have you been with your current carrier?</div>
-        <div class="finder-hint">Loyalty discounts kick in at 2, 3, and 5-year marks — and reset when you switch</div>
-        <div class="option-grid">
-          <button class="option-btn" onclick="select(this,'tenure','new')">Under 1 year</button>
-          <button class="option-btn" onclick="select(this,'tenure','1-2')">1–2 years</button>
-          <button class="option-btn" onclick="select(this,'tenure','3-5')">3–5 years</button>
-          <button class="option-btn" onclick="select(this,'tenure','5+')">5+ years</button>
-        </div>
-        <div class="finder-nav">
-          <button class="finder-back" onclick="prevStep(1)">← Back</button>
-          <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
-          <span class="step-counter">Step 2 of 5</span>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="finder-step" id="step-3">
-        <div class="finder-q">Which of these apply to you?</div>
-        <div class="finder-hint">Select all that apply — each one is a potential discount line item</div>
-        <div class="option-grid">
-          <button class="option-btn" onclick="toggle(this)">🎓 Good student (GPA 3.0+)</button>
-          <button class="option-btn" onclick="toggle(this)">🪖 Military / veteran</button>
-          <button class="option-btn" onclick="toggle(this)">🏠 Own your home</button>
-          <button class="option-btn" onclick="toggle(this)">🏢 Work from home</button>
-          <button class="option-btn" onclick="toggle(this)">🚘 Drive under 7,500 mi/yr</button>
-          <button class="option-btn" onclick="toggle(this)">🏛️ Member of alumni/employer group</button>
-        </div>
-        <div class="finder-nav">
-          <button class="finder-back" onclick="prevStep(2)">← Back</button>
-          <button class="btn-primary" onclick="nextStep(4)">Continue →</button>
-          <span class="step-counter">Step 3 of 5</span>
-        </div>
-      </div>
-
-      <!-- Step 4 -->
-      <div class="finder-step" id="step-4">
-        <div class="finder-q">How do you currently pay your premium?</div>
-        <div class="finder-hint">Payment method alone can save 5–12% — most people don't know this</div>
-        <div class="option-grid">
-          <button class="option-btn" onclick="select(this,'pay','monthly')">Monthly (credit card)</button>
-          <button class="option-btn" onclick="select(this,'pay','monthly-ach')">Monthly (bank draft)</button>
-          <button class="option-btn" onclick="select(this,'pay','6mo')">Every 6 months</button>
-          <button class="option-btn" onclick="select(this,'pay','annual')">Annual / paid in full</button>
-        </div>
-        <div class="finder-nav">
-          <button class="finder-back" onclick="prevStep(3)">← Back</button>
-          <button class="btn-primary" onclick="nextStep(5)">Continue →</button>
-          <span class="step-counter">Step 4 of 5</span>
-        </div>
-      </div>
-
-      <!-- Step 5 -->
-      <div class="finder-step" id="step-5">
-        <div class="finder-q">Vehicle & home safety features?</div>
-        <div class="finder-hint">These are often the most overlooked discount categories</div>
-        <div class="option-grid">
-          <button class="option-btn" onclick="toggle(this)">🚨 Home alarm system</button>
-          <button class="option-btn" onclick="toggle(this)">🔒 Deadbolts / fire extinguisher</button>
-          <button class="option-btn" onclick="toggle(this)">🚗 Anti-lock brakes / airbags</button>
-          <button class="option-btn" onclick="toggle(this)">📱 Willing to use telematics app</button>
-          <button class="option-btn" onclick="toggle(this)">🎓 Completed defensive driving course</button>
-          <button class="option-btn" onclick="toggle(this)">☀️ Solar / green home features</button>
-        </div>
-        <div class="finder-nav">
-          <button class="finder-back" onclick="prevStep(4)">← Back</button>
-          <button class="btn-primary" onclick="showResults()">Show my discounts →</button>
-          <span class="step-counter">Step 5 of 5</span>
-        </div>
-      </div>
-
-      <!-- Results -->
-      <div class="finder-step" id="results">
-        <div class="finder-q" style="margin-bottom:0.5rem">You likely qualify for <span id="discount-count" style="color:var(--accent)">8</span> discounts</div>
-        <p style="color:var(--ink-3);font-size:0.875rem;margin-bottom:1.5rem">Estimated potential savings: <strong style="color:var(--ink)">$280–$520/year</strong>. Here's what to ask for:</p>
-        <div class="results-grid" id="results-list"></div>
-        <button class="result-action" onclick="sendResults()">📧 Email me this report + the script to use with my insurer</button>
-        <p style="font-size:0.78rem;color:var(--ink-3);margin-top:0.75rem;text-align:center">No spam. Just your report and one annual renewal reminder.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CARRIER RANKINGS -->
-<section class="section carrier-section" id="rankings">
-  <div class="section-inner">
-    <div class="section-label">Carrier quality rankings</div>
-    <h2 class="section-heading">Who actually shows up when you need them?</h2>
-    <p class="section-sub">Ranked by claims satisfaction, complaint ratio, financial strength, and price stability — not by ad spend or who pays us the highest referral fee.</p>
-
-    <div style="overflow-x:auto;">
-      <table class="carriers-table">
-        <thead>
-          <tr>
-            <th>Carrier</th>
-            <th>Quality score</th>
-            <th>Claims satisfaction</th>
-            <th>Complaint ratio</th>
-            <th>Price stability</th>
-            <th>Best for</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><!-- AFFILIATE: when approved, wrap this in <a href="YOUR_USAA_AFFILIATE_LINK"> -->
-            <span class="carrier-name">USAA</span><span class="carrier-tag tag-best">Best overall</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill" style="width:95%"></div></div>
-                <span class="score-num">95</span>
-              </div>
-            </td>
-            <td>⭐⭐⭐⭐⭐</td>
-            <td style="color:var(--accent)">0.38 (excellent)</td>
-            <td><span class="stability-pill stab-high">Very stable</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">Military families</td>
-          </tr>
-          <tr>
-            <td><!-- AFFILIATE: wrap in affiliate link when available -->
-            <span class="carrier-name">Amica</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill" style="width:90%"></div></div>
-                <span class="score-num">90</span>
-              </div>
-            </td>
-            <td>⭐⭐⭐⭐⭐</td>
-            <td style="color:var(--accent)">0.41 (excellent)</td>
-            <td><span class="stability-pill stab-high">Very stable</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">Home + auto bundlers</td>
-          </tr>
-          <tr>
-            <td><span class="carrier-name">Erie Insurance</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill" style="width:85%"></div></div>
-                <span class="score-num">85</span>
-              </div>
-            </td>
-            <td>⭐⭐⭐⭐½</td>
-            <td style="color:var(--accent)">0.52 (good)</td>
-            <td><span class="stability-pill stab-high">Stable</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">Midwest / mid-Atlantic</td>
-          </tr>
-          <tr>
-            <td><span class="carrier-name">Auto-Owners</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill" style="width:82%"></div></div>
-                <span class="score-num">82</span>
-              </div>
-            </td>
-            <td>⭐⭐⭐⭐</td>
-            <td style="color:var(--accent)">0.58 (good)</td>
-            <td><span class="stability-pill stab-high">Stable</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">26-state availability</td>
-          </tr>
-          <tr>
-            <td><span class="carrier-name">State Farm</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill mid" style="width:74%"></div></div>
-                <span class="score-num">74</span>
-              </div>
-            </td>
-            <td>⭐⭐⭐½</td>
-            <td style="color:var(--ink-2)">0.81 (average)</td>
-            <td><span class="stability-pill stab-mid">Moderate</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">Nationwide availability</td>
-          </tr>
-          <tr>
-            <td><span class="carrier-name">Allstate</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill mid" style="width:61%"></div></div>
-                <span class="score-num">61</span>
-              </div>
-            </td>
-            <td>⭐⭐⭐</td>
-            <td style="color:#8a5c00">1.14 (below avg.)</td>
-            <td><span class="stability-pill stab-mid">Volatile</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">Agents in most states</td>
-          </tr>
-          <tr>
-            <td><span class="carrier-name">Farmers</span><span class="carrier-tag tag-avoid">Caution</span></td>
-            <td>
-              <div class="score-bar-wrap">
-                <div class="score-bar"><div class="score-fill low" style="width:52%"></div></div>
-                <span class="score-num">52</span>
-              </div>
-            </td>
-            <td>⭐⭐½</td>
-            <td style="color:var(--warn)">1.42 (high complaints)</td>
-            <td><span class="stability-pill stab-low">Unstable</span></td>
-            <td style="color:var(--ink-2);font-size:0.85rem">—</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="methodology-callout">
-      <div class="method-icon">🔬</div>
-      <div class="method-text">
-        <h4>About our methodology</h4>
-        <p>Scores weight claims satisfaction (25%), NAIC complaint ratio (20%), AM Best financial strength (20%), price stability over 3 years (15%), customer retention (10%), and coverage quality (10%).</p>
-        <p style="margin-top:0.5rem"><strong>Data sources:</strong> <a href="https://www.jdpower.com" target="_blank">J.D. Power</a> Auto &amp; Home Insurance Studies &middot; <a href="https://content.naic.org/consumer" target="_blank">NAIC Consumer Insurance Survey</a> &middot; <a href="https://www.ambest.com" target="_blank">AM Best</a> financial strength ratings &middot; <a href="https://www.consumerreports.org" target="_blank">Consumer Reports</a> insurance surveys &middot; State department of insurance filings. Updated annually. Scores are illustrative composites — not financial or insurance advice. <a href="#about">Read the full methodology →</a></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW WE'RE DIFFERENT -->
-<section class="section diff-section">
-  <div class="section-inner">
-    <div class="section-label">Why us</div>
-    <h2 class="section-heading">Not another comparison site</h2>
-    <p class="section-sub">Most insurance websites are lead generation businesses dressed up as advice. Every "best of" list ends with a referral link to whoever pays the highest commission. Ours doesn't.</p>
-    <div class="diff-grid">
-      <div class="diff-col us">
-        <h3>What we do</h3>
-        <ul class="diff-list">
-          <li><span class="tick">😊</span> Score carriers on quality, not commission rates</li>
-          <li><span class="tick">😊</span> Help you optimize the policy you already have</li>
-          <li><span class="tick">😊</span> Tell you "stay put — your carrier is good" when that's true</li>
-          <li><span class="tick">😊</span> Audit your declarations page for gaps and waste</li>
-          <li><span class="tick">😊</span> Independent quality score: claims, complaints, strength, stability</li>
-          <li><span class="tick">😊</span> Alert you 30 days before renewal with relevant changes</li>
-        </ul>
-      </div>
-      <div class="diff-col">
-        <h3>The other guys</h3>
-        <ul class="diff-list">
-          <li><span class="cross">😞</span> Rank carriers based on who pays the highest commission</li>
-          <li><span class="cross">😞</span> Help you find a new policy (so they get paid)</li>
-          <li><span class="cross">😞</span> Never tell you to stay with your current carrier</li>
-          <li><span class="cross">😞</span> No tool to audit a policy you already have</li>
-          <li><span class="cross">😞</span> No carrier quality score independent of price</li>
-          <li><span class="cross">😞</span> No flag when your coverage quietly degrades at renewal</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ABOUT / STORY -->
-<section class="section about-section" id="about">
-  <div class="section-inner">
-    <div class="section-label">Our story</div>
-    <h2 class="section-heading">Why we built this</h2>
-    <div class="about-grid">
-      <div>
-        <div class="about-story">
-          <p>I was paying a reasonable rate through a highly-rated national carrier. Great coverage. Fast claims. Zero surprises. I didn't think much about it — which, in hindsight, is exactly what a good insurer earns.</p>
-          <p>Then a friend of a friend, who happened to be an insurance broker, offered to help me save money. Friendly, confident. He ran the numbers. A competing carrier came in lower. I switched.</p>
-          <div class="pull-quote">"I didn't notice the six-month billing cycle. I didn't track the rate adjustments when I leased a new car. By the time I actually did the math, I was paying significantly more than before."</div>
-          <p>And here's what made it worse: the carrier I'd left consistently ranks at the top of every independent claims satisfaction study. The one I switched to doesn't. I had traded a genuinely excellent insurer for a mediocre one — and I was paying more for the privilege.</p>
-          <p>What I really wanted was simple: someone to tell me what was best for me, not what was best for them. No website did that. No tool showed me the discounts I was already entitled to. Every site I found wanted to sell me something new.</p>
-          <p><strong>I spent years thinking about what that tool should look like. This is it.</strong></p>
-        </div>
-      </div>
-      <div>
-        <div class="about-stats">
-          <div class="stat-card">
-            <div class="stat-num">30%+</div>
-            <div class="stat-label">Average homeowners premium increase since 2022 in many states</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num">$400</div>
-            <div class="stat-label">Average annual savings when people actively audit and negotiate their policies</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num">68%</div>
-            <div class="stat-label">Of policyholders never ask about discounts they already qualify for</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num">6–12</div>
-            <div class="stat-label">Typical number of discounts available on a standard auto or home policy</div>
-          </div>
-        </div>
-        <div style="margin-top:1.5rem;background:var(--surface-2);border-radius:12px;padding:1.25rem;">
-          <p style="font-size:0.875rem;color:var(--ink-2)"><strong style="color:var(--ink)">Data sources:</strong> JD Power Auto & Home Insurance Studies, NAIC Consumer Insurance Survey, AM Best ratings, Consumer Reports insurance surveys, state department of insurance filings (SERFF). Updated annually.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER -->
-<section class="newsletter-section" id="newsletter">
-  <div class="newsletter-inner">
-    <h2>Get your free discount report</h2>
-    <p>Enter your email and we'll send you the full discount checklist, plus a renewal reminder 30 days before your policy anniversary.</p>
-    <!-- MAILCHIMP FORM: replace ACTION_URL with your Mailchimp form action URL -->
-    <!-- Get it from: Mailchimp → Audience → Signup Forms → Embedded Forms -->
-    <form class="email-form" action="https://ai-nsurance.us20.list-manage.com/subscribe/post?u=2a21dbd972d0c745d08968931&id=6fc38719c6&f_id=00e758eaf0" method="post" id="mc-form" target="_blank" novalidate>
-      <input type="email" name="EMAIL" placeholder="your@email.com" id="email-input" required>
-      <!-- Mailchimp bot protection — do not remove -->
-      <div style="position:absolute;left:-5000px" aria-hidden="true">
-        <input type="text" name="b_2a21dbd972d0c745d08968931_6fc38719c6" tabindex="-1" value="">
-      </div>
-      <button type="submit">Send my report</button>
-    </form>
-    <p class="disclaimer">No spam. Unsubscribe anytime. We never sell your data or share it with carriers.</p>
-
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="logo">ai<span style="color:#5dcaa5">-n</span>surance</div>
-      <p>Unbiased auto & home insurance guidance. We help you audit, optimize, and understand your coverage — without trying to sell you a new policy.</p>
-      <p style="margin-top:0.5rem"><a href="mailto:help@ai-nsurance.com" style="color:rgba(255,255,255,0.5)">help@ai-nsurance.com</a></p>
-    </div>
-    <div class="footer-links">
-      <h4>Tools</h4>
-      <ul>
-        <li><a href="#finder">Discount finder</a></li>
-        <li><a href="/audit-tool.html">Policy audit ($9.97)</a></li>
-        <li><a href="#rankings">Carrier rankings</a></li>
-        <li><a href="#newsletter">Renewal alerts</a></li>
-      </ul>
-    </div>
-    <div class="footer-links">
-      <h4>Learn</h4>
-      <ul>
-        <li><a href="#">How to read your declarations page</a></li>
-        <li><a href="#">ACV vs. replacement cost — what it means</a></li>
-        <li><a href="#">When to switch carriers (and when not to)</a></li>
-        <li><a href="#">The discount conversation script</a></li>
-      </ul>
-    </div>
-    <div class="footer-links">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#about">Our story</a></li>
-        <li><a href="#">Methodology</a></li>
-        <li><a href="#">Affiliate disclosure</a></li>
-        <li><a href="#">Privacy policy</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 ai-nsurance.com</span>
-    <span>Not affiliated with any insurance carrier</span>
-  </div>
-  <div style="max-width:var(--max);margin:1rem auto 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.75rem;color:rgba(255,255,255,0.35);line-height:1.6;">
-    <strong style="color:rgba(255,255,255,0.5)">Disclaimer:</strong> ai-nsurance.com provides educational information only. Nothing on this site constitutes financial, legal, or insurance advice. We are not licensed insurance agents, brokers, or financial advisors. Carrier quality scores are based on publicly available data and are provided for informational purposes only. Always consult a licensed professional before making insurance decisions. This site does not currently accept advertising or affiliate compensation. Our carrier scores and recommendations are editorially independent.
-  </div>
-</footer>
-
-<script>
-const answers = {};
-
-function select(btn, key, val) {
-  const grid = btn.closest('.option-grid');
-  grid.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  answers[key] = val;
-}
-
-function toggle(btn) {
-  btn.classList.toggle('selected');
-}
-
-function nextStep(n) {
-  document.querySelectorAll('.finder-step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step-' + n).classList.add('active');
-  for (let i = 1; i <= 5; i++) {
-    document.getElementById('dot-' + i).classList.toggle('done', i < n);
-  }
-}
-
-function prevStep(n) {
-  nextStep(n);
-}
-
-function showResults() {
-  document.querySelectorAll('.finder-step').forEach(s => s.classList.remove('active'));
-  document.getElementById('results').classList.add('active');
-
-  const discounts = [
-    { icon: '🏠', title: 'Bundle discount', desc: 'Combining home and auto with the same carrier typically saves 10–18%.', savings: 'Up to $320/yr' },
-    { icon: '📅', title: 'Paid-in-full discount', desc: 'Paying your annual premium in one payment avoids installment fees and earns a 5–10% discount.', savings: 'Up to $120/yr' },
-    { icon: '📱', title: 'Paperless billing', desc: 'A small but easy discount — usually 2–5% just for switching to e-statements.', savings: '$20–60/yr' },
-    { icon: '🔄', title: 'Auto-pay enrollment', desc: 'Most carriers offer 3–7% off for setting up automatic payments.', savings: '$40–100/yr' },
-    { icon: '🚗', title: 'Vehicle safety features', desc: 'Anti-lock brakes, airbags, and daytime running lights all have associated discount line items. Ask specifically.', savings: '$30–90/yr' },
-    { icon: '🏡', title: 'Home alarm discount', desc: 'A monitored security system typically earns 5% off homeowners. Smoke detectors add another 2%.', savings: '$40–120/yr' },
-    { icon: '🎓', title: 'Defensive driving credit', desc: 'A state-approved course (often 4–6 hours online, ~$25) earns a discount that usually lasts 3 years.', savings: '$50–150/yr' },
-    { icon: '📋', title: 'Loyalty / claims-free discount', desc: 'Ask your carrier explicitly: "What is my claims-free discount and my loyalty discount?" — they don\'t always show on bills.', savings: '$60–180/yr' },
-  ];
-
-  const list = document.getElementById('results-list');
-  list.innerHTML = '';
-  discounts.forEach(d => {
-    const row = document.createElement('div');
-    row.className = 'result-row';
-    row.innerHTML = `
-      <div class="result-icon">${d.icon}</div>
-      <div>
-        <div class="result-title">${d.title}</div>
-        <div class="result-desc">${d.desc}</div>
-      </div>
-      <div class="result-savings">${d.savings}</div>
-    `;
-    list.appendChild(row);
-  });
-
-  document.getElementById('discount-count').textContent = discounts.length;
-}
-
-function sendResults() {
-  const email = prompt('Enter your email to receive the full report and discount call script:');
-  if (email) alert('Report sent to ' + email + '!\n\nCheck your inbox for the full list plus the exact script to use when you call your insurer.');
-}
-
-function handleEmail() {
-  const val = document.getElementById('email-input').value;
-  if (val && val.includes('@')) {
-    alert('You\'re on the list!\n\nYou\'ll receive your free discount report shortly, plus a reminder 30 days before your renewal.');
-    document.getElementById('email-input').value = '';
-  } else {
-    alert('Please enter a valid email address.');
-  }
-}
-</script>
+<div id="footer-placeholder"></div>
+<script src="/js/components.js"></script>
 </body>
 </html>

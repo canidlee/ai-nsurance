@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Auto Insurance Report — AI-nsurance</title>
+<meta name="description" content="See exactly what an AI-nsurance coverage review looks like. Real findings, plain English, actionable results.">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.sample-hero { background: var(--paper); padding: 70px 40px 50px; border-bottom: 1px solid var(--border); }
+.sample-hero-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.sample-hero h1 { margin-bottom: 12px; }
+.sample-hero p { max-width: 480px; }
+.sample-label { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-light); color: var(--teal-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 16px; }
+
+/* REPORT DOCUMENT */
+.report-wrap { max-width: 900px; margin: 60px auto; padding: 0 40px 80px; }
+
+.report-doc {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.report-topbar {
+  background: var(--teal-dark);
+  padding: 28px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.report-topbar-left h2 { color: var(--white); font-size: 22px; margin-bottom: 4px; }
+.report-topbar-left p { color: rgba(255,255,255,0.6); font-size: 13px; }
+.report-score-badge {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius);
+  padding: 14px 20px; text-align: center;
+}
+.report-score-number { font-family: 'DM Serif Display', serif; font-size: 40px; color: #f0d090; line-height: 1; }
+.report-score-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* SUMMARY CARDS */
+.summary-strip {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-bottom: 1px solid var(--border);
+}
+.summary-cell {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border);
+}
+.summary-cell:last-child { border-right: none; }
+.summary-cell-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-light); margin-bottom: 6px; }
+.summary-cell-value { font-size: 18px; font-weight: 700; color: var(--ink); }
+.summary-cell-sub { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+
+/* SECTIONS */
+.report-section { padding: 32px 40px; border-bottom: 1px solid var(--border); }
+.report-section:last-child { border-bottom: none; }
+.report-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.report-section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink-light); }
+.section-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+.tag-attention { background: var(--red-light); color: var(--red-soft); }
+.tag-savings { background: var(--gold-light); color: var(--gold); }
+.tag-ok { background: var(--teal-light); color: var(--teal-dark); }
+.tag-info { background: #e8eef8; color: #2c4a8a; }
+
+/* COVERAGE TABLE */
+.coverage-table { width: 100%; border-collapse: collapse; }
+.coverage-table th {
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--ink-light); padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.coverage-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+.coverage-table tr:last-child td { border-bottom: none; }
+.coverage-table .label { font-weight: 500; color: var(--ink); }
+.coverage-table .value { color: var(--ink-mid); }
+.coverage-table .status { white-space: nowrap; }
+
+/* GAP ITEMS */
+.gap-item {
+  background: #fdf8f8;
+  border: 1px solid #f0dada;
+  border-left: 4px solid var(--red-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 20px; margin-bottom: 12px;
+}
+.gap-item:last-child { margin-bottom: 0; }
+.gap-item-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.gap-item-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+.gap-item-impact { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--red-soft); }
+
+/* SAVINGS ITEMS */
+.savings-item {
+  background: var(--gold-light);
+  border: 1px solid var(--gold-mid);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 20px; margin-bottom: 12px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+}
+.savings-item:last-child { margin-bottom: 0; }
+.savings-item-left { flex: 1; }
+.savings-item-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.savings-item-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+.savings-amount { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
+
+/* QUESTIONS */
+.question-item {
+  background: var(--teal-light);
+  border: 1px solid var(--teal-mid);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px; margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.question-item:last-child { margin-bottom: 0; }
+.q-num {
+  width: 24px; height: 24px; background: var(--teal); color: var(--white);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+.q-text { font-size: 14px; color: var(--ink); line-height: 1.55; font-style: italic; }
+
+/* EXCLUSIONS */
+.exclusion-item { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; }
+.exclusion-item:last-child { border-bottom: none; }
+.excl-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.excl-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.excl-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+
+/* EXECUTIVE SUMMARY */
+.exec-summary { background: var(--ink); border-radius: var(--radius); padding: 36px 40px; margin: 0; }
+.exec-summary h3 { color: var(--white); margin-bottom: 20px; }
+.exec-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.exec-row:last-child { margin-bottom: 0; }
+.exec-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+.dot-red { background: #f08080; }
+.dot-gold { background: #f0d090; }
+.dot-teal { background: #5ecfbf; }
+.exec-text { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.55; }
+
+/* CTA BANNER */
+.report-cta-banner {
+  background: var(--teal);
+  padding: 48px 40px; text-align: center;
+  margin-top: 0;
+}
+.report-cta-banner h2 { color: var(--white); margin-bottom: 12px; }
+.report-cta-banner p { color: rgba(255,255,255,0.75); max-width: 480px; margin: 0 auto 28px; }
+
+@media (max-width: 700px) {
+  .summary-strip { grid-template-columns: 1fr 1fr; }
+  .report-topbar { flex-direction: column; gap: 20px; }
+  .report-wrap { padding: 0 16px 60px; }
+  .report-section, .report-topbar { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body data-page="sample-report">
+<div id="nav-placeholder"></div>
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="sample-hero">
+    <div class="sample-hero-inner">
+      <div>
+        <div class="sample-label">📄 Sample Report</div>
+        <h1>What your review<br>looks like</h1>
+        <p>This is a real example of an AI-nsurance auto policy review. Every section below is part of what you receive — in plain English, actionable, and yours to keep.</p>
+      </div>
+      <a class="btn-primary" href="/pages/get-my-review.html" style="font-size:16px;flex-shrink:0;">Get My Own Review →</a>
+    </div>
+  </div>
+
+  <!-- REPORT DOCUMENT -->
+  <div class="report-wrap">
+
+    <!-- DISCLAIMER BANNER -->
+    <div style="background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 20px;margin-bottom:28px;font-size:13px;color:var(--ink-mid);text-align:center;">
+      📋 <strong>Sample report only.</strong> This demonstrates what a real review looks like. Names, policy numbers, and figures are illustrative.
+    </div>
+
+    <div class="report-doc">
+
+      <!-- TOP BAR -->
+      <div class="report-topbar">
+        <div class="report-topbar-left">
+          <h2>AI-nsurance Coverage Review</h2>
+          <p>Auto Insurance · Sample Policy · Prepared June 2026</p>
+        </div>
+        <div class="report-score-badge">
+          <div class="report-score-number">62</div>
+          <div class="report-score-label">Coverage Score</div>
+        </div>
+      </div>
+
+      <!-- SUMMARY STRIP -->
+      <div class="summary-strip">
+        <div class="summary-cell">
+          <div class="summary-cell-label">Policy Type</div>
+          <div class="summary-cell-value">Auto</div>
+          <div class="summary-cell-sub">Personal · 2 vehicles</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-label">Gaps Found</div>
+          <div class="summary-cell-value" style="color:var(--red-soft);">3</div>
+          <div class="summary-cell-sub">Requires attention</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-label">Savings Found</div>
+          <div class="summary-cell-value" style="color:var(--gold);">$620/yr</div>
+          <div class="summary-cell-sub">Estimated annual</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-label">Questions for Agent</div>
+          <div class="summary-cell-value">5</div>
+          <div class="summary-cell-sub">Discussion guide included</div>
+        </div>
+      </div>
+
+      <!-- COVERAGE SUMMARY -->
+      <div class="report-section">
+        <div class="report-section-header">
+          <div class="report-section-title">Coverage Summary</div>
+          <div class="section-tag tag-info">2 Vehicles Reviewed</div>
+        </div>
+        <table class="coverage-table">
+          <thead>
+            <tr>
+              <th>Coverage Type</th>
+              <th>Vehicle 1 (2021 Honda CR-V)</th>
+              <th>Vehicle 2 (2019 Toyota Camry)</th>
+              <th class="status">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">Bodily Injury Liability</td>
+              <td class="value">$100,000 / $300,000</td>
+              <td class="value">$100,000 / $300,000</td>
+              <td class="status"><span class="section-tag tag-ok">Adequate</span></td>
+            </tr>
+            <tr>
+              <td class="label">Property Damage Liability</td>
+              <td class="value">$100,000</td>
+              <td class="value">$100,000</td>
+              <td class="status"><span class="section-tag tag-ok">Adequate</span></td>
+            </tr>
+            <tr>
+              <td class="label">Uninsured Motorist</td>
+              <td class="value">$50,000 / $100,000</td>
+              <td class="value">Not included</td>
+              <td class="status"><span class="section-tag tag-attention">Gap Found</span></td>
+            </tr>
+            <tr>
+              <td class="label">Medical Payments (MedPay)</td>
+              <td class="value">$5,000</td>
+              <td class="value">Not included</td>
+              <td class="status"><span class="section-tag tag-attention">Gap Found</span></td>
+            </tr>
+            <tr>
+              <td class="label">Comprehensive</td>
+              <td class="value">$500 deductible</td>
+              <td class="value">$500 deductible</td>
+              <td class="status"><span class="section-tag tag-ok">Adequate</span></td>
+            </tr>
+            <tr>
+              <td class="label">Collision</td>
+              <td class="value">$500 deductible</td>
+              <td class="value">$1,000 deductible</td>
+              <td class="status"><span class="section-tag tag-ok">Adequate</span></td>
+            </tr>
+            <tr>
+              <td class="label">Rental Reimbursement</td>
+              <td class="value">$30/day · $900 max</td>
+              <td class="value">Not included</td>
+              <td class="status"><span class="section-tag tag-savings">Duplicate?</span></td>
+            </tr>
+            <tr>
+              <td class="label">Roadside Assistance</td>
+              <td class="value">Included</td>
+              <td class="value">Included</td>
+              <td class="status"><span class="section-tag tag-savings">Duplicate?</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- GAPS -->
+      <div class="report-section">
+        <div class="report-section-header">
+          <div class="report-section-title">Coverage Gaps</div>
+          <div class="section-tag tag-attention">3 Issues Found</div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-item-title">Uninsured Motorist Coverage Missing on Vehicle 2</div>
+          <div class="gap-item-desc">Your 2019 Toyota Camry has no uninsured motorist coverage. In California, approximately 1 in 8 drivers is uninsured. If an uninsured driver hits your Camry, you have no coverage for your own injuries or lost wages through your auto policy alone.</div>
+          <div class="gap-item-impact">⚠ High exposure — affects medical and wage coverage after an accident</div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-item-title">No Medical Payments Coverage on Vehicle 2</div>
+          <div class="gap-item-desc">MedPay covers medical expenses for you and your passengers regardless of fault. Without it on your Camry, out-of-pocket medical costs from any accident fall entirely on your health insurance — which may involve deductibles, copays, and network restrictions.</div>
+          <div class="gap-item-impact">⚠ Moderate exposure — creates out-of-pocket medical risk after any accident</div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-item-title">Liability Limits May Be Insufficient Given Your Asset Profile</div>
+          <div class="gap-item-desc">Your $300,000 combined single limit on bodily injury is the policy minimum for most carriers, but personal injury lawsuits regularly exceed this. Without an umbrella policy on top of your auto coverage, a serious accident could expose assets beyond your policy limits.</div>
+          <div class="gap-item-impact">⚠ Significant exposure for homeowners or those with investments/savings</div>
+        </div>
+      </div>
+
+      <!-- SAVINGS -->
+      <div class="report-section">
+        <div class="report-section-header">
+          <div class="report-section-title">Savings Opportunities</div>
+          <div class="section-tag tag-savings">Est. $620/yr</div>
+        </div>
+        <div class="savings-item">
+          <div class="savings-item-left">
+            <div class="savings-item-title">Duplicate Roadside Assistance</div>
+            <div class="savings-item-desc">You are paying for roadside assistance through your auto policy. This same coverage is included in your AAA membership and as a benefit on your Chase Sapphire card. Removing it from both vehicles could reduce your premium.</div>
+          </div>
+          <div class="savings-amount">~$180/yr</div>
+        </div>
+        <div class="savings-item">
+          <div class="savings-item-left">
+            <div class="savings-item-title">Multi-Policy Bundle Not Applied</div>
+            <div class="savings-item-desc">Your home and auto policies are with different carriers. Most major carriers offer 8–15% discounts for bundling both policies. At your current premium level, this represents meaningful annual savings.</div>
+          </div>
+          <div class="savings-amount">~$340/yr</div>
+        </div>
+        <div class="savings-item">
+          <div class="savings-item-left">
+            <div class="savings-item-title">Good Driver Discount Not Confirmed</div>
+            <div class="savings-item-desc">Your policy does not show an applied good driver discount, despite no accidents or violations in the past 5 years. Confirm with your agent whether this discount is already applied or needs to be added.</div>
+          </div>
+          <div class="savings-amount">~$100/yr</div>
+        </div>
+      </div>
+
+      <!-- EXCLUSIONS -->
+      <div class="report-section">
+        <div class="report-section-header">
+          <div class="report-section-title">Key Exclusions to Know</div>
+          <div class="section-tag tag-info">4 Found</div>
+        </div>
+        <div class="exclusion-item">
+          <div class="excl-icon">🚫</div>
+          <div><div class="excl-title">Rideshare / Delivery Use</div><div class="excl-desc">Your personal auto policy does not cover you while driving for Uber, Lyft, DoorDash, or any other rideshare or delivery platform — even during the app-on, no-passenger phase.</div></div>
+        </div>
+        <div class="exclusion-item">
+          <div class="excl-icon">🚫</div>
+          <div><div class="excl-title">Business Use of Vehicle</div><div class="excl-desc">Regularly using your vehicle for work — sales calls, client visits, transporting work equipment — may void coverage in an accident. Personal policies exclude commercial use.</div></div>
+        </div>
+        <div class="exclusion-item">
+          <div class="excl-icon">🚫</div>
+          <div><div class="excl-title">Mechanical Breakdown</div><div class="excl-desc">Comprehensive coverage covers sudden events (storms, theft, animals) but does not cover mechanical failure or normal wear and tear. Engine failure is not a covered loss.</div></div>
+        </div>
+        <div class="exclusion-item">
+          <div class="excl-icon">🚫</div>
+          <div><div class="excl-title">Personal Property in Vehicle</div><div class="excl-desc">Laptops, cameras, and other personal items stolen from your car are not covered under auto insurance. These fall under your homeowners or renters policy (with applicable deductibles).</div></div>
+        </div>
+      </div>
+
+      <!-- AGENT QUESTIONS -->
+      <div class="report-section">
+        <div class="report-section-header">
+          <div class="report-section-title">Questions to Ask Your Agent</div>
+          <div class="section-tag tag-ok">5 Prepared</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="q-text">"Can you add uninsured motorist coverage to my 2019 Camry, and what would that cost? I want the same limits as my CR-V."</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="q-text">"I have AAA and a credit card with roadside coverage — is there a way to remove the roadside assistance from my policy to reduce the premium?"</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="q-text">"What discount would I receive if I moved my home insurance to you as a bundle? Can you quote both policies together?"</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="q-text">"Is my good driver discount currently applied to both vehicles? I've had no accidents or violations in over five years."</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">5</div>
+          <div class="q-text">"Given my asset level, would you recommend increasing my liability limits or adding an umbrella policy? What would a $1 million umbrella cost?"</div>
+        </div>
+      </div>
+
+      <!-- EXECUTIVE SUMMARY -->
+      <div class="report-section">
+        <div class="report-section-header">
+          <div class="report-section-title">Executive Summary</div>
+        </div>
+        <div class="exec-summary">
+          <h3>Three Things to Do This Week</h3>
+          <div class="exec-row"><div class="exec-dot dot-red"></div><div class="exec-text"><strong style="color:white;">Add uninsured motorist + MedPay to your Camry.</strong> You have a real gap that could cost you significantly after any accident involving an uninsured driver. This is the most important fix.</div></div>
+          <div class="exec-row"><div class="exec-dot dot-gold"></div><div class="exec-text"><strong style="color:white;">Ask about bundling your home and auto.</strong> At your premium level, a bundle discount likely saves $300+ per year. One call to your current home carrier is worth making.</div></div>
+          <div class="exec-row"><div class="exec-dot dot-teal"></div><div class="exec-text"><strong style="color:white;">Discuss an umbrella policy.</strong> Your current liability limits may leave you exposed given your asset profile. A $1M umbrella typically costs $150–300/year and provides significant additional protection.</div></div>
+        </div>
+      </div>
+
+    </div><!-- end report-doc -->
+
+    <!-- INLINE CTA -->
+    <div style="background:var(--teal-dark);border-radius:var(--radius);padding:48px 40px;margin-top:40px;text-align:center;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#5ecfbf;margin-bottom:12px;">Ready to get your own?</div>
+      <h2 style="color:var(--white);margin-bottom:12px;">Get your personalized report</h2>
+      <p style="color:rgba(255,255,255,0.65);max-width:440px;margin:0 auto 28px;">Upload your auto policy and get a real review with your actual coverage details, real gaps, and real savings — not a sample.</p>
+      <a class="btn-primary" href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" style="font-size:17px;padding:18px 36px;">Get My Auto Review — $199 →</a>
+      <div style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.45);">🔒 Secure checkout via Stripe · Money-back guarantee</div>
+    </div>
+
+  </div><!-- end report-wrap -->
+
+  <div id="ribbon-placeholder"></div>
+</div>
+<div id="footer-placeholder"></div>
+<script src="/js/components.js"></script>
+</body>
+</html>

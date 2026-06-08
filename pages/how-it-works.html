@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — AI-nsurance</title>
+<meta name="description" content="Three simple steps from confused to confident. Upload your policies, receive your review, make informed decisions.">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.hiw-hero { background: var(--paper); padding: 80px 40px 60px; text-align: center; border-bottom: 1px solid var(--border); }
+.hiw-hero h1 { margin-bottom: 16px; }
+
+.process-step { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 100px; }
+.process-step.reverse { }
+.step-visual {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 40px; text-align: center; min-height: 260px;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+}
+.step-visual-icon { font-size: 64px; }
+.step-visual-label { font-size: 14px; color: var(--ink-light); }
+.step-num { font-family: 'DM Serif Display', serif; font-size: 72px; color: var(--teal-mid); line-height: 1; margin-bottom: -8px; }
+.step-content h3 { font-size: 28px; margin-bottom: 16px; }
+.step-content p { margin-bottom: 16px; }
+.step-content ul { list-style: none; }
+.step-content li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--ink-mid); margin-bottom: 8px; line-height: 1.55; }
+.step-content li::before { content: '→'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+
+@media (max-width: 900px) {
+  .process-step { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+</head>
+<body data-page="how-it-works">
+<div id="nav-placeholder"></div>
+<div class="page-wrap">
+
+  <div class="hiw-hero">
+    <div class="eyebrow">The Process</div>
+    <h1>From policies to clarity,<br>in three simple steps</h1>
+    <p style="max-width:520px;margin:0 auto;">Most people haven't really read their insurance policies since they signed them. We built a process that makes understanding them effortless.</p>
+  </div>
+
+  <div class="section">
+    <div>
+
+      <div class="process-step">
+        <div class="step-visual">
+          <div class="step-visual-icon">📤</div>
+          <div style="font-size:16px;font-weight:600;color:var(--ink);">Upload Your Documents</div>
+          <div class="step-visual-label">PDF, photo, or any format you have</div>
+        </div>
+        <div class="step-content">
+          <div class="step-num">01</div>
+          <h3>Upload your policies</h3>
+          <p>Drop in your home, auto, umbrella, renters, or life insurance policies. Don't have the PDF? A photo works. You don't need everything — start with whatever you have.</p>
+          <ul>
+            <li>Home, auto, umbrella, renters, life — all covered</li>
+            <li>PDF, image, or any readable format</li>
+            <li>Bank-level encryption — your documents are private</li>
+            <li>No account required to get started</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="process-step" style="flex-direction:row-reverse;">
+        <div class="step-content" style="order:2;">
+          <div class="step-num">02</div>
+          <h3>Receive your review</h3>
+          <p>Our analysis reads every line of your policy and looks for what most people miss: gaps, overlaps, outdated limits, exclusions buried in the fine print, and savings you haven't claimed.</p>
+          <ul>
+            <li>Coverage limits compared to current replacement costs</li>
+            <li>Gaps identified — what's exposed and unprotected</li>
+            <li>Duplicate coverage flagged across all policies</li>
+            <li>Exclusions explained in plain language</li>
+            <li>Discounts and savings opportunities surfaced</li>
+          </ul>
+        </div>
+        <div class="step-visual" style="order:1;">
+          <div class="step-visual-icon">⚡</div>
+          <div style="font-size:16px;font-weight:600;color:var(--ink);">Analysis Running</div>
+          <div class="step-visual-label">Usually complete in under 5 minutes</div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-visual">
+          <div class="step-visual-icon">✅</div>
+          <div style="font-size:16px;font-weight:600;color:var(--ink);">Your Personalized Report</div>
+          <div class="step-visual-label">Clear, actionable, and yours to keep</div>
+        </div>
+        <div class="step-content">
+          <div class="step-num">03</div>
+          <h3>Make informed decisions</h3>
+          <p>You receive a clear, actionable report that tells you exactly where you stand — while you can still do something about it.</p>
+          <ul>
+            <li>Executive summary — one page, all key findings</li>
+            <li>Risk score — overall coverage health at a glance</li>
+            <li>Agent discussion guide — specific questions to bring up</li>
+            <li>Savings opportunities ranked by dollar value</li>
+            <li>PDF export to share with your agent or advisor</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="background:var(--paper);padding:80px 40px;text-align:center;border-top:1px solid var(--border);">
+    <h2>Ready to know exactly where you stand?</h2>
+    <p class="section-subtitle" style="margin:12px auto 32px;">Start with the free Insurance Mistake Finder — no account, no commitment, no jargon.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn-primary" href="/pages/get-my-review.html" style="font-size:16px;">Find My Coverage Gaps — Free →</a>
+      <a class="btn-secondary" href="/pages/sample-report.html">See Sample Report</a>
+    </div>
+  </div>
+
+  <div id="ribbon-placeholder"></div>
+</div>
+<div id="footer-placeholder"></div>
+<script src="/js/components.js"></script>
+</body>
+</html>

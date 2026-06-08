@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — AI-nsurance</title>
+<meta name="description" content="No conflicts. No commissions. No jargon. We're on your side.">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.about-hero { background: var(--paper); padding: 80px 40px 60px; border-bottom: 1px solid var(--border); }
+.about-inner { max-width: 780px; }
+.manifesto {
+  background: var(--white); border-left: 4px solid var(--teal);
+  padding: 32px 36px; margin: 48px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.manifesto p { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1.55; color: var(--ink); font-style: italic; }
+.mission-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+.mission-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: box-shadow 0.2s; }
+.mission-card:hover { box-shadow: var(--shadow); }
+.mission-card-icon { font-size: 32px; margin-bottom: 16px; }
+.giving-section { background: var(--ink); padding: 80px 40px; }
+.giving-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.giving-visual { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 40px; text-align: center; }
+.giving-pct { font-family: 'DM Serif Display', serif; font-size: 80px; color: #5ecfbf; line-height: 1; }
+@media (max-width: 900px) {
+  .mission-grid { grid-template-columns: 1fr; }
+  .giving-inner { grid-template-columns: 1fr; gap: 40px; }
+}
+</style>
+</head>
+<body data-page="about">
+<div id="nav-placeholder"></div>
+<div class="page-wrap">
+
+  <div class="about-hero">
+    <div class="section-sm" style="padding-top:0;">
+      <div class="about-inner">
+        <div class="eyebrow">Our Story</div>
+        <h1>We built this because<br>we've been there too.</h1>
+        <p>Most people spend more time choosing a new phone than reviewing the policies protecting their home, car, and family. Not because they don't care — because insurance policies are intentionally hard to understand.</p>
+        <p style="margin-top:12px;">We decided to fix that.</p>
+        <div class="manifesto">
+          <p>"People don't want AI insurance analysis. They want confidence that they're not making an expensive insurance mistake. That's what we deliver."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow">What We Believe</div>
+    <h2>We're on your side.</h2>
+    <p class="section-subtitle" style="margin-top:12px;">We have no relationship with any insurance carrier. No commissions. No conflicts. Our only job is to help you understand what you have and make better decisions.</p>
+    <div class="mission-grid">
+      <div class="mission-card"><div class="mission-card-icon">🔍</div><h4>Radical Transparency</h4><p style="font-size:14px;margin-top:8px;">We tell you what's in your policy, including the parts that don't benefit you. No spin, no softening.</p></div>
+      <div class="mission-card"><div class="mission-card-icon">⚖️</div><h4>No Conflicts of Interest</h4><p style="font-size:14px;margin-top:8px;">We're paid by you, not by any insurer or agent. Our recommendations exist solely to help you.</p></div>
+      <div class="mission-card"><div class="mission-card-icon">🤝</div><h4>Plain Language, Always</h4><p style="font-size:14px;margin-top:8px;">Insurance jargon exists to protect the industry. We translate everything into language that actually makes sense.</p></div>
+      <div class="mission-card"><div class="mission-card-icon">💡</div><h4>Empowerment Over Dependence</h4><p style="font-size:14px;margin-top:8px;">Our goal is to make you a more informed consumer — not someone who needs us for every decision.</p></div>
+      <div class="mission-card"><div class="mission-card-icon">🛡️</div><h4>Privacy First</h4><p style="font-size:14px;margin-top:8px;">Your policy documents are private and treated with the same care as financial records. We never sell your data.</p></div>
+      <div class="mission-card"><div class="mission-card-icon">❤️</div><h4>A Business with a Mission</h4><p style="font-size:14px;margin-top:8px;">1% of every subscription funds rare disease research. What you pay for clarity helps fund a cure.</p></div>
+    </div>
+  </div>
+
+  <!-- GIVING SECTION -->
+  <div class="giving-section" id="giving">
+    <div class="giving-inner">
+      <div>
+        <div class="eyebrow" style="color:#5ecfbf;">Our Giving Commitment</div>
+        <h2 style="color:var(--white);">Clarity that funds a cure.</h2>
+        <p style="color:rgba(255,255,255,0.65);margin-top:16px;">We pledge 1% of every subscription to a family foundation supporting research into rare mitochondrial diseases — conditions so rare they affect only a handful of people in the world.</p>
+        <p style="color:rgba(255,255,255,0.65);margin-top:12px;">The foundation was established by one of our founding partners after a family member was diagnosed. It operates under an established 501(c)(3) umbrella focused on rare genetic diseases.</p>
+        <p style="color:rgba(255,255,255,0.65);margin-top:12px;">When you protect your family with AI-nsurance, you're also helping protect another family too.</p>
+        <div style="margin-top:32px;">
+          <a class="btn-primary" href="/pages/get-my-review.html">Start Your Review →</a>
+        </div>
+      </div>
+      <div class="giving-visual">
+        <div class="giving-pct">1%</div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.65);margin-top:8px;max-width:260px;margin-left:auto;margin-right:auto;line-height:1.6;">of every subscription goes directly to rare disease research through our partner foundation</div>
+        <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:6px;">GIVING MODEL</div>
+          <div style="font-size:15px;color:rgba(255,255,255,0.7);">Pledge 1% Framework</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:4px;">Established 501(c)(3) recipient</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ribbon-placeholder"></div>
+</div>
+<div id="footer-placeholder"></div>
+<script src="/js/components.js"></script>
+</body>
+</html>

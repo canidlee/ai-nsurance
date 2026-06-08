@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get My Review — AI-nsurance</title>
+<meta name="description" content="Start your insurance review. Upload your policies and get a clear, actionable report in minutes.">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.review-hero { background: var(--ink); padding: 100px 40px 80px; text-align: center; }
+.review-hero h1 { color: var(--white); margin-bottom: 20px; }
+.review-hero p { color: rgba(255,255,255,0.65); max-width: 520px; margin: 0 auto; }
+.review-badge { display: inline-block; background: var(--teal); color: var(--white); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px; }
+
+.options-section { padding: 80px 40px; max-width: 900px; margin: 0 auto; }
+.option-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.option-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.option-card.featured { border: 2px solid var(--teal); }
+
+.option-header {
+  padding: 32px 36px 24px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 20px; align-items: start;
+  border-bottom: 1px solid var(--border);
+}
+.option-tier { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 4px; }
+.option-name { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 8px; }
+.option-tagline { font-size: 15px; color: var(--ink-mid); }
+.option-price-block { text-align: right; }
+.option-price { font-size: 42px; font-weight: 700; color: var(--teal-dark); line-height: 1; }
+.option-price-note { font-size: 13px; color: var(--ink-light); margin-top: 4px; }
+.popular-badge { display: inline-block; background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; margin-bottom: 8px; }
+
+.option-body { padding: 28px 36px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.option-features { list-style: none; }
+.option-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-mid); margin-bottom: 10px; line-height: 1.5; }
+.feat-check { width: 18px; height: 18px; background: var(--teal-light); color: var(--teal); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+.option-cta { flex-shrink: 0; }
+
+/* Free finder form */
+.finder-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 40px;
+  max-width: 560px; margin: 0 auto;
+}
+.form-field { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-mid); margin-bottom: 6px; }
+.form-input {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--border-mid);
+  border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif;
+  font-size: 15px; color: var(--ink); background: var(--cream);
+  transition: border-color 0.2s; outline: none;
+}
+.form-input:focus { border-color: var(--teal); background: var(--white); }
+.form-submit {
+  width: 100%; background: var(--teal); color: var(--white);
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
+  padding: 14px; border-radius: var(--radius-sm); border: none;
+  cursor: pointer; margin-top: 8px; transition: background 0.2s;
+}
+.form-submit:hover { background: var(--teal-dark); }
+.form-disclaimer { font-size: 12px; color: var(--ink-light); margin-top: 12px; text-align: center; }
+
+.guarantee-strip {
+  background: var(--teal-light); border: 1px solid var(--teal-mid);
+  border-radius: var(--radius); padding: 24px 32px; margin-top: 40px;
+  display: flex; align-items: center; gap: 20px;
+}
+.guarantee-strip .icon { font-size: 32px; flex-shrink: 0; }
+.guarantee-title { font-size: 16px; font-weight: 600; color: var(--teal-dark); margin-bottom: 4px; }
+.guarantee-text { font-size: 14px; color: var(--ink-mid); }
+
+@media (max-width: 700px) {
+  .option-header, .option-body { grid-template-columns: 1fr; }
+  .option-price-block { text-align: left; }
+}
+</style>
+</head>
+<body data-page="get-review">
+<div id="nav-placeholder"></div>
+<div class="page-wrap">
+
+  <div class="review-hero">
+    <div class="review-badge">Start Your Review</div>
+    <h1>Know exactly what<br>your insurance covers.</h1>
+    <p>Choose your review below, or start with the free Insurance Mistake Finder — no account required.</p>
+  </div>
+
+  <div class="options-section">
+
+    <!-- FREE OPTION -->
+    <div style="margin-bottom:48px;">
+      <div class="eyebrow" style="margin-bottom:24px;">Start Here — Free</div>
+      <div class="finder-card">
+        <h3 style="margin-bottom:8px;">Free Insurance Mistake Finder</h3>
+        <p style="font-size:14px;margin-bottom:24px;">Takes 2 minutes. Find out whether you may have coverage gaps, duplicate coverage, outdated limits, or missed savings.</p>
+        <div class="form-field">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" placeholder="Your first name">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="your@email.com">
+        </div>
+        <div class="form-field">
+          <label class="form-label">What's your biggest concern?</label>
+          <select class="form-input" style="cursor:pointer;">
+            <option value="">Select one...</option>
+            <option>I'm not sure I have enough coverage</option>
+            <option>I want to find savings opportunities</option>
+            <option>Something big changed (home, car, family)</option>
+            <option>I just want to understand what I have</option>
+          </select>
+        </div>
+        <button class="form-submit">Find My Coverage Gaps →</button>
+        <div class="form-disclaimer">No spam. Unsubscribe anytime. Your information is never sold or shared.</div>
+      </div>
+    </div>
+
+    <!-- PAID OPTION -->
+    <div class="eyebrow" style="margin-bottom:24px;">Full Review</div>
+    <div class="option-card featured">
+      <div class="option-header">
+        <div>
+          <div class="option-tier">Insurance Audit</div>
+          <div class="option-name">Complete Coverage Review</div>
+          <div class="option-tagline">The full picture. Every policy analyzed, every gap found, every savings opportunity surfaced.</div>
+        </div>
+        <div class="option-price-block">
+          <div class="popular-badge">⭐ Most Popular</div>
+          <div class="option-price">$199</div>
+          <div class="option-price-note">One-time · PDF report included</div>
+        </div>
+      </div>
+      <div class="option-body">
+        <ul class="option-features">
+          <li><div class="feat-check">✓</div>Coverage summary in plain English</li>
+          <li><div class="feat-check">✓</div>Gap analysis — what's exposed and unprotected</li>
+          <li><div class="feat-check">✓</div>Cross-policy duplicate coverage review</li>
+          <li><div class="feat-check">✓</div>Risk scoring — overall coverage health</li>
+          <li><div class="feat-check">✓</div>Savings opportunities ranked by dollar value</li>
+          <li><div class="feat-check">✓</div>Exclusions explained in plain language</li>
+          <li><div class="feat-check">✓</div>Agent discussion guide with specific questions</li>
+          <li><div class="feat-check">✓</div>Executive summary — one-page overview</li>
+        </ul>
+        <div class="option-cta">
+          <!-- STRIPE LINK WIRED IN -->
+          <a class="btn-primary" href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" style="font-size:16px;padding:16px 28px;white-space:nowrap;">
+            Get My Audit →
+          </a>
+          <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--ink-light);">
+            🔒 Secure checkout via Stripe
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GUARANTEE -->
+    <div class="guarantee-strip">
+      <div class="icon">🛡️</div>
+      <div>
+        <div class="guarantee-title">Our Confidence Guarantee</div>
+        <div class="guarantee-text">If your review doesn't uncover at least one thing you didn't know about your coverage — a gap, a savings opportunity, or something worth discussing with your agent — we'll give you a full refund. No questions.</div>
+      </div>
+    </div>
+
+    <!-- SAMPLE REPORT LINK -->
+    <div style="text-align:center;margin-top:48px;padding:32px;background:var(--paper);border-radius:var(--radius);border:1px solid var(--border);">
+      <p style="font-size:17px;font-weight:500;margin-bottom:8px;">Not sure what you'll get?</p>
+      <p style="font-size:15px;color:var(--ink-mid);margin-bottom:20px;">See a real example of what an AI-nsurance report looks like.</p>
+      <a class="btn-ghost" href="/pages/sample-report.html">View Sample Auto Report →</a>
+    </div>
+
+  </div>
+
+  <div id="ribbon-placeholder"></div>
+</div>
+<div id="footer-placeholder"></div>
+<script src="/js/components.js"></script>
+</body>
+</html>

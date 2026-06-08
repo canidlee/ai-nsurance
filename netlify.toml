@@ -1,9 +1,22 @@
-[build]
-  publish = "."
-  functions = "netlify/functions"
+[[redirects]]
+  from = "/how-it-works"
+  to = "/pages/how-it-works.html"
+  status = 200
 
-[functions]
-  node_bundler = "esbuild"
+[[redirects]]
+  from = "/sample-report"
+  to = "/pages/sample-report.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/pages/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/get-my-review"
+  to = "/pages/get-my-review.html"
+  status = 200
 
 [[headers]]
   for = "/*"
@@ -11,8 +24,3 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-
-[[headers]]
-  for = "/netlify/functions/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "https://ai-nsurance.com"
