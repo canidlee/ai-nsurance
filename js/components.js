@@ -7,7 +7,7 @@ function renderNav(activePage) {
       <a class="nav-link${activePage==='how-it-works'?' active':''}" href="/pages/how-it-works.html">How It Works</a>
       <a class="nav-link${activePage==='sample-report'?' active':''}" href="/pages/sample-report.html">Sample Report</a>
       <a class="nav-link${activePage==='about'?' active':''}" href="/pages/about.html">About</a>
-      <a class="nav-cta" href="/pages/get-my-review.html">Find My Coverage Gaps →</a>
+      <a class="nav-cta" href="/pages/get-my-review.html#free-finder">Find My Coverage Gaps →</a>
     </div>
   </nav>`;
 }
@@ -48,7 +48,7 @@ function renderFooter() {
       </div>
       <div class="footer-bottom">
         <div class="footer-copy">© 2026 AI-nsurance. All rights reserved.</div>
-        <div class="footer-giving-note">🤝 <span>1% of revenue</span> supports rare disease research.</div>
+        <div class="footer-giving-note">🤝 <span>1% of revenue</span> goes to Miracles for Mighty Milo.</div>
       </div>
     </div>
   </footer>`;
@@ -58,7 +58,7 @@ function renderFooter() {
 function renderGivingRibbon() {
   return `
   <div class="giving-ribbon">
-    <p>🤝 <strong>1% of every subscription</strong> goes to rare disease research through our partner foundation. <a href="/pages/about.html#giving">Learn about our mission →</a></p>
+    <p>🤝 <strong>1% of every subscription</strong> goes to <strong>Miracles for Mighty Milo</strong> — funding a cure for a 7-year-old with an ultra-rare disease. <a href="/pages/about.html#giving">Meet Milo →</a></p>
   </div>`;
 }
 
