@@ -318,6 +318,8 @@
       <div id="full-summary" style="font-size:0.9rem;color:var(--ink-2);line-height:1.75;white-space:pre-wrap"></div>
     </div>
 
+    <p style="font-size:0.75rem;color:var(--ink-3);line-height:1.6;margin-top:1.25rem;">This report is generated through automated analysis of the document you provided, on a best-efforts basis. It is educational information to help you have a better conversation with your insurance professional — it is not licensed insurance, legal, or financial advice, and it may not capture every detail of your policy. Always confirm coverage details directly with your carrier or agent before making changes.</p>
+
     <div class="report-actions">
       <button class="btn-secondary" onclick="window.print()">🖨 Print report</button>
       <button class="btn-secondary" onclick="copyReport()">📋 Copy to clipboard</button>
@@ -328,21 +330,27 @@
 </div>
 
 <script>
-// ── ACCESS GATE ──────────────────────────────────────────
-// Valid codes (case-insensitive). Add more here as needed.
-const VALID_CODES = ['TEST', 'FOUNDINGFRIEND'];
+// ── ACCESS GATE (server-validated) ──────────────────────
+// Codes are validated by the serverless function, never in the browser.
+async function verifyCode(code) {
+  try {
+    const res = await fetch('/.netlify/functions/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify', code })
+    });
+    return res.ok;
+  } catch { return false; }
+}
 
-function redeemCode() {
+async function redeemCode() {
   const input = document.getElementById('code-input').value.trim().toUpperCase();
   const errorEl = document.getElementById('code-error');
-
-  if (!input) {
-    errorEl.textContent = 'Please enter your access code.';
-    return;
-  }
-
-  if (VALID_CODES.includes(input)) {
+  if (!input) { errorEl.textContent = 'Please enter your access code.'; return; }
+  errorEl.textContent = 'Checking…';
+  if (await verifyCode(input)) {
     sessionStorage.setItem('audit_access', input);
+    errorEl.textContent = '';
     unlockAudit();
   } else {
     errorEl.textContent = 'That code isn\'t valid. Check for typos or get access below.';
@@ -356,15 +364,11 @@ function unlockAudit() {
 }
 
 // Check on page load — persists for the session
-(function checkAccess() {
-  // Also check URL param e.g. ?code=TEST (Stripe redirect can pass this)
+(async function checkAccess() {
   const urlCode = new URLSearchParams(window.location.search).get('code');
-  if (urlCode && VALID_CODES.includes(urlCode.toUpperCase())) {
-    sessionStorage.setItem('audit_access', urlCode.toUpperCase());
-  }
-
-  const stored = sessionStorage.getItem('audit_access');
-  if (stored && VALID_CODES.includes(stored)) {
+  const candidate = (urlCode || sessionStorage.getItem('audit_access') || '').toUpperCase();
+  if (candidate && await verifyCode(candidate)) {
+    sessionStorage.setItem('audit_access', candidate);
     unlockAudit();
   }
 })();
@@ -373,49 +377,7 @@ function unlockAudit() {
 let uploadedFile = null;
 let auditReport = {};
 
-const AUDIT_PROMPT = `You are an expert P&C insurance policy auditor with 20 years of experience. You have been given a declarations page (or description of one) to audit.
-
-Your job is to analyze this policy and produce a structured audit report. Be specific, practical, and honest. If you cannot determine something from the document, say so clearly rather than guessing.
-
-Analyze the following and return a JSON response with this exact structure:
-
-{
-  "overall_score": <number 0-100>,
-  "issues_count": <number>,
-  "discounts_count": <number>,
-  "estimated_savings": "<string like '$200-400/yr'>",
-  "carrier_name": "<carrier name from document>",
-  "carrier_score": <number 0-100>,
-  "carrier_verdict": "<2-3 sentence honest assessment of this carrier>",
-  "findings": [
-    {
-      "severity": "critical|warning|good",
-      "title": "<short title>",
-      "description": "<2-3 sentence explanation of what you found and why it matters>",
-      "action": "<specific action the policyholder should take>"
-    }
-  ],
-  "discounts": [
-    {
-      "name": "<discount name>",
-      "savings": "<estimated savings range>"
-    }
-  ],
-  "full_summary": "<3-5 paragraph written summary of the audit findings, written directly to the policyholder in plain English. Include the most important things to do this week, this month, and at next renewal.>"
-}
-
-Audit criteria to check (apply what's visible in the document):
-COVERAGE LIMITS: Are liability limits adequate (100/300/100 minimum recommended)? Are UM/UIM limits matching liability? Is dwelling coverage sufficient for current rebuild costs? Is personal property at replacement cost or ACV?
-GAPS: Missing umbrella liability? No UM/UIM? ACV instead of RCV? No extended replacement cost? High deductibles relative to assets?
-CARRIER QUALITY: Based on the carrier name, assess their known quality (JD Power rankings, NAIC complaint history, financial strength). Be honest — if it's Farmers, say so. If it's USAA or Amica, say so.
-DISCOUNTS: Based on visible policy details, what discounts should this person ask about? (bundling, loyalty tenure, claims-free, paperless, autopay, safety features)
-RED FLAGS: Anything unusual, concerning, or that suggests the policy was not structured in the policyholder's best interest?
-
-The policyholder's state: {STATE}
-Policy type: {POLICY_TYPE}
-Specific concern: {CONCERN}
-
-Return ONLY the JSON. No preamble, no markdown code blocks, just the raw JSON object.`;
+// Audit prompt now lives server-side in netlify/functions/audit.js
 
 function handleFile(input) {
   const file = input.files[0];
@@ -485,31 +447,17 @@ async function startAudit() {
     const isPDF = uploadedFile.type === 'application/pdf';
     const mediaType = isPDF ? 'application/pdf' : uploadedFile.type;
 
-    const prompt = AUDIT_PROMPT
-      .replace('{STATE}', state)
-      .replace('{POLICY_TYPE}', policyType)
-      .replace('{CONCERN}', concern);
-
-    const messages = [{
-      role: 'user',
-      content: [
-        {
-          type: isPDF ? 'document' : 'image',
-          source: { type: 'base64', media_type: mediaType, data: base64 }
-        },
-        { type: 'text', text: prompt }
-      ]
-    }];
-
     const response = await fetch('/.netlify/functions/audit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        params: {
-          model: 'claude-sonnet-4-6',
-          max_tokens: 2000,
-          messages
-        }
+        code: sessionStorage.getItem('audit_access') || '',
+        fileBase64: base64,
+        mediaType,
+        isPDF,
+        state,
+        policyType,
+        concern
       })
     });
 
@@ -522,15 +470,8 @@ async function startAudit() {
     }
 
     const data = await response.json();
-    const rawText = (data && data.content && Array.isArray(data.content) && data.content.find(b => b.type === 'text')?.text) || '';
-    if (!rawText) throw new Error('No response from AI. Please try again.');
-
-    let report;
-    try {
-      report = JSON.parse(rawText.replace(/```json|```/g, '').trim());
-    } catch(e) {
-      throw new Error('Could not parse audit report. Please try again.');
-    }
+    const report = data.report;
+    if (!report) throw new Error('No response from the analysis. Please try again.');
 
     auditReport = report;
     auditReport.email = email;

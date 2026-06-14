@@ -74,7 +74,7 @@
   <!-- HERO -->
   <div class="review-hero">
     <h1>Know exactly what<br>your insurance covers.</h1>
-    <p>Choose your review below — or start free with the Insurance Mistake Finder.</p>
+    <p>Three ways to finally stop wondering — or start free with the Coverage Checkup.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <a class="btn-primary" href="#paid-reviews" onclick="document.getElementById('paid-reviews').scrollIntoView({behavior:'smooth'});return false;">See Review Options →</a>
       <a class="btn-secondary" href="#free-finder" onclick="document.getElementById('free-finder').scrollIntoView({behavior:'smooth'});return false;" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);background:transparent;">Start Free ↓</a>
@@ -94,15 +94,23 @@
 
     <!-- PAID TIERS -->
     <div id="paid-reviews">
-      <div class="eyebrow" style="margin-bottom:24px;">Choose Your Review</div>
+      <div class="eyebrow" style="margin-bottom:12px;">Choose Your Review</div>
+      <div style="background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:28px;">
+        <div style="font-weight:600;margin-bottom:10px;font-size:15px;">Which one do I need? Each tier answers a different question:</div>
+        <div style="font-size:14px;color:var(--ink-mid);line-height:1.8;">
+          <strong>$9.97 — "Should I be worried?"</strong> A quick checkup on one policy.<br>
+          <strong>$39 — "What exactly needs fixing?"</strong> A complete read-through of one policy.<br>
+          <strong>$99 — "Is my whole household protected?"</strong> All your policies, reviewed together.
+        </div>
+      </div>
 
       <!-- TIER 1 — $9.97 -->
       <div class="tier-card">
         <div class="tier-header">
           <div>
-            <div class="tier-label">Tier 1</div>
+            <div class="tier-label">Tier 1 · The Quick Checkup</div>
             <div class="tier-name">Coverage Score</div>
-            <div class="tier-tagline">Upload one policy and get an instant score showing where you stand — in plain English.</div>
+            <div class="tier-tagline"><strong>Answers: "Should I be worried?"</strong> Upload one policy, get a 0–100 score and your top 3 issues. If your score is strong, you exhale and move on. If it isn't, you'll know exactly why — for less than lunch.</div>
           </div>
           <div>
             <div class="tier-price">$9.97</div>
@@ -128,9 +136,9 @@
       <div class="tier-card">
         <div class="tier-header">
           <div>
-            <div class="tier-label">Tier 2</div>
+            <div class="tier-label">Tier 2 · The Deep Read</div>
             <div class="tier-name">Policy Review</div>
-            <div class="tier-tagline">A full review of one policy — every gap, every exclusion, every savings opportunity surfaced.</div>
+            <div class="tier-tagline"><strong>Answers: "What exactly needs fixing — and how?"</strong> One policy, read cover to cover: every gap, every exclusion, every savings opportunity, with specific steps to fix each one. The score tells you <em>if</em>; this tells you <em>what and how</em>.</div>
           </div>
           <div>
             <div class="tier-price">$39</div>
@@ -159,9 +167,9 @@
         <div class="tier-badge">⭐ Most Popular</div>
         <div class="tier-header">
           <div>
-            <div class="tier-label">Tier 3</div>
+            <div class="tier-label">Tier 3 · The Household Review</div>
             <div class="tier-name">Insurance Audit</div>
-            <div class="tier-tagline">The complete picture. Multiple policies, full risk scoring, and a specific action plan to bring to your agent.</div>
+            <div class="tier-tagline"><strong>Answers: "Is my whole household actually protected?"</strong> Your auto, home, and umbrella policies reviewed <em>together</em> — because the most expensive gaps live between policies, where no single one covers you. Includes a priority action plan and your agent discussion guide.</div>
           </div>
           <div>
             <div class="tier-price">$99</div>
@@ -198,20 +206,20 @@
   <div class="free-section" id="free-finder">
     <div class="free-inner">
       <div class="eyebrow" style="text-align:center;margin-bottom:8px;">100% Free · No Account Required</div>
-      <h2 style="text-align:center;margin-bottom:8px;">Free Insurance Mistake Finder</h2>
-      <p style="text-align:center;margin-bottom:32px;font-size:15px;">Takes 2 minutes. Find out whether you may have coverage gaps, duplicate coverage, outdated limits, or missed savings.</p>
+      <h2 style="text-align:center;margin-bottom:8px;">Free Coverage Checkup</h2>
+      <p style="text-align:center;margin-bottom:32px;font-size:15px;">Takes 2 minutes, no account needed. An honest first look at whether your coverage still matches your life.</p>
       <div class="finder-card">
         <div class="form-field">
           <label class="form-label">First Name</label>
-          <input type="text" class="form-input" placeholder="Your first name">
+          <input type="text" class="form-input" id="checkup-name" placeholder="Your first name">
         </div>
         <div class="form-field">
           <label class="form-label">Email Address</label>
-          <input type="email" class="form-input" placeholder="your@email.com">
+          <input type="email" class="form-input" id="checkup-email" placeholder="your@email.com">
         </div>
         <div class="form-field">
           <label class="form-label">What's your biggest concern?</label>
-          <select class="form-input" style="cursor:pointer;">
+          <select class="form-input" id="checkup-concern" style="cursor:pointer;">
             <option value="">Select one...</option>
             <option>I'm not sure I have enough coverage</option>
             <option>I want to find savings opportunities</option>
@@ -219,7 +227,8 @@
             <option>I just want to understand what I have</option>
           </select>
         </div>
-        <button class="form-submit">Find My Coverage Gaps →</button>
+        <button class="form-submit" id="checkup-submit" onclick="submitCheckup()">Send My Free Checkup →</button>
+        <div id="checkup-msg" style="display:none;font-size:14px;text-align:center;margin-top:12px;padding:12px;border-radius:8px;"></div>
         <div class="form-disclaimer">No spam. Unsubscribe anytime. Your information is never sold or shared.</div>
       </div>
     </div>
@@ -231,11 +240,52 @@
 <script src="/js/components.js"></script>
 
 <script>
+  async function submitCheckup() {
+    const name = document.getElementById('checkup-name').value.trim();
+    const email = document.getElementById('checkup-email').value.trim();
+    const concern = document.getElementById('checkup-concern').value;
+    const btn = document.getElementById('checkup-submit');
+    const msg = document.getElementById('checkup-msg');
+
+    function show(text, ok) {
+      msg.textContent = text;
+      msg.style.display = 'block';
+      msg.style.background = ok ? '#e6f4ee' : '#fdf0ea';
+      msg.style.color = ok ? '#1d6b4a' : '#c44a1a';
+    }
+
+    if (!email || !email.includes('@')) { show('Please enter a valid email address.', false); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      const res = await fetch('/.netlify/functions/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName: name, email, concern })
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        show("You're in! Check your inbox — your Coverage Checkup is on its way.", true);
+        btn.textContent = '✓ Done';
+      } else {
+        show(data.error || 'Something went wrong. Please try again.', false);
+        btn.disabled = false;
+        btn.textContent = 'Find My Coverage Gaps →';
+      }
+    } catch (e) {
+      show('Could not connect. Please check your internet and try again.', false);
+      btn.disabled = false;
+      btn.textContent = 'Find My Coverage Gaps →';
+    }
+  }
+
   // Auto-scroll to free finder if URL has #free-finder
   window.addEventListener('load', function() {
-    if (window.location.hash === '#free-finder') {
+    var h = window.location.hash;
+    if (h === '#free-finder' || h === '#paid-reviews') {
       setTimeout(function() {
-        document.getElementById('free-finder').scrollIntoView({behavior: 'smooth'});
+        document.getElementById(h.slice(1)).scrollIntoView({behavior: 'smooth'});
       }, 100);
     }
   });
