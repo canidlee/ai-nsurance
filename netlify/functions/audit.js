@@ -109,7 +109,7 @@ exports.handler = async (event) => {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const response = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 3000,
+      max_tokens: 5000,
       messages: [{
         role: 'user',
         content: [
@@ -124,10 +124,18 @@ exports.handler = async (event) => {
     try {
       report = JSON.parse(rawText.replace(/```json|```/g, '').trim());
     } catch {
-      return json(502, { error: 'The analysis could not be structured. Please try again.' });
+      const truncated = response.stop_reason === 'max_tokens';
+      return json(502, {
+        error: truncated
+          ? 'The report was longer than expected and got cut off. Please try again — if it keeps happening, your declarations page may be very long.'
+          : 'The analysis came back in an unexpected format. Please try again.'
+      });
     }
     return json(200, { report });
   } catch (e) {
-    return json(e.status || 500, { error: e.message });
+    const msg = (e.status === 401 || /api.?key/i.test(e.message || ''))
+      ? 'The audit service is not configured correctly (API key). This is on our end — please contact help@ai-nsurance.com.'
+      : (e.message || 'Something went wrong running the audit. Please try again.');
+    return json(e.status || 500, { error: msg });
   }
 };

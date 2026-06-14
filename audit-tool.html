@@ -405,7 +405,8 @@ function showError(msg) {
   const box = document.getElementById('error-box');
   box.textContent = msg;
   box.style.display = 'block';
-  setTimeout(() => box.style.display = 'none', 6000);
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Stays visible until the next attempt — no auto-hide, so it can actually be read.
 }
 
 async function fileToBase64(file) {
@@ -465,8 +466,8 @@ async function startAudit() {
     steps.forEach(s => document.getElementById(s).className = 'done');
 
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || 'API error ' + response.status);
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || ('Request failed (' + response.status + ')'));
     }
 
     const data = await response.json();
