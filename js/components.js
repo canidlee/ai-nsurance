@@ -7,6 +7,7 @@ function renderNav(activePage) {
       <a class="nav-link${activePage==='how-it-works'?' active':''}" href="/pages/how-it-works.html">How It Works</a>
       <a class="nav-link${activePage==='sample-report'?' active':''}" href="/pages/sample-report.html">Sample Report</a>
       <a class="nav-link${activePage==='about'?' active':''}" href="/pages/about.html">About</a>
+      <a class="nav-link${activePage==='audit-tool'?' active':''}" href="/audit-tool.html">Run My Analysis</a>
       <a class="nav-cta" href="/pages/get-my-review.html#paid-reviews">Find My Coverage Gaps →</a>
     </div>
   </nav>`;
@@ -27,6 +28,7 @@ function renderFooter() {
           <ul class="footer-links">
             <li><a href="/pages/how-it-works.html">How It Works</a></li>
             <li><a href="/pages/sample-report.html">Sample Report</a></li>
+            <li><a href="/audit-tool.html">Run My Analysis</a></li>
             <li><a href="/pages/get-my-review.html#free-finder">Free Coverage Checkup</a></li>
           </ul>
         </div>
