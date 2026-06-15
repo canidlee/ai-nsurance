@@ -29,9 +29,11 @@ function sessionTier(session) {
       if (priceId && priceMap[priceId]) return priceMap[priceId];
     }
   }
-  // Fallback: infer from amount_total (in cents). Thresholds sit between the tier
-  // prices ($5 / $39 / $79) so small tax/fees don't bump a buyer into a higher tier.
-  const cents = session.amount_total || 0;
+  // Fallback: infer from the pre-discount subtotal (in cents). Using amount_subtotal
+  // (not amount_total) means a 100%-off promo code like FOUNDERFREE / PRELAUNCHFREE
+  // still maps to the right tier even though the buyer paid $0. Thresholds sit between
+  // the tier prices ($5 / $39 / $79) so small tax/fees don't bump a buyer up a tier.
+  const cents = session.amount_subtotal || session.amount_total || 0;
   if (cents >= 6000) return 3; // $79 Insurance Audit
   if (cents >= 2000) return 2; // $39 Policy Review
   if (cents >= 300)  return 1; // $5 Coverage Score
