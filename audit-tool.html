@@ -125,6 +125,18 @@
   .steps-inline { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .step-pill { font-size: 0.78rem; background: #fff; border: 0.5px solid var(--border); border-radius: 20px; padding: 0.25rem 0.7rem; color: var(--ink-2); }
   .step-arrow { color: var(--ink-3); font-size: 0.8rem; align-self: center; }
+
+  /* ── PAYMENT SUCCESS MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(26,26,24,0.55); display: none; align-items: center; justify-content: center; padding: 1.5rem; z-index: 100; }
+  .modal-overlay.show { display: flex; }
+  .modal-card { background: #fff; border-radius: 16px; max-width: 440px; width: 100%; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); animation: modal-in 0.25s ease; }
+  @keyframes modal-in { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+  .modal-check { width: 64px; height: 64px; border-radius: 50%; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem; }
+  .modal-card h2 { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .modal-tier-pill { display: inline-block; background: var(--accent-light); color: var(--accent); font-weight: 500; font-size: 0.82rem; padding: 0.3rem 0.8rem; border-radius: 20px; margin-bottom: 1rem; }
+  .modal-card p { font-size: 0.92rem; color: var(--ink-2); margin-bottom: 1.5rem; }
+  .btn-modal { background: var(--accent); color: #fff; border: none; padding: 0.85rem 2rem; border-radius: var(--r); font-family: var(--sans); font-size: 1rem; font-weight: 500; cursor: pointer; width: 100%; transition: opacity 0.15s; }
+  .btn-modal:hover { opacity: 0.88; }
 </style>
 </head>
 <body>
@@ -359,6 +371,17 @@
 
 </div>
 
+<!-- PAYMENT SUCCESS MODAL -->
+<div class="modal-overlay" id="payment-modal">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-check">✓</div>
+    <h2 id="modal-title">Payment confirmed</h2>
+    <div class="modal-tier-pill" id="modal-tier-pill">Coverage Score</div>
+    <p>You're all set — your access is unlocked. Upload your declarations page below and we'll run your audit right away.</p>
+    <button class="btn-modal" onclick="dismissPaymentSuccess()">Start my audit →</button>
+  </div>
+</div>
+
 <script>
 // ── ACCESS GATE (server-validated) ──────────────────────
 // Codes are validated by the serverless function, never in the browser.
@@ -426,6 +449,19 @@ function unlockAudit(tier) {
   }
 }
 
+// Payment success modal — shown only when arriving via a Stripe redirect (?code=… in the URL).
+function showPaymentSuccess(tier) {
+  const info = TIER_INFO[tier] || TIER_INFO[1];
+  const pill = document.getElementById('modal-tier-pill');
+  if (pill) pill.textContent = info.name;
+  document.getElementById('payment-modal').classList.add('show');
+}
+
+function dismissPaymentSuccess() {
+  document.getElementById('payment-modal').classList.remove('show');
+  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // Check on page load — persists for the session
 (async function checkAccess() {
   const urlCode = new URLSearchParams(window.location.search).get('code');
@@ -437,6 +473,12 @@ function unlockAudit(tier) {
     sessionStorage.setItem('audit_access', candidate);
     sessionStorage.setItem('audit_tier', String(tier));
     unlockAudit(tier);
+    if (urlCode) {
+      // Came back from a Stripe payment redirect — confirm, then strip the code
+      // from the URL so a refresh doesn't re-trigger the modal.
+      showPaymentSuccess(tier);
+      history.replaceState(null, '', window.location.pathname);
+    }
   }
 })();
 // ────────────────────────────────────────────────────────
