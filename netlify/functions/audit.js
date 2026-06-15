@@ -1,5 +1,6 @@
 const Anthropic = require('@anthropic-ai/sdk');
 const CARRIERS = require('./carriers-data.js');
+const { mintCodeForSession, tierForCode } = require('./_codes.js');
 
 const ALLOWED_ORIGIN = 'https://ai-nsurance.com';
 
@@ -154,9 +155,34 @@ exports.handler = async (event) => {
     return json(400, { error: 'Invalid request body' });
   }
 
+  // ── POST-PAYMENT SESSION EXCHANGE ──
+  // Stripe redirects the buyer to audit-tool.html?session_id=cs_… after checkout.
+  // We verify the session is paid and hand back the durable code minted for it
+  // (idempotent with the webhook — both converge on one code per session).
+  if (body.action === 'session') {
+    const sessionId = (body.sessionId || '').trim();
+    if (!sessionId) return json(400, { error: 'Missing checkout session.' });
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) return json(500, { error: 'Checkout verification is not configured.' });
+    try {
+      const stripe = require('stripe')(stripeKey);
+      const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['line_items'] });
+      if (!session || session.payment_status !== 'paid') {
+        return json(402, { error: 'This checkout session has not been paid.' });
+      }
+      const minted = await mintCodeForSession(session);
+      if (!minted) return json(400, { error: 'Could not determine your plan from this purchase.' });
+      return json(200, { ok: true, code: minted.code, tier: minted.tier });
+    } catch {
+      return json(400, { error: 'Could not verify this checkout session.' });
+    }
+  }
+
   // ── SERVER-SIDE ACCESS CODE VALIDATION (tier-bound) ──
+  // Accept both pre-shared env codes and unique codes minted per Stripe purchase.
   const code = (body.code || '').trim().toUpperCase();
-  const tier = getCodeTierMap()[code];
+  let tier = getCodeTierMap()[code];
+  if (!tier) tier = await tierForCode(code);
   if (!tier) {
     return json(401, { error: 'Invalid or missing access code.' });
   }

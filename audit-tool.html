@@ -462,23 +462,50 @@ function dismissPaymentSuccess() {
   document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// Exchange a paid Stripe checkout session for its durable access code.
+async function codeForSession(sessionId) {
+  try {
+    const res = await fetch('/.netlify/functions/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'session', sessionId })
+    });
+    if (!res.ok) return '';
+    const data = await res.json().catch(() => ({}));
+    return data.code || '';
+  } catch { return ''; }
+}
+
 // Check on page load — persists for the session
 (async function checkAccess() {
-  const urlCode = new URLSearchParams(window.location.search).get('code');
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  let urlCode = params.get('code');
+
+  // Post-payment redirect from Stripe carries ?session_id=cs_… — trade it for the
+  // unique code minted for that purchase (same code the webhook emails them).
+  if (sessionId && !urlCode) urlCode = await codeForSession(sessionId);
+
+  const fromRedirect = !!(urlCode || sessionId);
   const storedCode = sessionStorage.getItem('audit_access') || '';
   const candidate = (urlCode || storedCode).toUpperCase();
-  if (!candidate) return;
+  if (!candidate) {
+    if (sessionId) history.replaceState(null, '', window.location.pathname);
+    return;
+  }
   const tier = await verifyCode(candidate);
   if (tier) {
     sessionStorage.setItem('audit_access', candidate);
     sessionStorage.setItem('audit_tier', String(tier));
     unlockAudit(tier);
-    if (urlCode) {
-      // Came back from a Stripe payment redirect — confirm, then strip the code
-      // from the URL so a refresh doesn't re-trigger the modal.
+    if (fromRedirect) {
+      // Came back from a Stripe payment redirect (or emailed link) — confirm, then
+      // strip the code/session from the URL so a refresh doesn't re-trigger the modal.
       showPaymentSuccess(tier);
       history.replaceState(null, '', window.location.pathname);
     }
+  } else if (sessionId) {
+    history.replaceState(null, '', window.location.pathname);
   }
 })();
 // ────────────────────────────────────────────────────────
