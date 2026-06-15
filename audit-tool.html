@@ -145,10 +145,10 @@
   <div class="audit-card" id="access-gate">
     <div class="lock-icon">🔒</div>
     <h2>Access your policy audit</h2>
-    <p>A one-time audit costs $9.97 — less than a latte. If you have an access code, enter it below.</p>
+    <p>Choose the review that fits — from a $9.97 Coverage Score to the full $99 Household Audit. Already purchased? Enter the access code from your confirmation below.</p>
     <div class="gate-actions">
-      <a href="https://buy.stripe.com/fZu00l3QWecR8UK4tMbAs04" class="btn-pay" target="_blank" rel="noopener">
-        Get access — $9.97 →
+      <a href="/pages/get-my-review.html#paid-reviews" class="btn-pay">
+        Choose my review →
       </a>
       <div class="gate-divider">— or enter your access code —</div>
       <div style="width:100%;max-width:360px;">
@@ -164,6 +164,11 @@
 
   <!-- FORM (hidden until unlocked) -->
   <div id="form-section" style="display:none">
+
+    <div class="audit-card" style="background:var(--accent-light);border-color:rgba(29,107,74,0.25);">
+      <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);">Your plan</div>
+      <div id="tier-label" style="font-size:0.95rem;color:var(--ink-2);margin-top:0.25rem;">Coverage Score</div>
+    </div>
 
     <div class="what-happens">
       <h3>What happens after you submit</h3>
@@ -181,12 +186,12 @@
     </div>
 
     <div class="audit-card">
-      <h2>Step 1 — Upload your declarations page</h2>
+      <h2 id="upload-heading">Step 1 — Upload your declarations page</h2>
       <p>This is the 1–2 page summary sent at the start of every policy period. It's usually titled "Declarations Page" or "Policy Summary." PDF or image (JPG/PNG) accepted.</p>
       <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
         <div class="upload-icon">📄</div>
-        <div class="upload-label">Click to upload or drag and drop</div>
-        <div class="upload-hint">PDF, JPG, or PNG · Max 10MB</div>
+        <div class="upload-label" id="upload-label-text">Click to upload or drag and drop</div>
+        <div class="upload-hint" id="upload-hint-text">PDF, JPG, or PNG · Max 10MB</div>
         <div class="file-name" id="file-name"></div>
         <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this)">
       </div>
@@ -275,8 +280,13 @@
   <!-- RESULTS -->
   <div class="results" id="results-section">
     <div class="results-header">
-      <h2>Your audit is complete</h2>
+      <h2 id="results-title">Your review is complete</h2>
       <p>Results below · A full written report will be emailed to <span id="results-email"></span> within 24 hours · <span id="results-date"></span></p>
+    </div>
+
+    <div class="audit-card" id="executive-card" style="display:none">
+      <div class="section-heading">Executive summary</div>
+      <div id="executive-summary" style="font-size:0.92rem;color:var(--ink-2);line-height:1.7"></div>
     </div>
 
     <div class="score-row">
@@ -299,8 +309,18 @@
     </div>
 
     <div class="audit-card" id="findings-card">
-      <div class="section-heading">Coverage findings</div>
+      <div class="section-heading" id="findings-heading">Coverage findings</div>
       <div id="findings-list"></div>
+    </div>
+
+    <div class="audit-card" id="crosspolicy-card" style="display:none">
+      <div class="section-heading">Cross-policy findings — gaps &amp; overlaps between your policies</div>
+      <div id="crosspolicy-list"></div>
+    </div>
+
+    <div class="audit-card" id="actionplan-card" style="display:none">
+      <div class="section-heading">Your priority action plan</div>
+      <div id="actionplan-list"></div>
     </div>
 
     <div class="audit-card" id="discounts-card">
@@ -308,9 +328,19 @@
       <div class="discount-list" id="discounts-list"></div>
     </div>
 
+    <div class="audit-card" id="exclusions-card" style="display:none">
+      <div class="section-heading">What's NOT covered — exclusions explained</div>
+      <div id="exclusions-list"></div>
+    </div>
+
     <div class="audit-card" id="carrier-card">
       <div class="section-heading">Your carrier assessment</div>
       <div id="carrier-verdict"></div>
+    </div>
+
+    <div class="audit-card" id="agentguide-card" style="display:none">
+      <div class="section-heading">Agent discussion guide — questions to ask</div>
+      <ul id="agentguide-list" style="margin:0;padding-left:1.2rem;font-size:0.9rem;color:var(--ink-2);line-height:1.7"></ul>
     </div>
 
     <div class="audit-card" id="summary-card">
@@ -332,6 +362,7 @@
 <script>
 // ── ACCESS GATE (server-validated) ──────────────────────
 // Codes are validated by the serverless function, never in the browser.
+// Returns the unlocked tier (1|2|3) on success, or 0 on failure.
 async function verifyCode(code) {
   try {
     const res = await fetch('/.netlify/functions/audit', {
@@ -339,8 +370,10 @@ async function verifyCode(code) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'verify', code })
     });
-    return res.ok;
-  } catch { return false; }
+    if (!res.ok) return 0;
+    const data = await res.json().catch(() => ({}));
+    return data.tier || 0;
+  } catch { return 0; }
 }
 
 async function redeemCode() {
@@ -348,44 +381,84 @@ async function redeemCode() {
   const errorEl = document.getElementById('code-error');
   if (!input) { errorEl.textContent = 'Please enter your access code.'; return; }
   errorEl.textContent = 'Checking…';
-  if (await verifyCode(input)) {
+  const tier = await verifyCode(input);
+  if (tier) {
     sessionStorage.setItem('audit_access', input);
+    sessionStorage.setItem('audit_tier', String(tier));
     errorEl.textContent = '';
-    unlockAudit();
+    unlockAudit(tier);
   } else {
     errorEl.textContent = 'That code isn\'t valid. Check for typos or get access below.';
     document.getElementById('code-input').focus();
   }
 }
 
-function unlockAudit() {
+// Tier metadata drives labels and which steps/sections appear.
+const TIER_INFO = {
+  1: { name: 'Coverage Score', blurb: 'A fast checkup: your score and top 3 issues.', multi: false },
+  2: { name: 'Policy Review', blurb: 'A complete read of your policy — every gap, exclusion, and saving.', multi: false },
+  3: { name: 'Insurance Audit', blurb: 'Your whole household reviewed together, with an action plan and agent guide.', multi: true },
+};
+let currentTier = 1;
+
+function unlockAudit(tier) {
+  currentTier = tier || 1;
+  const info = TIER_INFO[currentTier] || TIER_INFO[1];
   document.getElementById('access-gate').style.display = 'none';
   document.getElementById('form-section').style.display = 'block';
+
+  // Tier banner
+  const tierLabel = document.getElementById('tier-label');
+  if (tierLabel) tierLabel.textContent = info.name + ' · ' + info.blurb;
+
+  // Multi-file upload for tier 3 only
+  const fileInput = document.getElementById('file-input');
+  const uploadLabel = document.getElementById('upload-label-text');
+  const uploadHint = document.getElementById('upload-hint-text');
+  const uploadHeading = document.getElementById('upload-heading');
+  if (info.multi) {
+    fileInput.setAttribute('multiple', 'multiple');
+    if (uploadHeading) uploadHeading.textContent = 'Step 1 — Upload your policies';
+    if (uploadLabel) uploadLabel.textContent = 'Click to upload or drag and drop (you can select several)';
+    if (uploadHint) uploadHint.textContent = 'Upload your auto, home, and umbrella dec pages · PDF, JPG, or PNG · Max ~4MB total';
+  } else {
+    fileInput.removeAttribute('multiple');
+  }
 }
 
 // Check on page load — persists for the session
 (async function checkAccess() {
   const urlCode = new URLSearchParams(window.location.search).get('code');
-  const candidate = (urlCode || sessionStorage.getItem('audit_access') || '').toUpperCase();
-  if (candidate && await verifyCode(candidate)) {
+  const storedCode = sessionStorage.getItem('audit_access') || '';
+  const candidate = (urlCode || storedCode).toUpperCase();
+  if (!candidate) return;
+  const tier = await verifyCode(candidate);
+  if (tier) {
     sessionStorage.setItem('audit_access', candidate);
-    unlockAudit();
+    sessionStorage.setItem('audit_tier', String(tier));
+    unlockAudit(tier);
   }
 })();
 // ────────────────────────────────────────────────────────
 
-let uploadedFile = null;
+let uploadedFiles = [];
 let auditReport = {};
 
 // Audit prompt now lives server-side in netlify/functions/audit.js
 
-function handleFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  uploadedFile = file;
-  document.getElementById('file-name').textContent = '✓ ' + file.name;
+function setFiles(fileList) {
+  const incoming = Array.from(fileList || []);
+  if (!incoming.length) return;
+  // Tier 3 keeps multiple; lower tiers keep only the most recent single file.
+  uploadedFiles = (TIER_INFO[currentTier] && TIER_INFO[currentTier].multi)
+    ? incoming
+    : [incoming[0]];
+  const names = uploadedFiles.map(f => f.name).join(', ');
+  document.getElementById('file-name').textContent = '✓ ' + names;
   document.getElementById('upload-zone').classList.add('has-file');
 }
+
+function handleFile(input) { setFiles(input.files); }
 
 const uploadZone = document.getElementById('upload-zone');
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
@@ -393,12 +466,7 @@ uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag
 uploadZone.addEventListener('drop', e => {
   e.preventDefault();
   uploadZone.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file) {
-    uploadedFile = file;
-    document.getElementById('file-name').textContent = '✓ ' + file.name;
-    uploadZone.classList.add('has-file');
-  }
+  setFiles(e.dataTransfer.files);
 });
 
 function showError(msg) {
@@ -424,7 +492,7 @@ async function startAudit() {
   const state = document.getElementById('user-state').value;
   const concern = document.getElementById('user-concern').value || 'None specified';
 
-  if (!uploadedFile) return showError('Please upload your declarations page first.');
+  if (!uploadedFiles.length) return showError('Please upload your declarations page first.');
   if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
   if (!policyType) return showError('Please select your policy type.');
   if (!state) return showError('Please select your state.');
@@ -444,18 +512,21 @@ async function startAudit() {
   }, 4000);
 
   try {
-    const base64 = await fileToBase64(uploadedFile);
-    const isPDF = uploadedFile.type === 'application/pdf';
-    const mediaType = isPDF ? 'application/pdf' : uploadedFile.type;
+    const files = await Promise.all(uploadedFiles.map(async (f) => {
+      const isPDF = f.type === 'application/pdf';
+      return {
+        fileBase64: await fileToBase64(f),
+        mediaType: isPDF ? 'application/pdf' : f.type,
+        isPDF
+      };
+    }));
 
     const response = await fetch('/.netlify/functions/audit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         code: sessionStorage.getItem('audit_access') || '',
-        fileBase64: base64,
-        mediaType,
-        isPDF,
+        files,
         state,
         policyType,
         concern
@@ -491,55 +562,95 @@ async function startAudit() {
   }
 }
 
+function findingHTML(f) {
+  const cls = f.severity === 'critical' ? 'critical' : f.severity === 'warning' ? 'warning' : 'good';
+  const icon = f.severity === 'critical' ? '🔴 ' : f.severity === 'warning' ? '🟡 ' : '🟢 ';
+  return `<div class="finding ${cls}">
+      <div class="finding-title">${icon}${f.title}</div>
+      <div class="finding-desc">${f.description}</div>
+      ${f.action ? `<div class="finding-action">→ ${f.action}</div>` : ''}
+    </div>`;
+}
+
 function renderResults(r, email) {
+  const tier = r.tier || currentTier || 1;
+  const info = TIER_INFO[tier] || TIER_INFO[1];
+  const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? 'block' : 'none'; };
+
   document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-title').textContent = 'Your ' + info.name + ' is complete';
   document.getElementById('results-email').textContent = email;
   document.getElementById('results-date').textContent = new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
 
   const scoreEl = document.getElementById('score-overall');
   scoreEl.textContent = r.overall_score;
   scoreEl.className = 'score-num ' + (r.overall_score >= 75 ? 'score-good' : r.overall_score >= 50 ? 'score-warn' : 'score-bad');
-
   document.getElementById('score-issues').textContent = r.issues_count;
-  document.getElementById('score-discounts').textContent = r.discounts_count;
-  document.getElementById('score-savings').textContent = r.estimated_savings;
+  document.getElementById('score-discounts').textContent = r.discounts_count != null ? r.discounts_count : '—';
+  document.getElementById('score-savings').textContent = r.estimated_savings || '—';
 
-  const findingsList = document.getElementById('findings-list');
-  findingsList.innerHTML = '';
-  (r.findings || []).forEach(f => {
-    const el = document.createElement('div');
-    el.className = 'finding ' + (f.severity === 'critical' ? 'critical' : f.severity === 'warning' ? 'warning' : 'good');
-    el.innerHTML = `
-      <div class="finding-title">${f.severity === 'critical' ? '🔴 ' : f.severity === 'warning' ? '🟡 ' : '🟢 '}${f.title}</div>
-      <div class="finding-desc">${f.description}</div>
-      ${f.action ? `<div class="finding-action">→ ${f.action}</div>` : ''}
-    `;
-    findingsList.appendChild(el);
-  });
+  // Executive summary (tier 3)
+  if (tier === 3 && r.executive_summary) {
+    document.getElementById('executive-summary').textContent = r.executive_summary;
+    show('executive-card', true);
+  } else { show('executive-card', false); }
 
-  const discountsList = document.getElementById('discounts-list');
-  discountsList.innerHTML = '';
-  (r.discounts || []).forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'discount-item';
-    el.innerHTML = `<span class="discount-name">💰 ${d.name}</span><span class="discount-savings">${d.savings}</span>`;
-    discountsList.appendChild(el);
-  });
+  // Findings (all tiers); tier 1 caps at 3
+  document.getElementById('findings-heading').textContent = tier === 1 ? 'Your top issues' : 'Coverage findings';
+  document.getElementById('findings-list').innerHTML = (r.findings || []).map(findingHTML).join('');
 
-  const carrierEl = document.getElementById('carrier-verdict');
+  // Cross-policy findings (tier 3)
+  if (tier === 3 && (r.cross_policy_findings || []).length) {
+    document.getElementById('crosspolicy-list').innerHTML = r.cross_policy_findings.map(findingHTML).join('');
+    show('crosspolicy-card', true);
+  } else { show('crosspolicy-card', false); }
+
+  // Action plan (tier 3)
+  if (tier === 3 && (r.action_plan || []).length) {
+    const rows = [...r.action_plan].sort((a,b)=>(a.priority||99)-(b.priority||99)).map(a => `
+      <div class="finding good">
+        <div class="finding-title">${a.priority ? a.priority + '. ' : ''}${a.item}</div>
+        ${a.impact ? `<div class="finding-desc">Impact: ${a.impact}</div>` : ''}
+      </div>`).join('');
+    document.getElementById('actionplan-list').innerHTML = rows;
+    show('actionplan-card', true);
+  } else { show('actionplan-card', false); }
+
+  // Discounts (tier 2 & 3 get the list; tier 1 only the count above)
+  if (tier >= 2 && (r.discounts || []).length) {
+    document.getElementById('discounts-list').innerHTML = (r.discounts || []).map(d =>
+      `<div class="discount-item"><span class="discount-name">💰 ${d.name}</span><span class="discount-savings">${d.savings}</span></div>`).join('');
+    show('discounts-card', true);
+  } else { show('discounts-card', false); }
+
+  // Exclusions (tier 2 & 3)
+  if (tier >= 2 && (r.exclusions || []).length) {
+    document.getElementById('exclusions-list').innerHTML = r.exclusions.map(x =>
+      `<div class="finding warning"><div class="finding-title">⚠️ ${x.title}</div><div class="finding-desc">${x.description || ''}</div></div>`).join('');
+    show('exclusions-card', true);
+  } else { show('exclusions-card', false); }
+
+  // Carrier assessment (all tiers)
   const carrierScore = r.carrier_score || 50;
   const carrierColor = carrierScore >= 75 ? 'score-good' : carrierScore >= 50 ? 'score-warn' : 'score-bad';
-  carrierEl.innerHTML = `
+  document.getElementById('carrier-verdict').innerHTML = `
     <div class="carrier-verdict">
       <div class="verdict-score ${carrierColor}">${carrierScore}</div>
       <div>
         <div class="verdict-name">${r.carrier_name || 'Your carrier'}</div>
         <div class="verdict-text">${r.carrier_verdict || ''}</div>
       </div>
-    </div>
-  `;
+    </div>`;
 
+  // Agent guide (tier 3)
+  if (tier === 3 && (r.agent_guide || []).length) {
+    document.getElementById('agentguide-list').innerHTML = r.agent_guide.map(q => `<li>${q}</li>`).join('');
+    show('agentguide-card', true);
+  } else { show('agentguide-card', false); }
+
+  // Summary (all tiers)
   document.getElementById('full-summary').textContent = r.full_summary || '';
+
   document.getElementById('results-section').scrollIntoView({behavior:'smooth'});
 }
 

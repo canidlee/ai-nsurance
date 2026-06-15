@@ -3,12 +3,32 @@ const CARRIERS = require('./carriers-data.js');
 
 const ALLOWED_ORIGIN = 'https://ai-nsurance.com';
 
-// Access codes live SERVER-SIDE only. Set AUDIT_ACCESS_CODES in Netlify
-// (Site settings → Environment variables) as a comma-separated list to
-// rotate codes without a deploy. Fallback below keeps launch working.
-function getValidCodes() {
-  const env = process.env.AUDIT_ACCESS_CODES;
-  return (env ? env.split(',') : ['TEST', 'FOUNDINGFRIEND']).map(c => c.trim().toUpperCase());
+// Access codes live SERVER-SIDE only and are BOUND TO A TIER, so the tier a
+// customer gets is tied to the code their Stripe purchase handed them — a
+// $9.97 buyer cannot edit the URL to unlock the $99 audit.
+//
+// Configure in Netlify → Site settings → Environment variables (comma-separated):
+//   AUDIT_CODES_T1  → tier 1 ($9.97 Coverage Score)
+//   AUDIT_CODES_T2  → tier 2 ($39 Policy Review)
+//   AUDIT_CODES_T3  → tier 3 ($99 Insurance Audit)
+// Legacy AUDIT_ACCESS_CODES (if set) maps to tier 2 for backward compatibility.
+// If nothing is configured, TEST/FOUNDINGFRIEND unlock tier 3 so launch + testing work.
+function getCodeTierMap() {
+  const map = {};
+  const add = (envName, tier) => {
+    const raw = process.env[envName];
+    if (!raw) return;
+    raw.split(',').forEach(c => {
+      const k = c.trim().toUpperCase();
+      if (k && !map[k]) map[k] = tier;
+    });
+  };
+  add('AUDIT_CODES_T1', 1);
+  add('AUDIT_CODES_T2', 2);
+  add('AUDIT_CODES_T3', 3);
+  add('AUDIT_ACCESS_CODES', 2); // legacy flat list → tier 2
+  if (Object.keys(map).length === 0) { map.TEST = 3; map.FOUNDINGFRIEND = 3; }
+  return map;
 }
 
 const SCORING_RUBRIC = `Score the policy using this exact 8-factor rubric (100 points total). Award points per factor, then sum for overall_score.
@@ -22,19 +42,41 @@ const SCORING_RUBRIC = `Score the policy using this exact 8-factor rubric (100 p
 8. POLICY HYGIENE & DISCOUNTS (5 pts): 5 if no lapses and discounts captured; 2 if 1-2 obvious unclaimed discounts; 0 if lapse indicators or multiple missed discounts.
 If a factor cannot be determined from the document, award the midpoint and say so in the reason — honesty over false precision.`;
 
-function buildPrompt(state, policyType, concern) {
+function buildPrompt(tier, state, policyType, concern, fileCount) {
   const carrierData = JSON.stringify(CARRIERS);
-  return `You are an expert auto & home insurance policy auditor with 20 years of experience. You have been given a declarations page (or description of one) to audit.
 
-Your job is to analyze this policy and produce a structured audit report. Be specific, practical, and honest. If you cannot determine something from the document, say so clearly rather than guessing. Your tone is a trusted advisor on the policyholder's side: warm, plain English, never alarmist, never bashing the insurance industry — most coverage problems come from policies going stale, not bad actors.
+  const intro = tier === 3
+    ? `You are an expert auto & home insurance auditor with 20 years of experience. You have been given ${fileCount > 1 ? `${fileCount} declarations pages from the same household` : 'a declarations page'} to audit TOGETHER as a single household. The most valuable findings live BETWEEN policies (coverage that overlaps, gaps that fall between auto and home, liability that no single policy covers) — look for those specifically.`
+    : `You are an expert auto & home insurance policy auditor with 20 years of experience. You have been given a declarations page (or description of one) to audit.`;
+
+  const toneAndData = `Your job is to analyze ${tier === 3 ? 'these policies' : 'this policy'} and produce a structured audit report. Be specific, practical, and honest. If you cannot determine something from the document, say so clearly rather than guessing. Your tone is a trusted advisor on the policyholder's side: warm, plain English, never alarmist, never bashing the insurance industry — most coverage problems come from policies going stale, not bad actors.
 
 ${SCORING_RUBRIC}
 
 CARRIER DATA (use this for factor 7 and the carrier verdict — do NOT rely on your general knowledge for carrier scores):
-${carrierData}
+${carrierData}`;
 
-Return a JSON response with this exact structure:
-{
+  // Tier-specific output contract
+  let schema, depth;
+  if (tier === 1) {
+    depth = `This is a TIER 1 "Coverage Score" — a fast checkup. Identify the THREE most important findings only (most severe first). Keep the summary to a single short paragraph.`;
+    schema = `{
+  "tier": 1,
+  "overall_score": <number 0-100, the sum of rubric factors>,
+  "score_breakdown": [ { "factor": "<factor name>", "points": <awarded>, "possible": <max>, "reason": "<1 sentence>" } ],
+  "issues_count": <total number of issues you observed, even if only top 3 are listed>,
+  "discounts_count": <number>,
+  "estimated_savings": "<string like '$200-400/yr'>",
+  "carrier_name": "<carrier name from document>",
+  "carrier_score": <composite score from carrier data, or 50 if unknown>,
+  "carrier_verdict": "<1-2 sentence assessment grounded in the carrier data above>",
+  "findings": [ <EXACTLY the top 3, each: { "severity": "critical|warning|good", "title": "<short title>", "description": "<1-2 sentences>", "action": "<specific next step>" }> ],
+  "full_summary": "<ONE short paragraph: should they be worried, and the single most important next step.>"
+}`;
+  } else if (tier === 2) {
+    depth = `This is a TIER 2 "Policy Review" — a complete read of one policy. List ALL findings, a full discount breakdown, and a thorough summary.`;
+    schema = `{
+  "tier": 2,
   "overall_score": <number 0-100, the sum of rubric factors>,
   "score_breakdown": [ { "factor": "<factor name>", "points": <awarded>, "possible": <max>, "reason": "<1 sentence>" } ],
   "issues_count": <number>,
@@ -45,8 +87,40 @@ Return a JSON response with this exact structure:
   "carrier_verdict": "<2-3 sentence assessment grounded in the carrier data above>",
   "findings": [ { "severity": "critical|warning|good", "title": "<short title>", "description": "<2-3 sentences>", "action": "<specific next step>" } ],
   "discounts": [ { "name": "<discount name>", "savings": "<estimated range>" } ],
+  "exclusions": [ { "title": "<what is NOT covered>", "description": "<1-2 sentences in plain English>" } ],
   "full_summary": "<3-5 paragraph plain-English summary written directly to the policyholder. Include what to do this week, this month, and at next renewal.>"
-}
+}`;
+  } else {
+    depth = `This is a TIER 3 "Insurance Audit" — the household review across ${fileCount > 1 ? 'all uploaded policies' : 'the policy provided'}. Include everything in a full review PLUS cross-policy analysis, a priority-ranked action plan, an agent discussion guide, and a one-paragraph executive summary. The overall_score should reflect the household's combined coverage health.`;
+    schema = `{
+  "tier": 3,
+  "overall_score": <number 0-100, household combined coverage health>,
+  "score_breakdown": [ { "factor": "<factor name>", "points": <awarded>, "possible": <max>, "reason": "<1 sentence>" } ],
+  "issues_count": <number>,
+  "discounts_count": <number>,
+  "estimated_savings": "<string like '$200-400/yr'>",
+  "carrier_name": "<primary carrier, or 'Multiple' if policies span carriers>",
+  "carrier_score": <composite score from carrier data for the primary carrier, or 50 if unknown>,
+  "carrier_verdict": "<2-3 sentence assessment grounded in the carrier data above>",
+  "executive_summary": "<ONE paragraph: the household's overall situation and the single biggest priority.>",
+  "findings": [ { "severity": "critical|warning|good", "title": "<short title>", "description": "<2-3 sentences>", "action": "<specific next step>" } ],
+  "cross_policy_findings": [ { "severity": "critical|warning|good", "title": "<short title>", "description": "<what happens between policies — overlap or gap — and why it matters>", "action": "<specific next step>" } ],
+  "discounts": [ { "name": "<discount name>", "savings": "<estimated range>" } ],
+  "exclusions": [ { "title": "<what is NOT covered>", "description": "<1-2 sentences>" } ],
+  "action_plan": [ { "priority": <1 is highest>, "item": "<what to do>", "impact": "<dollar or risk impact>" } ],
+  "agent_guide": [ "<specific question to ask the agent>", "..." ],
+  "full_summary": "<3-5 paragraph plain-English summary. Include what to do this week, this month, and at next renewal.>"
+}`;
+  }
+
+  return `${intro}
+
+${toneAndData}
+
+${depth}
+
+Return a JSON response with this exact structure:
+${schema}
 
 The policyholder's state: ${state}
 Policy type: ${policyType}
@@ -80,49 +154,67 @@ exports.handler = async (event) => {
     return json(400, { error: 'Invalid request body' });
   }
 
-  // ── SERVER-SIDE ACCESS CODE VALIDATION ──
+  // ── SERVER-SIDE ACCESS CODE VALIDATION (tier-bound) ──
   const code = (body.code || '').trim().toUpperCase();
-  if (!getValidCodes().includes(code)) {
+  const tier = getCodeTierMap()[code];
+  if (!tier) {
     return json(401, { error: 'Invalid or missing access code.' });
   }
 
-  // Gate unlock check — validates the code without running an audit
+  // Gate unlock check — validates the code and reports the tier without running an audit
   if (body.action === 'verify') {
-    return json(200, { ok: true });
+    return json(200, { ok: true, tier });
   }
 
   // ── AUDIT REQUEST ──
-  const { fileBase64, mediaType, isPDF, state, policyType, concern } = body;
-  if (!fileBase64 || !mediaType || !state || !policyType) {
+  const { state, policyType, concern } = body;
+  // Accept a `files` array (tier 3 multi-policy) or legacy single-file fields.
+  let files = Array.isArray(body.files) && body.files.length
+    ? body.files
+    : (body.fileBase64 ? [{ fileBase64: body.fileBase64, mediaType: body.mediaType, isPDF: body.isPDF }] : []);
+
+  if (!files.length || !state || !policyType) {
     return json(400, { error: 'Missing required fields.' });
   }
+  // Only tier 3 may submit multiple policies; lower tiers analyze the first file.
+  if (tier < 3) files = files.slice(0, 1);
+  if (files.some(f => !f.fileBase64 || !f.mediaType)) {
+    return json(400, { error: 'One or more uploads are missing data. Please re-upload.' });
+  }
   // ~6MB request ceiling on Netlify; reject oversized uploads with a clear message
-  if (fileBase64.length > 5.5 * 1024 * 1024) {
-    return json(413, { error: 'File too large. Please upload a file under 4MB (your declarations page, not the full policy book).' });
+  const totalBytes = files.reduce((sum, f) => sum + f.fileBase64.length, 0);
+  if (totalBytes > 5.5 * 1024 * 1024) {
+    return json(413, { error: 'Uploads are too large. Please keep total under ~4MB (declarations pages, not full policy books).' });
   }
 
   // The prompt is built HERE, server-side. Clients cannot send arbitrary
   // messages, so this endpoint cannot be repurposed as a free AI proxy.
-  const prompt = buildPrompt(state, policyType, concern || 'None specified');
+  const prompt = buildPrompt(tier, state, policyType, concern || 'None specified', files.length);
+
+  const docBlocks = files.map(f => ({
+    type: f.isPDF ? 'document' : 'image',
+    source: { type: 'base64', media_type: f.mediaType, data: f.fileBase64 },
+  }));
 
   try {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const response = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 5000,
+      max_tokens: tier === 3 ? 6500 : tier === 1 ? 3000 : 5000,
       messages: [{
         role: 'user',
-        content: [
-          { type: isPDF ? 'document' : 'image', source: { type: 'base64', media_type: mediaType, data: fileBase64 } },
-          { type: 'text', text: prompt },
-        ],
+        content: [...docBlocks, { type: 'text', text: prompt }],
       }],
     });
 
     const rawText = (response.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
     let report;
     try {
-      report = JSON.parse(rawText.replace(/```json|```/g, '').trim());
+      let cleaned = rawText.replace(/```json|```/g, '').trim();
+      const start = cleaned.indexOf('{');
+      const end = cleaned.lastIndexOf('}');
+      if (start !== -1 && end !== -1) cleaned = cleaned.slice(start, end + 1);
+      report = JSON.parse(cleaned);
     } catch {
       const truncated = response.stop_reason === 'max_tokens';
       return json(502, {
@@ -131,6 +223,7 @@ exports.handler = async (event) => {
           : 'The analysis came back in an unexpected format. Please try again.'
       });
     }
+    report.tier = tier; // authoritative tier from the validated code
     return json(200, { report });
   } catch (e) {
     const msg = (e.status === 401 || /api.?key/i.test(e.message || ''))
