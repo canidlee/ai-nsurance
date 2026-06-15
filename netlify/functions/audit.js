@@ -167,7 +167,9 @@ exports.handler = async (event) => {
     try {
       const stripe = require('stripe')(stripeKey);
       const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['line_items'] });
-      if (!session || session.payment_status !== 'paid') {
+      // 'paid' for normal orders; 'no_payment_required' for $0 (100%-off promo) orders.
+      const settled = session && (session.payment_status === 'paid' || session.payment_status === 'no_payment_required');
+      if (!settled) {
         return json(402, { error: 'This checkout session has not been paid.' });
       }
       const minted = await mintCodeForSession(session);

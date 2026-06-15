@@ -45,7 +45,8 @@ exports.handler = async (event) => {
       session = await stripe.checkout.sessions.retrieve(session.id, { expand: ['line_items'] });
     } catch { /* fall back to the event payload */ }
 
-    if (session.payment_status === 'paid') {
+    // 'paid' for normal orders; 'no_payment_required' for $0 (100%-off promo) orders.
+    if (session.payment_status === 'paid' || session.payment_status === 'no_payment_required') {
       try {
         const minted = await mintCodeForSession(session);
         if (minted && minted.email) {
