@@ -6,12 +6,12 @@ const ALLOWED_ORIGIN = 'https://ai-nsurance.com';
 
 // Access codes live SERVER-SIDE only and are BOUND TO A TIER, so the tier a
 // customer gets is tied to the code their Stripe purchase handed them — a
-// $9.97 buyer cannot edit the URL to unlock the $99 audit.
+// $5 buyer cannot edit the URL to unlock the $79 audit.
 //
 // Configure in Netlify → Site settings → Environment variables (comma-separated):
-//   AUDIT_CODES_T1  → tier 1 ($9.97 Coverage Score)
+//   AUDIT_CODES_T1  → tier 1 ($5 Coverage Score)
 //   AUDIT_CODES_T2  → tier 2 ($39 Policy Review)
-//   AUDIT_CODES_T3  → tier 3 ($99 Insurance Audit)
+//   AUDIT_CODES_T3  → tier 3 ($79 Insurance Audit)
 // Legacy AUDIT_ACCESS_CODES (if set) maps to tier 2 for backward compatibility.
 // If nothing is configured, TEST/FOUNDINGFRIEND unlock tier 3 so launch + testing work.
 function getCodeTierMap() {

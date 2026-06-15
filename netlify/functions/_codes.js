@@ -5,7 +5,7 @@
 // enter the code from their email, and still unlock the audit they paid for.
 //
 // One code per Stripe checkout session (idempotent), bound to a tier (1|2|3) so a
-// $9.97 buyer can never unlock the $99 audit.
+// $5 buyer can never unlock the $79 audit.
 const crypto = require('crypto');
 const { getStore } = require('@netlify/blobs');
 
@@ -29,11 +29,12 @@ function sessionTier(session) {
       if (priceId && priceMap[priceId]) return priceMap[priceId];
     }
   }
-  // Fallback: infer from amount_total (in cents). Tolerates small tax/fees.
+  // Fallback: infer from amount_total (in cents). Thresholds sit between the tier
+  // prices ($5 / $39 / $79) so small tax/fees don't bump a buyer into a higher tier.
   const cents = session.amount_total || 0;
-  if (cents >= 9000) return 3; // $99 Insurance Audit
-  if (cents >= 3000) return 2; // $39 Policy Review
-  if (cents >= 500)  return 1; // $9.97 Coverage Score
+  if (cents >= 6000) return 3; // $79 Insurance Audit
+  if (cents >= 2000) return 2; // $39 Policy Review
+  if (cents >= 300)  return 1; // $5 Coverage Score
   return 0;
 }
 
