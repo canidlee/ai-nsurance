@@ -13,7 +13,8 @@ const ALLOWED_ORIGIN = 'https://ai-nsurance.com';
 //   AUDIT_CODES_T2  → tier 2 ($39 Policy Review)
 //   AUDIT_CODES_T3  → tier 3 ($79 Insurance Audit)
 // Legacy AUDIT_ACCESS_CODES (if set) maps to tier 2 for backward compatibility.
-// If nothing is configured, TEST/FOUNDINGFRIEND unlock tier 3 so launch + testing work.
+// If nothing is configured the map is EMPTY and no pre-shared code validates
+// (fail closed) — per-purchase codes minted via Netlify Blobs still work.
 function getCodeTierMap() {
   const map = {};
   const add = (envName, tier) => {
@@ -28,7 +29,6 @@ function getCodeTierMap() {
   add('AUDIT_CODES_T2', 2);
   add('AUDIT_CODES_T3', 3);
   add('AUDIT_ACCESS_CODES', 2); // legacy flat list → tier 2
-  if (Object.keys(map).length === 0) { map.TEST = 3; map.FOUNDINGFRIEND = 3; }
   return map;
 }
 
