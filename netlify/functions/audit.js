@@ -6,12 +6,12 @@ const ALLOWED_ORIGIN = 'https://ai-nsurance.com';
 
 // Access codes live SERVER-SIDE only and are BOUND TO A TIER, so the tier a
 // customer gets is tied to the code their Stripe purchase handed them — a
-// $5 buyer cannot edit the URL to unlock the $79 audit.
+// $10 buyer cannot edit the URL to unlock the $15 household review.
 //
 // Configure in Netlify → Site settings → Environment variables (comma-separated):
-//   AUDIT_CODES_T1  → tier 1 ($5 Coverage Score)
-//   AUDIT_CODES_T2  → tier 2 ($39 Policy Review)
-//   AUDIT_CODES_T3  → tier 3 ($79 Insurance Audit)
+//   AUDIT_CODES_T2  → tier 2 ($10 Single-Policy Review)
+//   AUDIT_CODES_T3  → tier 3 ($15 Household Review)
+//   AUDIT_CODES_T1  → tier 1 (retired Coverage Score; legacy codes only)
 // Legacy AUDIT_ACCESS_CODES (if set) maps to tier 2 for backward compatibility.
 // If nothing is configured the map is EMPTY and no pre-shared code validates
 // (fail closed) — per-purchase codes minted via Netlify Blobs still work.
@@ -75,7 +75,7 @@ ${carrierData}`;
   "full_summary": "<ONE short paragraph: should they be worried, and the single most important next step.>"
 }`;
   } else if (tier === 2) {
-    depth = `This is a TIER 2 "Policy Review" — a complete read of one policy. List ALL findings, a full discount breakdown, and a thorough summary.`;
+    depth = `This is a "Single-Policy Review" — a complete read of one policy. List ALL findings, a full discount breakdown, and a thorough summary.`;
     schema = `{
   "tier": 2,
   "overall_score": <number 0-100, the sum of rubric factors>,
@@ -92,7 +92,7 @@ ${carrierData}`;
   "full_summary": "<3-5 paragraph plain-English summary written directly to the policyholder. Include what to do this week, this month, and at next renewal.>"
 }`;
   } else {
-    depth = `This is a TIER 3 "Insurance Audit" — the household review across ${fileCount > 1 ? 'all uploaded policies' : 'the policy provided'}. Include everything in a full review PLUS cross-policy analysis, a priority-ranked action plan, an agent discussion guide, and a one-paragraph executive summary. The overall_score should reflect the household's combined coverage health.`;
+    depth = `This is a "Household Review" — the household review across ${fileCount > 1 ? 'all uploaded policies' : 'the policy provided'}. Include everything in a full review PLUS cross-policy analysis, a priority-ranked action plan, an agent discussion guide, and a one-paragraph executive summary. The overall_score should reflect the household's combined coverage health.`;
     schema = `{
   "tier": 3,
   "overall_score": <number 0-100, household combined coverage health>,

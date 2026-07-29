@@ -4,23 +4,25 @@
 // so a buyer who pays but doesn't upload right away can come back days later,
 // enter the code from their email, and still unlock the audit they paid for.
 //
-// One code per Stripe checkout session (idempotent), bound to a tier (1|2|3) so a
-// $5 buyer can never unlock the $79 audit.
+// One code per Stripe checkout session (idempotent), bound to a tier so a
+// $10 single-policy buyer can never unlock the $15 household review.
 const crypto = require('crypto');
 const { getStore } = require('@netlify/blobs');
 
 const STORE_NAME = 'audit-codes';
 function store() { return getStore(STORE_NAME); }
 
-// Map a paid Stripe session to a tier (1|2|3), or 0 if it can't be determined.
+// Map a paid Stripe session to a tier, or 0 if it can't be determined.
+// Two products are sold: $10 Single-Policy Review (tier 2) and $15 Household
+// Review (tier 3). Tier 1 is retired but still honored if a legacy code exists.
 // Prefers an explicit price→tier env mapping; falls back to the amount paid so it
-// still works before distinct Stripe prices are wired up.
-//   STRIPE_PRICE_T1 / STRIPE_PRICE_T2 / STRIPE_PRICE_T3  = the Stripe price IDs
+// still works before the Stripe price IDs are wired up.
+//   STRIPE_PRICE_T2 = the $10 Single-Policy Review price ID
+//   STRIPE_PRICE_T3 = the $15 Household Review price ID
 function sessionTier(session) {
   const priceMap = {
-    [process.env.STRIPE_PRICE_T1]: 1,
-    [process.env.STRIPE_PRICE_T2]: 2,
-    [process.env.STRIPE_PRICE_T3]: 3,
+    [process.env.STRIPE_PRICE_T2]: 2, // $10 Single-Policy Review
+    [process.env.STRIPE_PRICE_T3]: 3, // $15 Household Review
   };
   const lineItems = session.line_items && session.line_items.data;
   if (lineItems && lineItems.length) {
@@ -30,13 +32,11 @@ function sessionTier(session) {
     }
   }
   // Fallback: infer from the pre-discount subtotal (in cents). Using amount_subtotal
-  // (not amount_total) means a 100%-off promo code like FOUNDERFREE / PRELAUNCHFREE
-  // still maps to the right tier even though the buyer paid $0. Thresholds sit between
-  // the tier prices ($5 / $39 / $79) so small tax/fees don't bump a buyer up a tier.
+  // (not amount_total) means a 100%-off promo code still maps to the right tier even
+  // though the buyer paid $0. The threshold sits between the two prices ($10 / $15).
   const cents = session.amount_subtotal || session.amount_total || 0;
-  if (cents >= 6000) return 3; // $79 Insurance Audit
-  if (cents >= 2000) return 2; // $39 Policy Review
-  if (cents >= 300)  return 1; // $5 Coverage Score
+  if (cents >= 1250) return 3; // $15 Household Review
+  if (cents >= 500)  return 2; // $10 Single-Policy Review
   return 0;
 }
 
@@ -84,7 +84,7 @@ async function emailCode({ to, code, tier }) {
   if (!apiKey || !to) return false;
 
   const from = process.env.RESEND_FROM || 'AI-nsurance <noreply@ai-nsurance.com>';
-  const names = { 1: 'Coverage Score', 2: 'Policy Review', 3: 'Insurance Audit' };
+  const names = { 1: 'Coverage Score', 2: 'Single-Policy Review', 3: 'Household Review' };
   const tierName = names[tier] || 'audit';
   const link = `https://ai-nsurance.com/audit-tool.html?code=${encodeURIComponent(code)}`;
 

@@ -157,7 +157,7 @@
   <div class="audit-card" id="access-gate">
     <div class="lock-icon">🔒</div>
     <h2>Access your policy audit</h2>
-    <p>Choose the review that fits — from a $5 Coverage Score to the full $79 Household Audit. Already purchased? Enter the access code from your confirmation below.</p>
+    <p>Choose the review that fits — a $10 Single-Policy Review or the $15 Household Review. Already purchased? Enter the access code from your confirmation below.</p>
     <div class="gate-actions">
       <a href="/pages/get-my-review.html#paid-reviews" class="btn-pay">
         Choose my review →
@@ -179,7 +179,7 @@
 
     <div class="audit-card" style="background:var(--accent-light);border-color:rgba(29,107,74,0.25);">
       <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);">Your plan</div>
-      <div id="tier-label" style="font-size:0.95rem;color:var(--ink-2);margin-top:0.25rem;">Coverage Score</div>
+      <div id="tier-label" style="font-size:0.95rem;color:var(--ink-2);margin-top:0.25rem;">Single-Policy Review</div>
     </div>
 
     <div class="what-happens">
@@ -376,7 +376,7 @@
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-check">✓</div>
     <h2 id="modal-title">Payment confirmed</h2>
-    <div class="modal-tier-pill" id="modal-tier-pill">Coverage Score</div>
+    <div class="modal-tier-pill" id="modal-tier-pill">Single-Policy Review</div>
     <p>You're all set — your access is unlocked. Upload your declarations page below and we'll run your audit right away.</p>
     <button class="btn-modal" onclick="dismissPaymentSuccess()">Start my audit →</button>
   </div>
@@ -418,11 +418,12 @@ async function redeemCode() {
 
 // Tier metadata drives labels and which steps/sections appear.
 const TIER_INFO = {
+  // Tier 1 is retired from sale; kept only so any legacy code still resolves gracefully.
   1: { name: 'Coverage Score', blurb: 'A fast checkup: your score and top 3 issues.', multi: false },
-  2: { name: 'Policy Review', blurb: 'A complete read of your policy — every gap, exclusion, and saving.', multi: false },
-  3: { name: 'Insurance Audit', blurb: 'Your whole household reviewed together, with an action plan and agent guide.', multi: true },
+  2: { name: 'Single-Policy Review', blurb: 'A complete read of one policy — every gap, exclusion, and saving.', multi: false },
+  3: { name: 'Household Review', blurb: 'Two policies reviewed together, with an action plan and agent guide.', multi: true },
 };
-let currentTier = 1;
+let currentTier = 2;
 
 function unlockAudit(tier) {
   currentTier = tier || 1;
@@ -441,9 +442,9 @@ function unlockAudit(tier) {
   const uploadHeading = document.getElementById('upload-heading');
   if (info.multi) {
     fileInput.setAttribute('multiple', 'multiple');
-    if (uploadHeading) uploadHeading.textContent = 'Step 1 — Upload your policies';
-    if (uploadLabel) uploadLabel.textContent = 'Click to upload or drag and drop (you can select several)';
-    if (uploadHint) uploadHint.textContent = 'Upload your auto, home, and umbrella dec pages · PDF, JPG, or PNG · Max ~4MB total';
+    if (uploadHeading) uploadHeading.textContent = 'Step 1 — Upload your two policies';
+    if (uploadLabel) uploadLabel.textContent = 'Click to upload or drag and drop (select both policies)';
+    if (uploadHint) uploadHint.textContent = 'Upload both dec pages — e.g. auto + home · PDF, JPG, or PNG · Max ~4MB total';
   } else {
     fileInput.removeAttribute('multiple');
   }
