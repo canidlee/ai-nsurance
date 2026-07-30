@@ -217,6 +217,11 @@
       <p>These help the AI contextualize your coverage against your actual situation.</p>
 
       <div class="form-row">
+        <label class="form-label">Your first name (so we can personalize your report)</label>
+        <input type="text" class="form-input" id="user-name" placeholder="e.g. Sarah" maxlength="40">
+      </div>
+
+      <div class="form-row">
         <label class="form-label">Your email (we'll send the report here)</label>
         <input type="email" class="form-input" id="user-email" placeholder="you@email.com">
       </div>
@@ -557,6 +562,7 @@ async function fileToBase64(file) {
 }
 
 async function startAudit() {
+  const firstName = document.getElementById('user-name').value.trim();
   const email = document.getElementById('user-email').value;
   const policyType = document.getElementById('policy-type').value;
   const state = document.getElementById('user-state').value;
@@ -597,6 +603,7 @@ async function startAudit() {
       body: JSON.stringify({
         code: sessionStorage.getItem('audit_access') || '',
         files,
+        firstName,
         state,
         policyType,
         concern
@@ -617,11 +624,12 @@ async function startAudit() {
 
     auditReport = report;
     auditReport.email = email;
+    auditReport.firstName = firstName;
     auditReport.policyType = policyType;
 
     setTimeout(() => {
       proc.style.display = 'none';
-      renderResults(report, email);
+      renderResults(report, email, firstName);
     }, 800);
 
   } catch(err) {
@@ -642,13 +650,16 @@ function findingHTML(f) {
     </div>`;
 }
 
-function renderResults(r, email) {
+function renderResults(r, email, firstName) {
   const tier = r.tier || currentTier || 1;
   const info = TIER_INFO[tier] || TIER_INFO[1];
   const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? 'block' : 'none'; };
 
   document.getElementById('results-section').style.display = 'block';
-  document.getElementById('results-title').textContent = 'Your ' + info.name + ' is complete';
+  const who = (firstName || '').trim();
+  document.getElementById('results-title').textContent = who
+    ? who + ', your ' + info.name + ' is complete'
+    : 'Your ' + info.name + ' is complete';
   document.getElementById('results-email').textContent = email;
   document.getElementById('results-date').textContent = new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
 
